@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0c80c177-03a1-483a-b1b4-2fa669a7a973" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../Libraries/Includes/GLFW/glfw3.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Shake_Engine_CPP/glad.c" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Shake_Engine_CPP/Shake_Engine_CPP.cpp" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Shake_Engine_CPP/Shake_Engine_CPP.cpp" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1cibsneykBNGx4Ks4XfQsABHN81" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.3501355" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.300271" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Shake_Engine_CPP" type="CppProject" factoryName="C++ Project">
+      <configuration_1>
+        <option name="CONFIGURATION" value="Debug" />
+        <option name="PLATFORM" value="Win32" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Shake_Engine_CPP/Shake_Engine_CPP.vcxproj" />
+        <option name="EXE_PATH" value="$(LocalDebuggerCommand)" />
+        <option name="PROGRAM_PARAMETERS" value="$(LocalDebuggerCommandArguments)" />
+        <option name="WORKING_DIRECTORY" value="$(LocalDebuggerWorkingDirectory)" />
+        <option name="PASS_PARENT_ENVS" value="1" />
+        <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      </configuration_1>
+      <configuration_2>
+        <option name="CONFIGURATION" value="Debug" />
+        <option name="PLATFORM" value="x64" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Shake_Engine_CPP/Shake_Engine_CPP.vcxproj" />
+        <option name="EXE_PATH" value="$(LocalDebuggerCommand)" />
+        <option name="PROGRAM_PARAMETERS" value="$(LocalDebuggerCommandArguments)" />
+        <option name="WORKING_DIRECTORY" value="$(LocalDebuggerWorkingDirectory)" />
+        <option name="PASS_PARENT_ENVS" value="1" />
+        <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      </configuration_2>
+      <configuration_3>
+        <option name="CONFIGURATION" value="Release" />
+        <option name="PLATFORM" value="Win32" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Shake_Engine_CPP/Shake_Engine_CPP.vcxproj" />
+        <option name="EXE_PATH" value="$(LocalDebuggerCommand)" />
+        <option name="PROGRAM_PARAMETERS" value="$(LocalDebuggerCommandArguments)" />
+        <option name="WORKING_DIRECTORY" value="$(LocalDebuggerWorkingDirectory)" />
+        <option name="PASS_PARENT_ENVS" value="1" />
+        <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      </configuration_3>
+      <configuration_4>
+        <option name="CONFIGURATION" value="Release" />
+        <option name="PLATFORM" value="x64" />
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/Shake_Engine_CPP/Shake_Engine_CPP.vcxproj" />
+        <option name="EXE_PATH" value="$(LocalDebuggerCommand)" />
+        <option name="PROGRAM_PARAMETERS" value="$(LocalDebuggerCommandArguments)" />
+        <option name="WORKING_DIRECTORY" value="$(LocalDebuggerWorkingDirectory)" />
+        <option name="PASS_PARENT_ENVS" value="1" />
+        <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      </configuration_4>
+      <option name="DEFAULT_PROJECT_PATH" value="$PROJECT_DIR$/Shake_Engine_CPP/Shake_Engine_CPP.vcxproj" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0c80c177-03a1-483a-b1b4-2fa669a7a973" name="Default Changelist" comment="" />
+      <created>1591014570019</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1591014570019</updated>
+      <workItem from="1591014572693" duration="3939000" />
+      <workItem from="1591018677559" duration="14000" />
+      <workItem from="1591019034688" duration="911000" />
+    </task>
+    <servers />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591015511637">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591015511637" />
+    <state width="1876" height="179" key="GridCell.Tab.0.bottom" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.0.bottom/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.0.center" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.0.center/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.0.left" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.0.left/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.0.right" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.0.right/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.1.bottom" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.1.bottom/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.1.center" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.1.center/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.1.left" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.1.left/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.1.right" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.1.right/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.2.bottom" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.2.bottom/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.2.center" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.2.center/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.2.left" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.2.left/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.2.right" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.2.right/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.3.bottom" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.3.bottom/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.3.center" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.3.center/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.3.left" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.3.left/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state width="1876" height="179" key="GridCell.Tab.3.right" timestamp="1591019946007">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1876" height="179" key="GridCell.Tab.3.right/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019946007" />
+    <state x="623" y="239" width="672" height="678" key="search.everywhere.popup" timestamp="1591019160329">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="239" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1160/-1920.0.1920.1080/0.0.1920.1040@0.0.1920.1040" timestamp="1591019160329" />
+  </component>
+</project>
