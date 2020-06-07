@@ -2,14 +2,27 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\rsmekens\AppData\Local\JetBrains\Rider2020.1\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\rsmekens\AppData\Local\JetBrains\Rider2020.1\resharper-host\Local\Transient\ReSharperHost\v201\SolutionCaches\_Shake_Engine_CPP.-775267348.00" t="ExcludeRecursive" />
-    <e p="C:\Users\rsmekens\AppData\Roaming\JetBrains\Rider2020.1\scratches" t="IncludeRecursive" />
-    <e p="C:\Users\rsmekens\Documents\GitHub\Shake_Engine_CPP" t="IncludeFlat">
+    <e p="C:\Users\rsmekens\AppData\Local\JetBrains\Rider2020.1\resharper-host\Local\Transient\ReSharperHost\v201\SolutionCaches\_Shake_Engine_CPP.1403444866.00" t="ExcludeRecursive" />
+    <e p="E:\Documents\GitHub\Shake_Engine_CPP" t="IncludeFlat">
       <e p="packages" t="ExcludeRecursive" />
       <e p="Shake_Engine_CPP" t="IncludeRecursive">
+        <e p="Camera.cpp" t="Include" />
+        <e p="Camera.h" t="Include" />
         <e p="glad.c" t="Include" />
+        <e p="Resources" t="Include">
+          <e p="awesomeface.png" t="Include" />
+          <e p="wall.jpg" t="Include" />
+        </e>
+        <e p="Shader.cpp" t="Include" />
+        <e p="Shader.h" t="Include" />
+        <e p="Shaders" t="Include">
+          <e p="shader01.fs" t="Include" />
+          <e p="shader01.vs" t="Include" />
+          <e p="shader02.fs" t="Include" />
+        </e>
         <e p="Shake_Engine_CPP.cpp" t="Include" />
         <e p="Shake_Engine_CPP.vcxproj" t="IncludeRecursive" />
+        <e p="stb_image.h" t="Include" />
         <e p="x64\Debug" t="ExcludeRecursive" />
       </e>
       <e p="Shake_Engine_CPP.sln" t="IncludeFlat" />

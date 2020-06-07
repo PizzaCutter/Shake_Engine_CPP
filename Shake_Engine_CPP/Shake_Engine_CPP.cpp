@@ -9,21 +9,16 @@
 #include "Shader.h"
 
 #define STB_IMAGE_IMPLEMENTATION
+#include "Camera.h"
 #include "stb_image.h"
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
-bool firstMouse = true;
-float yaw = -90.0f;
-float pitch = 0.0f;
-float lastX = 800.0f / 2.0f;
-float lastY = 600.0f / 2.0f;
-float fov = 45.0f;
+int SCREEN_WIDTH = 1280;
+int SCREEN_HEIGHT = 720;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+
+Camera cam = Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -32,22 +27,21 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void processInput(GLFWwindow* window)
 {
-    const float cameraSpeed = 2.5f * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-        cameraPos += cameraSpeed * cameraFront;
+        cam.ProcessInput(EMovementInput::Forward, deltaTime);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        cameraPos += cameraSpeed * -cameraFront;
+        cam.ProcessInput(EMovementInput::Backwards, deltaTime);
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        cam.ProcessInput(EMovementInput::Left, deltaTime);
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        cam.ProcessInput(EMovementInput::Right, deltaTime);
     }
 
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -56,45 +50,12 @@ void processInput(GLFWwindow* window)
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos;
-    lastX = xpos;
-    lastY = ypos;
-
-    float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    yaw += xoffset;
-    pitch += yoffset;
-
-    if(pitch > 89.0f)
-    {
-        pitch = 89.0f;
-    }
-    if(pitch < -89.0f)
-    {
-        pitch = -89.0f;
-    }
-
-    glm::vec3 front;
-    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    front.y = sin(glm::radians(pitch));
-    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(front);
+    cam.ProcessMouseInput(xpos, ypos);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    fov -= (float)yoffset;
-    if (fov < 1.0f)
-    {
-        fov = 1.0f;
-    }
-    if (fov > 45.0f)
-    {
-        fov = 45.0f;
-    }
+    cam.ProcessScrollInput(xoffset, yoffset); 
 }
 
 int main(int argc, char* argv[])
@@ -106,7 +67,7 @@ int main(int argc, char* argv[])
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // GLFW: window creation
-    GLFWwindow* window = glfwCreateWindow(800, 600, "SHAKE_ENGINE", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH,SCREEN_HEIGHT, "SHAKE_ENGINE", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -127,7 +88,7 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glEnable(GL_DEPTH_TEST);
 
     // LOAD SHADERS	
@@ -261,11 +222,9 @@ int main(int argc, char* argv[])
     shader_01.setInt("texture1", 0);
     shader_01.setInt("texture2", 1);
 
-
     int nrAttributes;
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
     std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << std::endl;
-
 
     int mode = 0;
     while (!glfwWindowShouldClose(window))
@@ -282,25 +241,25 @@ int main(int argc, char* argv[])
         }
         else if (mode == 1000)
         {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
         else if (mode == 2000)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         mode = mode % 3000;
 
-        float timeValue = glfwGetTime();
+        float timeValue = static_cast<float>(glfwGetTime());
         deltaTime = timeValue - lastFrame;
         lastFrame = timeValue;
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         glm::mat4 view = glm::mat4(1.0f);
-        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+        view = cam.GetViewMatrix();
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(cam.GetFOV()), 800.0f / 600.0f, 0.1f, 100.0f);
 
         int modelLoc = glGetUniformLocation(shader_01.ID, "model");
         model = glm::rotate(model, timeValue * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));

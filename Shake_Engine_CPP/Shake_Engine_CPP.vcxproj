@@ -75,23 +75,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);C:\Users\rsmekens\Documents\Libraries\Libs;</LibraryPath>
-    <ReferencePath>$(VC_ReferencesPath_x86); C:\Users\rsmekens\Documents\Libraries\Includes;</ReferencePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);E:\Libraries\Libs;</LibraryPath>
+    <ReferencePath>$(VC_ReferencesPath_x86); E:\Libraries\Includes;</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\rsmekens\Documents\Libraries\Includes;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\Users\rsmekens\Documents\Libraries\Libs;</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);E:\Libraries\Includes;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);E:\Libraries\Libs;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath); ; C:\Users\rsmekens\Documents\Libraries\Includes;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86); C:\Users\rsmekens\Documents\Libraries\Libs;</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath); ; E:\Libraries\Includes;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86); E:\Libraries\Libs;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath); C:\Users\rsmekens\Documents\Libraries\Includes;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64); C:\Users\rsmekens\Documents\Libraries\Libs;</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath); E:\Libraries\Includes;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64); E:\Libraries\Libs;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -168,8 +168,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Shake_Engine_CPP.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\awesomeface.png" />
+    <Content Include="Resources\wall.jpg" />
+    <Content Include="Shaders\shader01.vs" />
+    <Content Include="Shaders\shader01.fs" />
+    <Content Include="Shaders\shader02.fs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
