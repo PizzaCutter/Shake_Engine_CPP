@@ -5,6 +5,8 @@
 *.vcxproj
 *.vcxproj.user
 *.vcxproj.filters
+*bin
+*bin-int
 
 # Prerequisites
 *.d
@@ -38,3 +40,4 @@
 *.exe
 *.out
 *.app
+*.sln
