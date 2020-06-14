@@ -6,6 +6,11 @@
 
     int main(int argc, char** argv)
     {
+        Shake::Log::Init();
+        
+        SE_CORE_WARN("Initialized Log System");
+        SE_INFO("App Starting = {0}", 1);
+
         auto app = Shake::CreateApplication();
         app->Run();
         delete app;

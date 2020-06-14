@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Log.h"
+
 namespace Shake
 {
     Application::Application(const std::string& applicationName)
@@ -15,10 +17,9 @@ namespace Shake
 
     void Application::Run()
     {
-        std::cout << "Started Application " << ApplicationName << std::endl;
         while (true)
         {
-    //        std::cout << "Running" << std::endl;
+        
         }
     }
 }
