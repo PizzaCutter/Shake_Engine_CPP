@@ -1,4 +1,5 @@
-﻿#include "Application.h"
+﻿#include "sepch.h"
+#include "Application.h"
 
 #include <iostream>
 

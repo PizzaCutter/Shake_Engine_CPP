@@ -11,6 +11,12 @@ workspace "Sable"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "Shake_Engine/vendor/GLFW"
+
+include "Shake_Engine/vendor/GLFW"
+
 project "Shake_Engine"
 	location "Shake_Engine"
 	kind "SharedLib"
@@ -18,6 +24,9 @@ project "Shake_Engine"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	
+	pchheader "sepch.h"
+	pchsource "Shake_Engine/src/sepch.cpp"
 
 	files
 	{
@@ -27,7 +36,15 @@ project "Shake_Engine"
 
 	includedirs
 	{
-		"%{prj.name}/vendor/spdlog/include;"
+		"%{prj.name}/src",
+		"%{prj.name}/vendor/spdlog/include;",
+		"%{IncludeDir.GLFW}"
+	}
+	
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"

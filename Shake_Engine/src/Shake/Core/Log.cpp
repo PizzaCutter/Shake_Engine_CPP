@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#include "sepch.h"
+
+#pragma once
 #include "Log.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
