@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Core.h"
+#include "Shake/Window.h"
 
 namespace Shake 
 {
@@ -15,6 +16,8 @@ namespace Shake
         void Run();
     private:
         std::string ApplicationName = "";
+        std::unique_ptr<Window> m_Window;
+        bool m_running = true;
     };
 
     Application* CreateApplication();
