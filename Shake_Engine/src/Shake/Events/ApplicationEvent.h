@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include <sstream>
-
 #include "Shake/Events/Event.h"
 
 namespace Shake
@@ -24,6 +22,8 @@ namespace Shake
             return ss.str();
         }
 
+        static EventType GetStaticType() { return EventType::WindowResize; }
+
         EventType GetEventType() const override { return EventType::WindowResize; }
         int GetCategoryFlags() const override { return EventCategoryApplication; };
     private:
@@ -36,6 +36,8 @@ namespace Shake
     public:
         WindowCloseEvent() = default;
 
+        static EventType GetStaticType() { return EventType::WindowClose; };
+
         EventType GetEventType() const override { return EventType::WindowClose; };
         int GetCategoryFlags() const override { return EventCategoryApplication; };
     };
@@ -44,6 +46,8 @@ namespace Shake
     {
     public:
         AppTickEvent() = default;
+
+        static EventType GetStaticType() { return EventType::AppTick; }
 
         EventType GetEventType() const override { return EventType::AppTick; };
         int GetCategoryFlags() const override { return EventCategoryApplication; };
@@ -54,6 +58,8 @@ namespace Shake
     public:
         AppUpdateEvent() = default;
 
+        static EventType GetStaticType() { return EventType::AppUpdate; }
+
         EventType GetEventType() const override { return EventType::AppUpdate; };
         int GetCategoryFlags() const override { return EventCategoryApplication; };
     };
@@ -63,6 +69,8 @@ namespace Shake
     public:
         AppRenderEvent() = default;
 
+        static EventType GetStaticType() { return EventType::AppRender; } 
+        
         EventType GetEventType() const override { return EventType::AppRender; }
         int GetCategoryFlags() const override { return EventCategoryApplication; };
     };

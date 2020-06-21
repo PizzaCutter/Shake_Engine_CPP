@@ -11,10 +11,9 @@
         SE_CORE_WARN("Initialized Log System");
         SE_INFO("App Starting = {0}", 1);
 
-        auto app = Shake::CreateApplication();
+        Shake::Application* app = Shake::CreateApplication();
         app->Run();
-        delete app;
-        return 0;
+        delete app; 
     }
 #else
 

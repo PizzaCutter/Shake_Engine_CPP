@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include <sstream>
-
 #include "Shake/Events/Event.h"
 #include "Shake/Core/KeyCodes.h"
 
@@ -15,7 +13,6 @@ namespace Shake
         KeyCode GetKeyCode() const { return m_keyCode; }
 
         int GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; };
-
     protected:
         KeyCode m_keyCode;
     };
@@ -27,6 +24,7 @@ namespace Shake
         {
         }
 
+        static EventType GetStaticType() { return EventType::KeyPressed; }
         EventType GetEventType() const override { return EventType::KeyPressed; }
 
         int GetRepeatCount() const { return m_repeatCount; }
@@ -49,6 +47,7 @@ namespace Shake
         {
         }
 
+        static EventType GetStaticType() { return EventType::KeyReleased; }
         EventType GetEventType() const override { return EventType::KeyReleased; }
 
         std::string ToString() const override

@@ -1,8 +1,5 @@
 ﻿#pragma once
 
-#include <apiquery2.h>
-#include <sstream>
-
 #include "Shake/Events/Event.h"
 #include "Shake/Core/MouseCodes.h"
 
@@ -16,6 +13,8 @@ namespace Shake
         float GetX() const { return m_mouseX; }
         float GetY() const { return m_mouseY; }
 
+        static EventType GetStaticType() { return EventType::MouseMoved; } 
+        
         EventType GetEventType() const override { return EventType::MouseMoved; };
         int GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; };
         
@@ -38,6 +37,8 @@ namespace Shake
         float GetXOffset() const { return m_xOffset; }
         float GetYOffset() const { return m_yOffset; }
 
+        static EventType GetStaticType() { return EventType::MouseScrolled; }
+        
         EventType GetEventType() const override { return EventType::MouseScrolled; }
         int GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
         
@@ -77,13 +78,14 @@ namespace Shake
             return ss.str();
         }
 
+        static EventType GetStaticType() { return EventType::MouseButtonPressed; }
         EventType GetEventType() const override { return EventType::MouseButtonPressed; };
     };
     
     class MouseButtonReleasedEvent : public MouseButtonEvent
     {
     public:
-        MouseButtonReleasedEvent(MouseCode button) : MouseButtonReleasedEvent(button) {}
+        MouseButtonReleasedEvent(MouseCode button) : MouseButtonEvent(button) {}
 
         std::string ToString() const override
         {
@@ -91,7 +93,8 @@ namespace Shake
             ss << "MouseButtonReleasedEvent: " << m_button;
             return ss.str();
         }
-
+        
+        static EventType GetStaticType() { return EventType::MouseButtonReleased; }
         EventType GetEventType() const override { return EventType::MouseButtonReleased; }
     };
 }

@@ -2,9 +2,6 @@
 
 #include "Shake/Core/Core.h"
 
-#include <string>
-#include <functional>
-
 namespace Shake
 {
     enum class EventType
@@ -36,14 +33,21 @@ namespace Shake
         EventCategoryMouseButton = BIT(4)
     };
 
+
+#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }
+    
     class SHAKE_API Event
     {
         friend class EventDispatcher;
     public:
+        //static EventType GetStaticType() { return EventType::None; }
         virtual EventType GetEventType() const = 0;
+
+        virtual int GetCategoryFlags() const = 0;
+
         const char* GetName() const
         {
-            switch(GetEventType())
+            switch (GetEventType())
             {
             case EventType::None: return "None";
             case EventType::WindowClose: return "WindowClose";
@@ -64,9 +68,8 @@ namespace Shake
             return "NOT IMPLEMENTED";
         };
         virtual std::string ToString() const { return GetName(); };
-        virtual int GetCategoryFlags() const = 0;
 
-        inline bool IsInCategory(EventCategory category)
+        bool IsInCategory(EventCategory category) const
         {
             return GetCategoryFlags() & category;
         }
@@ -78,23 +81,23 @@ namespace Shake
     class EventDispatcher
     {
     public:
-        EventDispatcher(Event& event) : Event(event)
+        EventDispatcher(Event& event) : m_Event(event)
         {
-            
         }
-        
-        template<typename T, typename F>
+
+        template <typename T, typename F>
         bool Dispatch(const F& func)
         {
-            if(Event.GetEventType() == T::GetStaticType())
+            if (m_Event.GetEventType() == T::GetStaticType())
             {
-                Event.Handled = func(static_cast<T&>(Event));
-                return true;
+                 m_Event.Handled = func(static_cast<T&>(m_Event));
+                 return true;
             }
             return false;
         }
+
     private:
-        Event& Event;
+        Event& m_Event;
     };
 
     inline std::ostream& operator<<(std::ostream& os, const Event& event)

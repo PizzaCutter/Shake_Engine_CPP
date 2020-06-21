@@ -23,6 +23,7 @@ namespace Shake
         void* GetNativeWindow() const override;
     private:
         virtual void Init(const Shake::WindowProps& props);
+        void SetupGLFWWindowCallbacks() const;
         virtual void Shutdown();
 
     private:

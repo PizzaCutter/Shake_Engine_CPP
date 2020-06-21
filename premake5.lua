@@ -55,7 +55,8 @@ project "Shake_Engine"
 		defines
 		{
 			"SE_PLATFORM_WINDOWS",
-			"SE_BUILD_DLL"		
+			"SE_BUILD_DLL",
+			"SE_ENABLE_ASSERTS"
 		}
 		
 		postbuildcommands
