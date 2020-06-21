@@ -18,9 +18,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
-IncludeDir["GLFW"] = "Shake_Engine/vendor/GLFW"
+IncludeDir["GLFW"] = "Shake_Engine/vendor/GLFW/include"
+IncludeDir["GLAD"] = "Shake_Engine/vendor/glad/include"
 
 include "Shake_Engine/vendor/GLFW"
+include "Shake_Engine/vendor/glad"
 
 project "Shake_Engine"
 	location "Shake_Engine"
@@ -43,12 +45,14 @@ project "Shake_Engine"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include;",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLAD}"
 	}
 	
 	links
 	{
 		"GLFW",
+		"GLAD",
 		"opengl32.lib"
 	}
 
@@ -61,7 +65,8 @@ project "Shake_Engine"
 		{
 			"SE_PLATFORM_WINDOWS",
 			"SE_BUILD_DLL",
-			"SE_ENABLE_ASSERTS"
+			"SE_ENABLE_ASSERTS",
+			"GLFW_INCLUDE_NONE"
 		}
 		
 		postbuildcommands

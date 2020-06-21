@@ -1,6 +1,9 @@
 ﻿#include "sepch.h"
 #include "WindowsWindow.h"
 
+#include "GLFW/glfw3.h"
+#include "glad/glad.h"
+
 #include "Shake/Core/Log.h"
 #include "Shake/Events/ApplicationEvent.h"
 #include "Shake/Events/KeyEvent.h"
@@ -50,6 +53,10 @@ namespace Shake
                                     nullptr, nullptr);
 
         glfwMakeContextCurrent(m_Window);
+
+        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        SE_CORE_ASSERT(status, "Failed to initialize GLAD!");
+        
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
 

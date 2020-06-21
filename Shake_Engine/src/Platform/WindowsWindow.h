@@ -1,7 +1,8 @@
 ﻿#pragma once
 
 #include "Shake/Window.h"
-#include "include/GLFW/glfw3.h"
+
+struct GLFWwindow;
 
 namespace Shake
 {

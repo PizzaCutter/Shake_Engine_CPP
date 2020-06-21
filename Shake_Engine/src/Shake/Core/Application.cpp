@@ -1,6 +1,7 @@
 ﻿#include "sepch.h"
 #include "Application.h"
 
+#include "glad/glad.h"
 #include <GL/gl.h>
 
 #include "Log.h"
