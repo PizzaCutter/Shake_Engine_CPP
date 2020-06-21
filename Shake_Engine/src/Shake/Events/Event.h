@@ -32,15 +32,11 @@ namespace Shake
         EventCategoryMouse = BIT(3),
         EventCategoryMouseButton = BIT(4)
     };
-
-
-#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }
     
     class SHAKE_API Event
     {
         friend class EventDispatcher;
     public:
-        //static EventType GetStaticType() { return EventType::None; }
         virtual EventType GetEventType() const = 0;
 
         virtual int GetCategoryFlags() const = 0;
