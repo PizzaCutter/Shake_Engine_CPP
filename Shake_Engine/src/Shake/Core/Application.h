@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "Core.h"
+#include "Layer.h"
+#include "LayerStack.h"
 #include "Shake/Window.h"
 #include "Shake/Events/ApplicationEvent.h"
 
@@ -14,6 +16,9 @@ namespace Shake
         virtual ~Application();
         void OnEvent(Event& event);
 
+        void PushLayer(Layer* layer);
+        void PushOverlay(Layer* layer);
+        
         void Run();
         void Shutdown();
     private:
@@ -22,6 +27,7 @@ namespace Shake
         std::string ApplicationName = "";
         std::unique_ptr<Window> m_Window;
         bool m_running = true;
+        LayerStack m_LayerStack;
     };
 
     Application* CreateApplication();

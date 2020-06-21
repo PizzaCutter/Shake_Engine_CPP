@@ -2,6 +2,7 @@
 
 #include "Shake/Core/Application.h"
 #include "Shake/Core/Log.h"
+#include "Shake/Core/Layer.h"
 
 // ------------- ENTRY POINT --------
 #include "Shake/Core/EntryPoint.h"
