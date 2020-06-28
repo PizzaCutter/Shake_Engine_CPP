@@ -17,7 +17,7 @@ namespace Shake
     {
         //SE_CORE_ERROR("GLFW Error '{0}': '{1}'", error, description); 
     }
-    
+
     Window* Window::Create(const WindowProps& props)
     {
         return new WindowsWindow(props);
@@ -45,7 +45,7 @@ namespace Shake
 
             //SE_CORE_ASSERT(success, "Could not initialize GLFW!");
             glfwSetErrorCallback(GLFWErrorCallback);
-            
+
             s_GLFWInitialized = true;
         }
 
@@ -56,7 +56,7 @@ namespace Shake
 
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
         SE_CORE_ASSERT(status, "Failed to initialize GLAD!");
-        
+
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
 
@@ -71,11 +71,11 @@ namespace Shake
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
             data.Width = width;
             data.Height = height;
-        
+
             WindowResizeEvent event(width, height);
             data.EventCallback(event);
         });
-        
+
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
         {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -86,7 +86,7 @@ namespace Shake
         glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
         {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-        
+
             switch (action)
             {
             case GLFW_PRESS:
@@ -109,40 +109,48 @@ namespace Shake
                 }
             }
         });
-        
+
+        glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int c)
+        {
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+            KeyTypedEvent event = KeyTypedEvent(KeyCode(c));
+            data.EventCallback(event);
+        });
+
         glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
         {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-        
+
             switch (action)
             {
-                case GLFW_PRESS:
-                    {
-                        MouseButtonPressedEvent event = MouseButtonPressedEvent(MouseCode(button));
-                        data.EventCallback(event);
-                        break;
-                    }
-                case GLFW_RELEASE:
-                    {
-                        MouseButtonReleasedEvent event = MouseButtonReleasedEvent(MouseCode(button));
-                        data.EventCallback(event);
-                        break;
-                    }
+            case GLFW_PRESS:
+                {
+                    MouseButtonPressedEvent event = MouseButtonPressedEvent(MouseCode(button));
+                    data.EventCallback(event);
+                    break;
+                }
+            case GLFW_RELEASE:
+                {
+                    MouseButtonReleasedEvent event = MouseButtonReleasedEvent(MouseCode(button));
+                    data.EventCallback(event);
+                    break;
+                }
             }
         });
-        
+
         glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xOffset, double yOffset)
         {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-        
+
             MouseScrolledEvent event((float)xOffset, (float)yOffset);
             data.EventCallback(event);
         });
-        
+
         glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
         {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-        
+
             MouseMovedEvent event((float)xPos, (float)yPos);
             data.EventCallback(event);
         });
@@ -150,7 +158,7 @@ namespace Shake
 
     void WindowsWindow::Shutdown()
     {
-        if(m_Window != nullptr)
+        if (m_Window != nullptr)
         {
             glfwDestroyWindow(m_Window);
         }

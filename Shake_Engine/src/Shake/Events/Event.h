@@ -16,6 +16,7 @@ namespace Shake
         AppUpdate,
         AppRender,
         KeyPressed,
+        KeyTyped,
         KeyReleased,
         MouseButtonPressed,
         MouseButtonReleased,

@@ -8,7 +8,9 @@ namespace Shake
     class KeyEvent : public Event
     {
     public:
-        KeyEvent(KeyCode keyCode) : m_keyCode(keyCode) { }
+        KeyEvent(KeyCode keyCode) : m_keyCode(keyCode)
+        {
+        }
 
         KeyCode GetKeyCode() const { return m_keyCode; }
 
@@ -54,6 +56,24 @@ namespace Shake
         {
             std::stringstream ss;
             ss << "KeyReleasedEvent: " << m_keyCode;
+            return ss.str();
+        }
+    };
+
+    class KeyTypedEvent : public KeyEvent
+    {
+    public:
+        KeyTypedEvent(KeyCode keycode) : KeyEvent(keycode)
+        {
+        }
+
+        static EventType GetStaticType() { return EventType::KeyTyped; }
+        EventType GetEventType() const override { return EventType::KeyTyped; }
+
+        std::string ToString() const override
+        {
+            std::stringstream ss;
+            ss << "KeyPressedEvent: " << m_keyCode;
             return ss.str();
         }
     };
