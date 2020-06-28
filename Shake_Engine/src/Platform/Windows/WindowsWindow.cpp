@@ -61,7 +61,7 @@ namespace Shake
         SetVSync(true);
 
         // SET GLFW callback
-        SetupGLFWWindowCallbacks();
+        SetupGLFWWindowCallbacks(); 
     }
 
     void WindowsWindow::SetupGLFWWindowCallbacks() const
@@ -186,10 +186,5 @@ namespace Shake
     bool WindowsWindow::IsVSync() const
     {
         return m_Data.VSync;
-    }
-
-    void* WindowsWindow::GetNativeWindow() const
-    {
-        return m_Window;
     }
 }

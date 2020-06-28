@@ -4,6 +4,9 @@
 #include "glad/glad.h"
 #include <GL/gl.h>
 
+
+#include "Input.h"
+#include "KeyCodes.h"
 #include "Log.h"
 
 namespace Shake
@@ -65,6 +68,7 @@ namespace Shake
             }
             
             m_Window->OnUpdate();
+
         }
         Shutdown();
     }
