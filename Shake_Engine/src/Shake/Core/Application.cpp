@@ -4,10 +4,9 @@
 #include "glad/glad.h"
 #include <GL/gl.h>
 
-
-#include "Input.h"
-#include "KeyCodes.h"
 #include "Log.h"
+
+
 
 namespace Shake
 {

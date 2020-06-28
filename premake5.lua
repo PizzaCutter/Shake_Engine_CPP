@@ -21,10 +21,12 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Shake_Engine/vendor/GLFW/include"
 IncludeDir["GLAD"] = "Shake_Engine/vendor/glad/include"
 IncludeDir["IMGUI"] = "Shake_Engine/vendor/imgui"
+IncludeDir["GLM"] = "Shake_Engine/vendor/glm"
 
 include "Shake_Engine/vendor/GLFW"
 include "Shake_Engine/vendor/glad"
 include "Shake_Engine/vendor/imgui"
+
 
 project "Shake_Engine"
 	location "Shake_Engine"
@@ -40,7 +42,9 @@ project "Shake_Engine"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/venodr/glm/glm/**.hpp",
+		"%{prj.name}/venodr/glm/glm/**.inl"
 	}
 
 	includedirs
@@ -49,7 +53,8 @@ project "Shake_Engine"
 		"%{prj.name}/vendor/spdlog/include;",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
-		"%{IncludeDir.IMGUI}"
+		"%{IncludeDir.IMGUI}",
+		"%{IncludeDir.GLM}"
 	}
 	
 	links
@@ -106,7 +111,8 @@ project "Sable"
 	includedirs
 	{
 		"Shake_Engine/vendor/spdlog/include",
-		"Shake_Engine/src"
+		"Shake_Engine/src",
+		"%{IncludeDir.GLM}"
 	}
 
 	links

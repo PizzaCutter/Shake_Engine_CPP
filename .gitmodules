@@ -7,3 +7,6 @@
 [submodule "Shake_Engine/vendor/imgui"]
 	path = Shake_Engine/vendor/imgui
 	url = https://github.com/ocornut/imgui
+[submodule "Shake_Engine/vendor/glm"]
+	path = Shake_Engine/vendor/glm
+	url = https://github.com/g-truc/glm.git
