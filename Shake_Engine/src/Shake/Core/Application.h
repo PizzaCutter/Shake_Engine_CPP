@@ -5,6 +5,7 @@
 #include "LayerStack.h"
 #include "Shake/Window.h"
 #include "Shake/Events/ApplicationEvent.h"
+#include "Shake/IMGUI/ImGuiLayer.h"
 
 namespace Shake 
 {
@@ -30,6 +31,7 @@ namespace Shake
         
         std::string ApplicationName = "";
         std::unique_ptr<Window> m_Window;
+        ImGuiLayer* m_imGuiLayer;
         bool m_running = true;
         LayerStack m_LayerStack;
 

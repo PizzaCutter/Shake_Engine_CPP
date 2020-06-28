@@ -20,18 +20,21 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Shake_Engine/vendor/GLFW/include"
 IncludeDir["GLAD"] = "Shake_Engine/vendor/glad/include"
-IncludeDir["IMGUI"] = "Shake_Engine/vendor/imgui"
+IncludeDir["ImGui"] = "Shake_Engine/vendor/imgui"
 IncludeDir["GLM"] = "Shake_Engine/vendor/glm"
 
-include "Shake_Engine/vendor/GLFW"
-include "Shake_Engine/vendor/glad"
-include "Shake_Engine/vendor/imgui"
-
+group "Dependencies"
+	include "Shake_Engine/vendor/GLFW"
+	include "Shake_Engine/vendor/glad"
+	include "Shake_Engine/vendor/imgui"
+group ""
 
 project "Shake_Engine"
 	location "Shake_Engine"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -43,17 +46,29 @@ project "Shake_Engine"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/venodr/glm/glm/**.hpp",
-		"%{prj.name}/venodr/glm/glm/**.inl"
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/vendor/imgui/examples/imgui_impl_glfw.h",
+		"%{prj.name}/vendor/imgui/examples/imgui_impl_glfw.cpp",
+		"%{prj.name}/vendor/imgui/examples/imgui_impl_opengl3.h",
+		"%{prj.name}/vendor/imgui/examples/imgui_impl_opengl3.cpp"	
+	}
+	
+	defines
+	{
+		"SE_ENABLE_ASSERTS",
+		"SE_PLATFORM_WINDOWS",
+		"SE_BUILD_DLL",
+		"GLFW_INCLUDE_NONE",
 	}
 
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include;",
+		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
-		"%{IncludeDir.IMGUI}",
+		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.GLM}"
 	}
 	
@@ -61,43 +76,34 @@ project "Shake_Engine"
 	{
 		"GLFW",
 		"GLAD",
-		"IMGUI",
+		"ImGui",
 		"opengl32.lib"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "10.0.18362.0"
 
 		defines
 		{
-			"SE_PLATFORM_WINDOWS",
-			"SE_BUILD_DLL",
-			"SE_ENABLE_ASSERTS",
-			"GLFW_INCLUDE_NONE"
-		}
-		
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sable")
 		}
 		
 
 	filter "configurations:Debug"
 		defines "SE_DEBUG"
-		symbols "On"
+		symbols "on"
 	filter "configurations:Release"
 		defines "SE_RELEASE"
-		optimize "On"
+		optimize "on"
 	filter "configurations:Shipping"
 		defines "SE_SHIPPING"
-		optimize "On"
+		optimize "on"
 
 project "Sable"
 	location "Sable"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -112,6 +118,7 @@ project "Sable"
 	{
 		"Shake_Engine/vendor/spdlog/include",
 		"Shake_Engine/src",
+		"Shake_Engine/vendor",
 		"%{IncludeDir.GLM}"
 	}
 
@@ -121,8 +128,6 @@ project "Sable"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "10.0.18362.0"
 
 		defines

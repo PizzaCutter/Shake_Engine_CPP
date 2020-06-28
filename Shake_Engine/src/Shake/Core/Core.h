@@ -1,11 +1,15 @@
 ﻿#pragma once
 
 #ifdef SE_PLATFORM_WINDOWS
+#if SE_DYNAMIC_LINK 
     #ifdef SE_BUILD_DLL
         #define SHAKE_API __declspec(dllexport)
     #else
         #define SHAKE_API __declspec(dllimport)
     #endif
+#else
+#define SHAKE_API
+#endif
 #else
     #error Shake only supports windows!
 #endif

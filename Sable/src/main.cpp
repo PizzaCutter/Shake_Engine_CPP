@@ -42,7 +42,6 @@ public:
     Sable(const std::string& applicationName) : Application(applicationName)
     {
         PushLayer(new BaseLayer());
-        PushLayer(new Shake::ImGuiLayer());
     }
 
     ~Sable()

@@ -22,6 +22,9 @@ namespace Shake
         ApplicationName = applicationName;
         m_Window = std::unique_ptr<Window>(Window::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+
+        m_imGuiLayer = new ImGuiLayer();
+        PushOverlay(m_imGuiLayer); 
     }
 
     Application::~Application()
@@ -59,12 +62,17 @@ namespace Shake
             glClearColor(1, 0.5, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            int count = 0;
             for(Layer* layer : m_LayerStack)
             {
-                layer->OnUpdate();
-                count++;
+               layer->OnUpdate(); 
             }
+            
+            m_imGuiLayer->Begin();
+            for(Layer* layer : m_LayerStack)
+            {
+                m_imGuiLayer->OnImGuiRender();
+            }
+            m_imGuiLayer->End();
             
             m_Window->OnUpdate();
 
