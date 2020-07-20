@@ -18,6 +18,9 @@ namespace Shake
         glfwMakeContextCurrent(m_WindowHandle);
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
         SE_CORE_ASSERT(status, "Failed to initialize GLAD!");
+
+        auto vendor = glGetString(GL_VENDOR);
+        SE_CORE_INFO("OpenGL Renderer: {0} {1}", vendor, glGetString(GL_RENDERER));
     }
 
     void OpenGLContext::SwapBuffers()
