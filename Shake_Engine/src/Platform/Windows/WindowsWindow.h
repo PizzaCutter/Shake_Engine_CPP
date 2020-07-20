@@ -1,11 +1,14 @@
 ﻿#pragma once
 
+
 #include "Shake/Window.h"
 
 struct GLFWwindow;
 
 namespace Shake
 {
+    class GraphicsContext;
+
     class WindowsWindow : public Shake::Window
     {
     public:
@@ -29,7 +32,8 @@ namespace Shake
 
     private:
         GLFWwindow* m_Window;
-
+        GraphicsContext* m_Context;
+        
         struct WindowData
         {
             std::string Title;

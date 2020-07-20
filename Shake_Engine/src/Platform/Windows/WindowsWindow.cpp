@@ -2,7 +2,7 @@
 #include "WindowsWindow.h"
 
 #include "GLFW/glfw3.h"
-#include "glad/glad.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 #include "Shake/Core/Log.h"
 #include "Shake/Events/ApplicationEvent.h"
@@ -39,6 +39,8 @@ namespace Shake
         m_Data.Width = props.Width;
         m_Data.Height = props.Height;
 
+        // TODO[rsmekens]: add logging
+
         if (!s_GLFWInitialized)
         {
             int success = glfwInit();
@@ -52,10 +54,8 @@ namespace Shake
         m_Window = glfwCreateWindow(static_cast<int>(props.Width), static_cast<int>(props.Height), m_Data.Title.c_str(),
                                     nullptr, nullptr);
 
-        glfwMakeContextCurrent(m_Window);
-
-        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        SE_CORE_ASSERT(status, "Failed to initialize GLAD!");
+        m_Context = new OpenGLContext(m_Window);
+        m_Context->Init();
 
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
@@ -167,7 +167,7 @@ namespace Shake
     void WindowsWindow::OnUpdate()
     {
         glfwPollEvents();
-        glfwSwapBuffers(m_Window);
+        m_Context->SwapBuffers();
     }
 
     void WindowsWindow::SetVSync(bool enabled)
