@@ -3,17 +3,21 @@
 
 #include "glad/glad.h"
 #include "Shake/Core/Log.h"
+#include "Shake/Helpers/FileReader.h"
 
 namespace Shake
 {
-    Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc)
+    Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
     {
-       // Create an empty vertex shader handle
+		const std::string vertexShaderSource = FileReader::ReadFile("Shaders/" + vertexShaderPath); 
+		const std::string fragmentShaderSource = FileReader::ReadFile("Shaders/" + fragmentShaderPath);
+    	
+	    // Create an empty vertex shader handle
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
 		// Send the vertex shader source code to GL
 		// Note that std::string's .c_str is NULL character terminated.
-		const GLchar* source = vertexSrc.c_str();
+		const GLchar* source = vertexShaderSource.c_str();
 		glShaderSource(vertexShader, 1, &source, 0);
 
 		// Compile the vertex shader
@@ -43,7 +47,7 @@ namespace Shake
 
 		// Send the fragment shader source code to GL
 		// Note that std::string's .c_str is NULL character terminated.
-		source = fragmentSrc.c_str();
+		source = fragmentShaderSource.c_str();
 		glShaderSource(fragmentShader, 1, &source, 0);
 
 		// Compile the fragment shader

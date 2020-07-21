@@ -5,7 +5,7 @@ namespace Shake
     class Shader
     {
     public:
-        Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
+        Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
         ~Shader();
 
         void Bind() const;
