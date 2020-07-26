@@ -28,6 +28,16 @@ namespace Shake
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
+    void OpenGLVertexBuffer::SetLayout(const BufferLayout& layout)
+    {
+        m_bufferLayout = layout;     
+    }
+
+    const BufferLayout& OpenGLVertexBuffer::GetBufferLayout() const
+    {
+        return m_bufferLayout;      
+    }
+
     // --------------------- INDEX BUFFER ---------------------------
 
     OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)

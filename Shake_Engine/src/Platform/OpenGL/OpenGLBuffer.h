@@ -12,8 +12,11 @@ namespace Shake
         void Bind() override;
         void UnBind() override;
 
+        void SetLayout(const BufferLayout& layout) override;
+        const BufferLayout& GetBufferLayout() const override;
     private:
-        uint32_t m_rendererID; 
+        uint32_t m_rendererID;
+        BufferLayout m_bufferLayout;
     };
 
     class OpenGLIndexBuffer : public IndexBuffer 
