@@ -8,6 +8,7 @@
 #include "Shake/IMGUI/ImGuiLayer.h"
 #include "Shake/Renderer/Buffer.h"
 #include "Shake/Renderer/Shader.h"
+#include "Shake/Renderer/VertexArray.h"
 
 namespace Shake 
 {
@@ -37,10 +38,10 @@ namespace Shake
         bool m_running = true;
         LayerStack m_LayerStack;
 
-        unsigned int m_VertexArray;
-        std::unique_ptr<Shader> m_Shader;
-        std::unique_ptr<VertexBuffer> m_VertexBuffer;
-        std::unique_ptr<IndexBuffer> m_IndexBuffer;
+        std::shared_ptr<Shader> m_Shader;
+        std::shared_ptr<VertexArray> m_VertexArray;
+       
+        std::shared_ptr<VertexArray> m_squareVertexArray;
         
         static Application* s_Instance;
     };
