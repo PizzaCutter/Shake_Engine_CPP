@@ -1,19 +1,16 @@
 ﻿#pragma once
+#include "RenderAPI.h"
 
 namespace Shake
 {
-    enum class RenderAPI
-    {
-        None = 0,
-        OpenGL = 1
-    };
-
     class Renderer
     {
     public:
-        static inline RenderAPI GetRenderAPI() { return s_rendererAPI; };
+        static void BeginScene();
+        static void EndScene();
+
+        static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
         
-    private:
-        static RenderAPI s_rendererAPI;
+        inline static RenderAPI::API GetRenderAPI() { return RenderAPI::GetAPI(); };
     };
 }

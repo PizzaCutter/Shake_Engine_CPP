@@ -13,8 +13,8 @@ namespace Shake
     {
        switch(Renderer::GetRenderAPI())
        {
-            case RenderAPI::None: SE_CORE_ASSERT(false, "RenderAPI::None is currently not supported");
-            case RenderAPI::OpenGL: return new OpenGLVertexBuffer(vertices, size);
+            case RenderAPI::API::None: SE_CORE_ASSERT(false, "RenderAPI::None is currently not supported");
+            case RenderAPI::API::OpenGL: return new OpenGLVertexBuffer(vertices, size);
             default: SE_CORE_ASSERT(false, "Unknown render api");
        }
        return nullptr;
@@ -24,8 +24,8 @@ namespace Shake
     {
         switch(Renderer::GetRenderAPI())
         {
-        case RenderAPI::None: SE_CORE_ASSERT(false, "RenderAPI::None is currently not supported");
-        case RenderAPI::OpenGL: return new OpenGLIndexBuffer(indices, count);
+        case RenderAPI::API::None: SE_CORE_ASSERT(false, "RenderAPI::None is currently not supported");
+        case RenderAPI::API::OpenGL: return new OpenGLIndexBuffer(indices, count);
         default: SE_CORE_ASSERT(false, "Unknown render api");
         }
         return nullptr;

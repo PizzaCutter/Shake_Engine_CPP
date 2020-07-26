@@ -1,11 +1,9 @@
 ﻿#include "sepch.h"
 #include "Application.h"
 
-#include "glad/glad.h"
-#include <GL/gl.h>
-
 #include "Log.h"
-#include "Shake/Renderer/Buffer.h"
+#include "Shake/Renderer/RenderCommand.h"
+#include "Shake/Renderer/Renderer.h"
 
 
 namespace Shake
@@ -27,7 +25,7 @@ namespace Shake
         m_imGuiLayer = new ImGuiLayer();
         PushOverlay(m_imGuiLayer);
 
-        m_VertexArray.reset(VertexArray::Create());
+        m_vertexArray.reset(VertexArray::Create());
         
         // Index buffer
         float vertices_01 [3 * 3] = {
@@ -43,11 +41,11 @@ namespace Shake
             { "a_position", ShaderDataType::Float3 }
         };
         vertexBuffer->SetLayout(layout);
-        m_VertexArray->AddVertexBuffer(vertexBuffer);
+        m_vertexArray->AddVertexBuffer(vertexBuffer);
 
         std::shared_ptr<IndexBuffer> indexBuffer;
         indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-        m_VertexArray->SetIndexBuffer(indexBuffer);
+        m_vertexArray->SetIndexBuffer(indexBuffer);
 
         // SECOND OBJECT
         float vertices_02 [3 * 3] = {
@@ -104,17 +102,18 @@ namespace Shake
     {
         while (m_running)
         {
-            glClearColor(0.1f, 0.1f, 0.1f, 1);
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            m_Shader->Bind();
-            m_squareVertexArray->Bind();
-            glDrawElements(GL_TRIANGLES, m_squareVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-
-            m_Shader->Bind();
-            m_VertexArray->Bind();
+            RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
+            RenderCommand::Clear();
             
-            glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::BeginScene();
+            
+            m_Shader->Bind();
+            Renderer::Submit(m_vertexArray);
+            
+            m_Shader->Bind();
+            Renderer::Submit(m_squareVertexArray);
+            
+            Renderer::EndScene();
             
             for(Layer* layer : m_LayerStack)
             {
