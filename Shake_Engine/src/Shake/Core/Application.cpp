@@ -1,10 +1,17 @@
 ﻿#include "sepch.h"
 #include "Application.h"
 
+#include "Input.h"
 #include "Log.h"
 #include "Shake/Renderer/RenderCommand.h"
 #include "Shake/Renderer/Renderer.h"
 
+#include "Shake/Renderer/OrthographicCamera.h"
+
+#include <chrono>
+using namespace std::chrono;
+
+#define GLM_FORCE_CTOR_INIT 1
 
 namespace Shake
 {
@@ -14,6 +21,7 @@ namespace Shake
 
 
     Application::Application(const std::string& applicationName)
+        : m_orthoCamera(-1.6f, 1.6f, -0.9f, 0.9f)
     {
         //SE_CORE_ASSERT(s_Instance != nullptr, "Application already exists");
         s_Instance = this;
@@ -100,17 +108,48 @@ namespace Shake
 
     void Application::Run()
     {
+        float deltaTime = 0.0f;
+        float cameraMovementSpeed = 5.0f;
         while (m_running)
         {
+            std::chrono::milliseconds beginMs = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+
+            if(Input::IsKeyPressed(KeyCode::W))
+            {
+                glm::vec3 pos = m_orthoCamera.GetPosition();
+                pos += glm::vec3(0.0f, cameraMovementSpeed, 0.0f) * deltaTime;
+                m_orthoCamera.SetPosition(pos);
+            }
+            if(Input::IsKeyPressed(KeyCode::S))
+            {
+                glm::vec3 pos = m_orthoCamera.GetPosition();
+                pos += glm::vec3(0.0f, -cameraMovementSpeed, 0.0f) * deltaTime;
+                m_orthoCamera.SetPosition(pos);
+            }
+            if(Input::IsKeyPressed(KeyCode::A))
+            {
+                glm::vec3 pos = m_orthoCamera.GetPosition();
+                pos += glm::vec3(-cameraMovementSpeed, 0.0f, 0.0f) * deltaTime;
+                m_orthoCamera.SetPosition(pos);
+            }
+            if(Input::IsKeyPressed(KeyCode::D))
+            {
+                glm::vec3 pos = m_orthoCamera.GetPosition();
+                pos += glm::vec3(cameraMovementSpeed, 0.0f, 0.0f) * deltaTime;
+                m_orthoCamera.SetPosition(pos);
+            }
+            
             RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
             RenderCommand::Clear();
             
             Renderer::BeginScene();
-            
+
             m_Shader->Bind();
+            m_Shader->UploadUniformMat4("u_viewProjection", m_orthoCamera.GetViewProjectionMatrix());
             Renderer::Submit(m_vertexArray);
             
             m_Shader->Bind();
+            m_Shader->UploadUniformMat4("u_viewProjection", m_orthoCamera.GetViewProjectionMatrix());
             Renderer::Submit(m_squareVertexArray);
             
             Renderer::EndScene();
@@ -128,6 +167,13 @@ namespace Shake
             m_imGuiLayer->End();
             
             m_Window->OnUpdate();
+
+            std::chrono::milliseconds endMs = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            auto beginMsAsInt = beginMs.count();
+            auto endMsAsInt = endMs.count();
+            int diff = endMsAsInt - beginMsAsInt;
+
+            deltaTime = static_cast<float>(diff) / 1000.0f; 
         }
         Shutdown();
     }

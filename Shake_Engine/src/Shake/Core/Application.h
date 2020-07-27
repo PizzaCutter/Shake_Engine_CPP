@@ -7,6 +7,7 @@
 #include "Shake/Events/ApplicationEvent.h"
 #include "Shake/IMGUI/ImGuiLayer.h"
 #include "Shake/Renderer/Buffer.h"
+#include "Shake/Renderer/OrthographicCamera.h"
 #include "Shake/Renderer/Shader.h"
 #include "Shake/Renderer/VertexArray.h"
 
@@ -42,6 +43,8 @@ namespace Shake
         std::shared_ptr<VertexArray> m_vertexArray;
        
         std::shared_ptr<VertexArray> m_squareVertexArray;
+
+        OrthographicCamera m_orthoCamera;
         
         static Application* s_Instance;
     };
