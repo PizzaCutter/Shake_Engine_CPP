@@ -142,15 +142,10 @@ namespace Shake
             RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
             RenderCommand::Clear();
             
-            Renderer::BeginScene();
+            Renderer::BeginScene(m_orthoCamera);
 
-            m_Shader->Bind();
-            m_Shader->UploadUniformMat4("u_viewProjection", m_orthoCamera.GetViewProjectionMatrix());
-            Renderer::Submit(m_vertexArray);
-            
-            m_Shader->Bind();
-            m_Shader->UploadUniformMat4("u_viewProjection", m_orthoCamera.GetViewProjectionMatrix());
-            Renderer::Submit(m_squareVertexArray);
+            Renderer::Submit(m_vertexArray, m_Shader);
+            Renderer::Submit(m_squareVertexArray, m_Shader);
             
             Renderer::EndScene();
             
