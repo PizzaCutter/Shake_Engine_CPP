@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Timestep.h"
 #include "Shake/Events/Event.h"
 
 namespace Shake
@@ -11,7 +12,7 @@ namespace Shake
 
         virtual void OnAttach() {}
         virtual void OnDetach() {}
-        virtual void OnUpdate() {}
+        virtual void OnUpdate(Timestep timeStep) {}
         virtual void OnImGuiRender() {}
         virtual void OnEvent(Event& event) {}
 

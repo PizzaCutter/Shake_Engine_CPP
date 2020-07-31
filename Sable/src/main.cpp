@@ -25,7 +25,7 @@ public:
         return Projection * View * Model;
     }
 
-    void OnUpdate() override
+    void OnUpdate(Shake::Timestep timestep) override
     {
         //SE_INFO("BaseLayer::OnUpdate");
     }

@@ -9,6 +9,8 @@
 #include "Shake/Renderer/OrthographicCamera.h"
 
 #include <chrono>
+
+#include "GLFW/glfw3.h"
 using namespace std::chrono;
 
 #define GLM_FORCE_CTOR_INIT 1
@@ -108,34 +110,35 @@ namespace Shake
 
     void Application::Run()
     {
-        float deltaTime = 0.0f;
         float cameraMovementSpeed = 5.0f;
         while (m_running)
         {
-            std::chrono::milliseconds beginMs = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            float time = static_cast<float>(glfwGetTime()); 
+            Timestep timestep = time - m_lastFrameTime;
+            m_lastFrameTime = static_cast<float>(glfwGetTime());
 
             if(Input::IsKeyPressed(KeyCode::W))
             {
                 glm::vec3 pos = m_orthoCamera.GetPosition();
-                pos += glm::vec3(0.0f, cameraMovementSpeed, 0.0f) * deltaTime;
+                pos += glm::vec3(0.0f, cameraMovementSpeed, 0.0f) * timestep.GetSeconds();
                 m_orthoCamera.SetPosition(pos);
             }
             if(Input::IsKeyPressed(KeyCode::S))
             {
                 glm::vec3 pos = m_orthoCamera.GetPosition();
-                pos += glm::vec3(0.0f, -cameraMovementSpeed, 0.0f) * deltaTime;
+                pos += glm::vec3(0.0f, -cameraMovementSpeed, 0.0f) * timestep.GetSeconds();
                 m_orthoCamera.SetPosition(pos);
             }
             if(Input::IsKeyPressed(KeyCode::A))
             {
                 glm::vec3 pos = m_orthoCamera.GetPosition();
-                pos += glm::vec3(-cameraMovementSpeed, 0.0f, 0.0f) * deltaTime;
+                pos += glm::vec3(-cameraMovementSpeed, 0.0f, 0.0f) * timestep.GetSeconds();
                 m_orthoCamera.SetPosition(pos);
             }
             if(Input::IsKeyPressed(KeyCode::D))
             {
                 glm::vec3 pos = m_orthoCamera.GetPosition();
-                pos += glm::vec3(cameraMovementSpeed, 0.0f, 0.0f) * deltaTime;
+                pos += glm::vec3(cameraMovementSpeed, 0.0f, 0.0f) * timestep.GetSeconds();
                 m_orthoCamera.SetPosition(pos);
             }
             
@@ -151,7 +154,7 @@ namespace Shake
             
             for(Layer* layer : m_LayerStack)
             {
-               layer->OnUpdate(); 
+               layer->OnUpdate(timestep); 
             }
             
             m_imGuiLayer->Begin();
@@ -162,13 +165,6 @@ namespace Shake
             m_imGuiLayer->End();
             
             m_Window->OnUpdate();
-
-            std::chrono::milliseconds endMs = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-            auto beginMsAsInt = beginMs.count();
-            auto endMsAsInt = endMs.count();
-            int diff = endMsAsInt - beginMsAsInt;
-
-            deltaTime = static_cast<float>(diff) / 1000.0f; 
         }
         Shutdown();
     }

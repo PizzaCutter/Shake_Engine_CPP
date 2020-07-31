@@ -3,6 +3,7 @@
 #include "Core.h"
 #include "Layer.h"
 #include "LayerStack.h"
+#include "Timestep.h"
 #include "Shake/Window.h"
 #include "Shake/Events/ApplicationEvent.h"
 #include "Shake/IMGUI/ImGuiLayer.h"
@@ -38,6 +39,8 @@ namespace Shake
         ImGuiLayer* m_imGuiLayer;
         bool m_running = true;
         LayerStack m_LayerStack;
+        
+        float m_lastFrameTime = 0.0f;
 
         std::shared_ptr<Shader> m_Shader;
         std::shared_ptr<VertexArray> m_vertexArray;
