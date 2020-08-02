@@ -28,7 +28,7 @@ public:
         };
         unsigned int indices[3] = {0, 1, 2};
 
-        std::shared_ptr<Shake::VertexBuffer> vertexBuffer;
+        Shake::Ref<Shake::VertexBuffer> vertexBuffer;
         vertexBuffer.reset(Shake::VertexBuffer::Create(vertices_01, sizeof(vertices_01)));
         const Shake::BufferLayout layout = {
             {"a_position", Shake::ShaderDataType::Float3}
@@ -36,7 +36,7 @@ public:
         vertexBuffer->SetLayout(layout);
         m_vertexArray->AddVertexBuffer(vertexBuffer);
 
-        std::shared_ptr<Shake::IndexBuffer> indexBuffer;
+        Shake::Ref<Shake::IndexBuffer> indexBuffer;
         indexBuffer.reset(Shake::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
         m_vertexArray->SetIndexBuffer(indexBuffer);
 
@@ -141,9 +141,9 @@ public:
 private:
     Shake::OrthographicCamera m_orthoCamera;
 
-    std::shared_ptr<Shake::Shader> m_Shader;
-    std::shared_ptr<Shake::VertexArray> m_vertexArray;
-    std::shared_ptr<Shake::VertexArray> m_squareVertexArray;
+    Shake::Ref<Shake::Shader> m_Shader;
+    Shake::Ref<Shake::VertexArray> m_vertexArray;
+    Shake::Ref<Shake::VertexArray> m_squareVertexArray;
 
     glm::vec3 m_trianglePosition;
     glm::vec3 m_editableColor;

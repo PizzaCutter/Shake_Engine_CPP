@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <memory.h>
+
 #ifdef SE_PLATFORM_WINDOWS
 #if SE_DYNAMIC_LINK 
     #ifdef SE_BUILD_DLL
@@ -25,3 +27,12 @@
 
 #define BIT(x) (1 << x)
 #define SE_BIND_EVENT(x) std::bind(&x, this, std::placeholders::_1)
+
+namespace Shake
+{
+    template<typename T>
+    using Scope = std::unique_ptr<T>;
+
+    template<typename T>
+    using Ref = std::shared_ptr<T>;
+}

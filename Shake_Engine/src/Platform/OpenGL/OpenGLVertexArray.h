@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include <memory>
+
+#include "Shake/Core/Core.h"
 #include "Shake/Renderer/VertexArray.h"
 
 namespace Shake
@@ -13,15 +15,15 @@ namespace Shake
 
         void Bind() const override;
         void UnBind() const override;
-        void AddVertexBuffer(const std::shared_ptr<VertexBuffer>& newVertexBuffer) override;
-        void SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer) override;
+        void AddVertexBuffer(const Ref<VertexBuffer>& newVertexBuffer) override;
+        void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) override;
 
-        const std::vector<std::shared_ptr<VertexBuffer>>& GetVertexBuffer() const override { return m_vertexBuffers; };
-        const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const override { return m_indexBuffer; };
+        const std::vector<Ref<VertexBuffer>>& GetVertexBuffer() const override { return m_vertexBuffers; };
+        const Ref<IndexBuffer>& GetIndexBuffer() const override { return m_indexBuffer; };
         
     private:
        uint32_t m_rendererId; 
-       std::vector<std::shared_ptr<VertexBuffer>> m_vertexBuffers;
-       std::shared_ptr<IndexBuffer> m_indexBuffer;
+       std::vector<Ref<VertexBuffer>> m_vertexBuffers;
+       Ref<IndexBuffer> m_indexBuffer;
     };
 }

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "glad/glad.h"
+#include "Shake/Core/Core.h"
 
 namespace Shake
 {
@@ -49,7 +50,7 @@ namespace Shake
         glBindVertexArray(0);
     }
 
-    void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& newVertexBuffer) 
+    void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& newVertexBuffer) 
     {
         glBindVertexArray(m_rendererId);
         newVertexBuffer->Bind();
@@ -72,7 +73,7 @@ namespace Shake
         m_vertexBuffers.push_back(newVertexBuffer);
     }
 
-    void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+    void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
     {
         glBindVertexArray(m_rendererId);
         indexBuffer->Bind();
