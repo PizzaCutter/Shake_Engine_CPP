@@ -1,19 +1,9 @@
 ﻿#include "sepch.h"
 #include "Application.h"
 
-#include "Input.h"
 #include "Log.h"
-#include "Shake/Renderer/RenderCommand.h"
-#include "Shake/Renderer/Renderer.h"
-
-#include "Shake/Renderer/OrthographicCamera.h"
-
-#include <chrono>
-
 #include "GLFW/glfw3.h"
-using namespace std::chrono;
 
-#define GLM_FORCE_CTOR_INIT 1
 
 namespace Shake
 {
@@ -23,7 +13,6 @@ namespace Shake
 
 
     Application::Application(const std::string& applicationName)
-        : m_orthoCamera(-1.6f, 1.6f, -0.9f, 0.9f)
     {
         //SE_CORE_ASSERT(s_Instance != nullptr, "Application already exists");
         s_Instance = this;
@@ -35,49 +24,7 @@ namespace Shake
         m_imGuiLayer = new ImGuiLayer();
         PushOverlay(m_imGuiLayer);
 
-        m_vertexArray.reset(VertexArray::Create());
-        
-        // Index buffer
-        float vertices_01 [3 * 3] = {
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f, 0.5f, 0.0f
-        };
-        unsigned int indices [3] = { 0, 1, 2 };
-
-        std::shared_ptr<VertexBuffer> vertexBuffer;
-        vertexBuffer.reset(VertexBuffer::Create(vertices_01, sizeof(vertices_01)));
-        const BufferLayout layout = {
-            { "a_position", ShaderDataType::Float3 }
-        };
-        vertexBuffer->SetLayout(layout);
-        m_vertexArray->AddVertexBuffer(vertexBuffer);
-
-        std::shared_ptr<IndexBuffer> indexBuffer;
-        indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-        m_vertexArray->SetIndexBuffer(indexBuffer);
-
-        // SECOND OBJECT
-        float vertices_02 [3 * 3] = {
-            0.0f, -0.5f, 0.0f,
-            1.0f, -0.5f, 0.0f,
-            0.5f, 0.5f, 0.0f
-        };
-         
-        m_squareVertexArray.reset(VertexArray::Create());
-        vertexBuffer.reset(VertexBuffer::Create(vertices_02, sizeof(vertices_02)));
-        const BufferLayout layout_02 =
-        {
-            { "a_position", ShaderDataType::Float3}
-        };
-        vertexBuffer->SetLayout(layout_02);
-        m_squareVertexArray->AddVertexBuffer(vertexBuffer);
-
-        unsigned int indices_02[3] = { 0, 1, 2 };
-        indexBuffer.reset(IndexBuffer::Create(indices_02, sizeof(indices) / sizeof(uint32_t))); 
-        m_squareVertexArray->SetIndexBuffer(indexBuffer); 
-
-        m_Shader.reset(new Shader("Default.vs", "Default.fs")); 
+     
     }
 
     Application::~Application()
@@ -110,48 +57,12 @@ namespace Shake
 
     void Application::Run()
     {
-        float cameraMovementSpeed = 5.0f;
         while (m_running)
         {
-            float time = static_cast<float>(glfwGetTime()); 
-            Timestep timestep = time - m_lastFrameTime;
+            const float time = static_cast<float>(glfwGetTime()); 
+            const Timestep timestep = time - m_lastFrameTime;
             m_lastFrameTime = static_cast<float>(glfwGetTime());
 
-            if(Input::IsKeyPressed(KeyCode::W))
-            {
-                glm::vec3 pos = m_orthoCamera.GetPosition();
-                pos += glm::vec3(0.0f, cameraMovementSpeed, 0.0f) * timestep.GetSeconds();
-                m_orthoCamera.SetPosition(pos);
-            }
-            if(Input::IsKeyPressed(KeyCode::S))
-            {
-                glm::vec3 pos = m_orthoCamera.GetPosition();
-                pos += glm::vec3(0.0f, -cameraMovementSpeed, 0.0f) * timestep.GetSeconds();
-                m_orthoCamera.SetPosition(pos);
-            }
-            if(Input::IsKeyPressed(KeyCode::A))
-            {
-                glm::vec3 pos = m_orthoCamera.GetPosition();
-                pos += glm::vec3(-cameraMovementSpeed, 0.0f, 0.0f) * timestep.GetSeconds();
-                m_orthoCamera.SetPosition(pos);
-            }
-            if(Input::IsKeyPressed(KeyCode::D))
-            {
-                glm::vec3 pos = m_orthoCamera.GetPosition();
-                pos += glm::vec3(cameraMovementSpeed, 0.0f, 0.0f) * timestep.GetSeconds();
-                m_orthoCamera.SetPosition(pos);
-            }
-            
-            RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1});
-            RenderCommand::Clear();
-            
-            Renderer::BeginScene(m_orthoCamera);
-
-            Renderer::Submit(m_vertexArray, m_Shader);
-            Renderer::Submit(m_squareVertexArray, m_Shader);
-            
-            Renderer::EndScene();
-            
             for(Layer* layer : m_LayerStack)
             {
                layer->OnUpdate(timestep); 
