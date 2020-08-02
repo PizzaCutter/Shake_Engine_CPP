@@ -22,6 +22,7 @@ IncludeDir["GLFW"] = "Shake_Engine/vendor/GLFW/include"
 IncludeDir["GLAD"] = "Shake_Engine/vendor/glad/include"
 IncludeDir["ImGui"] = "Shake_Engine/vendor/imgui"
 IncludeDir["GLM"] = "Shake_Engine/vendor/glm"
+IncludeDir["stb_image"] = "Shake_Engine/vendor/stb_image"
 
 group "Dependencies"
 	include "Shake_Engine/vendor/GLFW"
@@ -51,7 +52,9 @@ project "Shake_Engine"
 		"%{prj.name}/vendor/imgui/examples/imgui_impl_glfw.h",
 		"%{prj.name}/vendor/imgui/examples/imgui_impl_glfw.cpp",
 		"%{prj.name}/vendor/imgui/examples/imgui_impl_opengl3.h",
-		"%{prj.name}/vendor/imgui/examples/imgui_impl_opengl3.cpp"	
+		"%{prj.name}/vendor/imgui/examples/imgui_impl_opengl3.cpp"
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp"
 	}
 	
 	defines
@@ -69,7 +72,8 @@ project "Shake_Engine"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.GLM}"
+		"%{IncludeDir.GLM}",
+		"%{IncludeDir.stb_image}"
 	}
 	
 	links
