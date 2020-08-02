@@ -23,8 +23,6 @@ namespace Shake
 
         m_imGuiLayer = new ImGuiLayer();
         PushOverlay(m_imGuiLayer);
-
-     
     }
 
     Application::~Application()
@@ -65,13 +63,13 @@ namespace Shake
 
             for(Layer* layer : m_LayerStack)
             {
-               layer->OnUpdate(timestep); 
+               layer->OnUpdate(timestep);
             }
-            
+
             m_imGuiLayer->Begin();
             for(Layer* layer : m_LayerStack)
             {
-                m_imGuiLayer->OnImGuiRender();
+                layer->OnImGuiRender();
             }
             m_imGuiLayer->End();
             

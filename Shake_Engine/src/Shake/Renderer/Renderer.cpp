@@ -7,6 +7,8 @@
 #include "Shader.h"
 #include "VertexArray.h"
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 namespace Shake
 {
     Renderer::SceneData Renderer::m_sceneData = Renderer::SceneData{}; 
@@ -21,10 +23,12 @@ namespace Shake
         
     }
 
-    void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader)
+    void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader, const glm::mat4& transform)
     {
         shader->Bind();
-        shader->UploadUniformMat4("u_viewProjection", m_sceneData.m_viewProjectionMatrix);
+
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_viewProjection", m_sceneData.m_viewProjectionMatrix);
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transform);
         
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);

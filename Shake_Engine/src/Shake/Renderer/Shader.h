@@ -1,20 +1,15 @@
 ﻿#pragma once
 
-#include "glm/glm.hpp"
-
 namespace Shake
 {
     class Shader
     {
     public:
-        Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
-        ~Shader();
+        virtual ~Shader() = default;
 
-        void Bind() const;
-        void Unbind() const;
+        virtual void Bind() const = 0;
+        virtual void Unbind() const = 0;
 
-        void UploadUniformMat4(const std::string& name, const glm::mat4& matrix);
-    private:
-        unsigned int m_ShaderId;
+        static Shader* Create(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
     };
 }

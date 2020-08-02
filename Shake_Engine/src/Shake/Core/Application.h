@@ -15,6 +15,7 @@ namespace Shake
     public:
         Application(const std::string& applicationName);
         virtual ~Application();
+
         void OnEvent(Event& event);
 
         void PushLayer(Layer* layer);

@@ -5,11 +5,18 @@
 #include <glm/vec4.hpp> // glm::vec4
 #include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
 
+#include "glm/gtc/type_ptr.hpp"
+#include "imgui/imgui.h"
+#include "Platform/OpenGL/OpenGLShader.h"
+
 
 class BaseLayer : public Shake::Layer
 {
 public:
-    BaseLayer() : Layer("Base"), m_orthoCamera(-1.6f, 1.6f, -0.9f, 0.9f)
+    BaseLayer() : Layer("Base"),
+                  m_orthoCamera(-1.6f, 1.6f, -0.9f, 0.9f),
+                  m_trianglePosition(0.0f),
+                  m_editableColor(glm::vec3(1.0f)) 
     {
         m_vertexArray.reset(Shake::VertexArray::Create());
 
@@ -53,7 +60,7 @@ public:
         indexBuffer.reset(Shake::IndexBuffer::Create(indices_02, sizeof(indices) / sizeof(uint32_t)));
         m_squareVertexArray->SetIndexBuffer(indexBuffer);
 
-        m_Shader.reset(new Shake::Shader("Default.vs", "Default.fs"));
+        m_Shader.reset(Shake::Shader::Create("Default.vs", "Default.fs"));
     }
 
     void OnUpdate(Shake::Timestep timestep) override
@@ -85,20 +92,50 @@ public:
             m_orthoCamera.SetPosition(pos);
         }
 
+        if(Shake::Input::IsKeyPressed(Shake::KeyCode::L))
+        {
+            m_trianglePosition.x += cameraMovementSpeed * timestep.GetSeconds();
+        }
+        if(Shake::Input::IsKeyPressed(Shake::KeyCode::J))
+        {
+            m_trianglePosition.x -= cameraMovementSpeed * timestep.GetSeconds();
+        }
+        if(Shake::Input::IsKeyPressed(Shake::KeyCode::I))
+        {
+            m_trianglePosition.y += cameraMovementSpeed * timestep.GetSeconds();
+        }
+        if(Shake::Input::IsKeyPressed(Shake::KeyCode::K))
+        {
+            m_trianglePosition.y -= cameraMovementSpeed * timestep.GetSeconds();
+        }
+
         Shake::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
         Shake::RenderCommand::Clear();
 
         Shake::Renderer::BeginScene(m_orthoCamera);
 
-        Shake::Renderer::Submit(m_vertexArray, m_Shader);
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_trianglePosition);
+        transform = glm::scale(transform, glm::vec3(0.1f));
+        std::dynamic_pointer_cast<Shake::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_color", m_editableColor);
+        
+        Shake::Renderer::Submit(m_vertexArray, m_Shader, transform);
         Shake::Renderer::Submit(m_squareVertexArray, m_Shader);
 
         Shake::Renderer::EndScene();
     }
 
+    void OnImGuiRender() override
+    {
+        ImGui::Begin("Settings");
+
+        ImGui::ColorEdit3("Square Color", glm::value_ptr(m_editableColor));
+        
+        ImGui::End();
+    }
+
     void OnEvent(Shake::Event& event) override
     {
-        //SE_TRACE("{0}", event.ToString());
+        
     }
 
 private:
@@ -107,6 +144,9 @@ private:
     std::shared_ptr<Shake::Shader> m_Shader;
     std::shared_ptr<Shake::VertexArray> m_vertexArray;
     std::shared_ptr<Shake::VertexArray> m_squareVertexArray;
+
+    glm::vec3 m_trianglePosition;
+    glm::vec3 m_editableColor;
 };
 
 class Sable : public Shake::Application
