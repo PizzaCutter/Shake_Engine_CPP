@@ -1,16 +1,16 @@
 #include <iostream>
 #include "Shake.h"
 
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
-#include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
+#include "imgui/imgui.h"
 
 #include "glm/gtc/type_ptr.hpp"
-#include "imgui/imgui.h"
+
 #include "Platform/OpenGL/OpenGLShader.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
+
 #include "Shake/Renderer/Texture.h"
 
+#include "Shake/Math/SMath.h"
 
 namespace Shake {
     class Texture2D;
@@ -22,7 +22,7 @@ public:
     BaseLayer() : Layer("Base"),
                   m_orthoCamera(-1.6f, 1.6f, -0.9f, 0.9f),
                   m_playerPosition(0.0f),
-                  m_editableColor(glm::vec3(1.0f)) 
+                  m_editableColor(SVector3(1.0f)) 
     {
         m_vertexArray.reset(Shake::VertexArray::Create());
 
@@ -59,26 +59,26 @@ public:
 
         if (Shake::Input::IsKeyPressed(Shake::KeyCode::W))
         {
-            glm::vec3 pos = m_orthoCamera.GetPosition();
-            pos += glm::vec3(0.0f, cameraMovementSpeed, 0.0f) * timestep.GetSeconds();
+            SVector3 pos = m_orthoCamera.GetPosition();
+            pos += SVector3(0.0f, cameraMovementSpeed, 0.0f) * timestep.GetSeconds();
             m_orthoCamera.SetPosition(pos);
         }
         if (Shake::Input::IsKeyPressed(Shake::KeyCode::S))
         {
-            glm::vec3 pos = m_orthoCamera.GetPosition();
-            pos += glm::vec3(0.0f, -cameraMovementSpeed, 0.0f) * timestep.GetSeconds();
+            SVector3 pos = m_orthoCamera.GetPosition();
+            pos += SVector3(0.0f, -cameraMovementSpeed, 0.0f) * timestep.GetSeconds();
             m_orthoCamera.SetPosition(pos);
         }
         if (Shake::Input::IsKeyPressed(Shake::KeyCode::A))
         {
-            glm::vec3 pos = m_orthoCamera.GetPosition();
-            pos += glm::vec3(-cameraMovementSpeed, 0.0f, 0.0f) * timestep.GetSeconds();
+            SVector3 pos = m_orthoCamera.GetPosition();
+            pos += SVector3(-cameraMovementSpeed, 0.0f, 0.0f) * timestep.GetSeconds();
             m_orthoCamera.SetPosition(pos);
         }
         if (Shake::Input::IsKeyPressed(Shake::KeyCode::D))
         {
-            glm::vec3 pos = m_orthoCamera.GetPosition();
-            pos += glm::vec3(cameraMovementSpeed, 0.0f, 0.0f) * timestep.GetSeconds();
+            SVector3 pos = m_orthoCamera.GetPosition();
+            pos += SVector3(cameraMovementSpeed, 0.0f, 0.0f) * timestep.GetSeconds();
             m_orthoCamera.SetPosition(pos);
         }
 
@@ -110,8 +110,9 @@ public:
         
         m_Texture->Bind();
 
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_playerPosition);
-        transform = glm::scale(transform, glm::vec3(0.1f));
+        SMat4 transform = SMath::Translate(SMat4(1.0f), m_playerPosition);
+        
+        transform = SMath::Scale(transform, SVector3(0.1f));
         Shake::Renderer::Submit(m_vertexArray, m_Shader, transform);
 
         int gridSize = 10;
@@ -120,9 +121,9 @@ public:
         {
             for (int j = 0; j < gridSize; ++j)
             {
-                glm::vec3 tilePosition = glm::vec3(i * tileOffset, j * tileOffset, 0.0f);
-                glm::mat4 transform = glm::translate(glm::mat4(1.0f), tilePosition);
-                transform = glm::scale(transform, glm::vec3(0.1f));
+                SVector3 tilePosition = SVector3(i * tileOffset, j * tileOffset, 0.0f);
+                SMat4 transform = SMath::Translate(SMat4(1.0f), tilePosition);
+                transform = SMath::Scale(transform, SVector3(0.1f));
                    
                 Shake::Renderer::Submit(m_vertexArray, m_Shader, transform);
             } 
@@ -152,8 +153,8 @@ private:
     Shake::Ref<Shake::Texture2D> m_Texture;
     Shake::Ref<Shake::VertexArray> m_vertexArray;
 
-    glm::vec3 m_playerPosition;
-    glm::vec3 m_editableColor;
+    SVector3 m_playerPosition;
+    SVector3 m_editableColor;
 };
 
 class Sable : public Shake::Application

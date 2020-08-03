@@ -7,6 +7,8 @@
 
 #include "Shake/Core/Timestep.h"
 
+#include "Shake/Math/SMath.h"
+
 // -------------- INPUT ----------
 #include "Shake/Core/Input.h"
 

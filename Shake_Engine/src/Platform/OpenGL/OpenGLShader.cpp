@@ -140,13 +140,13 @@ namespace Shake
          glUniform1i(uniformLocation, value);
     }
 
-    void OpenGLShader::UploadUniformMat3(const std::string& name, const glm::mat3& matrix)
+    void OpenGLShader::UploadUniformMat3(const std::string& name, const SMat3& matrix)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniformMatrix3fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
-    void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
+    void OpenGLShader::UploadUniformMat4(const std::string& name, const SMat4& matrix)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
@@ -158,19 +158,19 @@ namespace Shake
          glUniform1f(uniformLocation, value);
     }
 
-    void OpenGLShader::UploadUniformFloat2(const std::string& name, const glm::vec2& data)
+    void OpenGLShader::UploadUniformFloat2(const std::string& name, const SVector2& data)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniform2f(uniformLocation, data.x, data.y);
     }
 
-    void OpenGLShader::UploadUniformFloat3(const std::string& name, const glm::vec3& data)
+    void OpenGLShader::UploadUniformFloat3(const std::string& name, const SVector3& data)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniform3f(uniformLocation, data.x, data.y, data.z);
     }
 
-    void OpenGLShader::UploadUniformFloat4(const std::string& name, const glm::vec4& vector)
+    void OpenGLShader::UploadUniformFloat4(const std::string& name, const SVector4& vector)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniform4f(uniformLocation, vector.x, vector.y, vector.z, vector.w);
