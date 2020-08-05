@@ -9,6 +9,7 @@ namespace Shake
     public:
         void SetClearColor(const glm::vec4& color) override;
         void Clear() override;
+        void Initialize() override;
         void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
     };
 }

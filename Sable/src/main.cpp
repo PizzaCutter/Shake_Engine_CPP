@@ -24,6 +24,8 @@ public:
                   m_playerPosition(0.0f),
                   m_editableColor(SVector3(1.0f)) 
     {
+        Shake::RenderCommand::Initialize();
+        
         m_vertexArray.reset(Shake::VertexArray::Create());
 
         // Index buffer
@@ -50,7 +52,8 @@ public:
        
         m_Shader.reset(Shake::Shader::Create("Default.vs", "Default.fs"));
 
-        m_Texture = Shake::Texture2D::Create("Content/Textures/grid.png"); 
+        m_Texture = Shake::Texture2D::Create("Content/Textures/grid.png");
+        m_TransparentTexture = Shake::Texture2D::Create("Content/Textures/Test.png");
     }
 
     void OnUpdate(Shake::Timestep timestep) override
@@ -103,17 +106,16 @@ public:
         Shake::RenderCommand::Clear();
 
         Shake::Renderer::BeginScene(m_orthoCamera);
-
        
         m_Shader->UploadUniformFloat3("u_color", m_editableColor);
         m_Shader->UploadUniformInt("u_sampler", 0);
         
-        m_Texture->Bind();
-
         SMat4 transform = SMath::Translate(SMat4(1.0f), m_playerPosition);
+        transform = SMath::Scale(transform, SVector3(0.5f));
+
         
-        transform = SMath::Scale(transform, SVector3(0.1f));
-        Shake::Renderer::Submit(m_vertexArray, m_Shader, transform);
+        m_Texture->Bind();
+        //Shake::Renderer::Submit(m_vertexArray, m_Shader, transform);
 
         int gridSize = 10;
         float tileOffset = 0.15f;
@@ -122,12 +124,15 @@ public:
             for (int j = 0; j < gridSize; ++j)
             {
                 SVector3 tilePosition = SVector3(i * tileOffset, j * tileOffset, 0.0f);
-                SMat4 transform = SMath::Translate(SMat4(1.0f), tilePosition);
-                transform = SMath::Scale(transform, SVector3(0.1f));
+                SMat4 tempTransform = SMath::Translate(SMat4(1.0f), tilePosition);
+                tempTransform = SMath::Scale(tempTransform, SVector3(0.1f));
                    
-                Shake::Renderer::Submit(m_vertexArray, m_Shader, transform);
+                Shake::Renderer::Submit(m_vertexArray, m_Shader, tempTransform);
             } 
-        } 
+        }
+        
+        m_TransparentTexture->Bind();
+        Shake::Renderer::Submit(m_vertexArray, m_Shader, transform);
 
         Shake::Renderer::EndScene();
     }
@@ -151,6 +156,7 @@ private:
 
     Shake::Ref<Shake::Shader> m_Shader;
     Shake::Ref<Shake::Texture2D> m_Texture;
+    Shake::Ref<Shake::Texture2D> m_TransparentTexture;
     Shake::Ref<Shake::VertexArray> m_vertexArray;
 
     SVector3 m_playerPosition;

@@ -18,6 +18,11 @@ namespace Shake
             s_renderAPI->Clear();
         }
 
+        inline static void Initialize()
+        {
+            s_renderAPI->Initialize();
+        }
+
         inline static void DrawIndexed(const Ref<VertexArray>& vertexArray)
         {
             s_renderAPI->DrawIndexed(vertexArray);
