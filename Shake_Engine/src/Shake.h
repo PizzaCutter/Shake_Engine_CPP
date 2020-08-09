@@ -20,9 +20,10 @@
 #include "Shake/Renderer/VertexArray.h"
 
 #include "Shake/Renderer/Shader.h"
+#include "Shake/Renderer/Texture.h"
 
 #include "Shake/Renderer/OrthographicCamera.h"
 
 
 // ------------- ENTRY POINT --------
-#include "Shake/Core/EntryPoint.h"
+//#include "Shake/Core/EntryPoint.h"
