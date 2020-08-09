@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "RenderAPI.h"
+#include "Renderer2D.h"
 
 namespace Shake
 {
@@ -21,6 +22,7 @@ namespace Shake
         inline static void Initialize()
         {
             s_renderAPI->Initialize();
+            Renderer2D::Initialize();
         }
 
         inline static void WindowResize(int32_t width, int32_t height)

@@ -51,7 +51,7 @@ namespace Shake
             m_orthoCamera.SetPosition(pos);
         }
 
-        if(Input::IsMouseButtonPressed(MouseCode::Button0))
+        if(Input::IsMouseButtonPressed(MouseCode::Button2))
         {
             const std::pair<float, float> mousePos = Input::GetMousePos();
             const float diffX = m_prevMousePosition.first - mousePos.first;

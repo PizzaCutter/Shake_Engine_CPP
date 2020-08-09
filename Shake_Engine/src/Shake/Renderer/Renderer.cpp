@@ -27,8 +27,8 @@ namespace Shake
     {
         shader->Bind();
 
-        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_viewProjection", m_sceneData.m_viewProjectionMatrix);
-        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transform);
+        shader->UploadUniformMat4("u_viewProjection", m_sceneData.m_viewProjectionMatrix);
+        shader->UploadUniformMat4("u_Transform", transform);
         
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);

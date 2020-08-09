@@ -21,13 +21,8 @@ public:
 private:
     Shake::OrthographicCameraController m_orthoCameraController;
 
-    float m_playerMovementSpeed = 5.0f;
-    SVector3 m_playerPosition;
-    SVector3 m_editableColor;
-
     Shake::ShaderLibrary m_shaderLibrary;
-    Shake::Ref<Shake::Texture2D> m_Texture;
-    Shake::Ref<Shake::Texture2D> m_TransparentTexture;
-    Shake::Ref<Shake::VertexArray> m_vertexArray;
- 
+    Shake::Ref<Shake::Texture2D> m_TestTexture;
+    
+    SVector4 m_editableColor;
 };
