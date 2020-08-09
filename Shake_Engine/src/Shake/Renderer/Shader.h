@@ -22,7 +22,6 @@ namespace Shake
         virtual void UploadUniformFloat3(const std::string& name, const SVector3& data) = 0;
         virtual void UploadUniformFloat4(const std::string& name, const SVector4& vector) = 0;
 
-
-        static Shader* Create(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
+        static Shader* Create(const std::string& path);
     };
 }

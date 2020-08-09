@@ -50,7 +50,7 @@ public:
         indexBuffer.reset(Shake::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
         m_vertexArray->SetIndexBuffer(indexBuffer);
        
-        m_Shader.reset(Shake::Shader::Create("Default.vs", "Default.fs"));
+        m_Shader.reset(Shake::Shader::Create("Content/Shaders/Texture.glsl"));        
 
         m_Texture = Shake::Texture2D::Create("Content/Textures/grid.png");
         m_TransparentTexture = Shake::Texture2D::Create("Content/Textures/Test.png");
