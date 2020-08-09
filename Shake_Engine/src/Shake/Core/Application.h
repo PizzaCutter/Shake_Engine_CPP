@@ -29,11 +29,13 @@ namespace Shake
 
     private:
         bool OnWindowClosed(WindowCloseEvent& event);
-        
+        bool OnWindowResizeCallback(WindowResizeEvent& event);
+
         std::string ApplicationName = "";
         std::unique_ptr<Window> m_Window;
         ImGuiLayer* m_imGuiLayer;
         bool m_running = true;
+        bool m_minimized = false;
         LayerStack m_LayerStack;
         
         float m_lastFrameTime = 0.0f;

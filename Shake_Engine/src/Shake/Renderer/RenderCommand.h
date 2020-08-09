@@ -23,6 +23,11 @@ namespace Shake
             s_renderAPI->Initialize();
         }
 
+        inline static void WindowResize(int32_t width, int32_t height)
+        {
+            s_renderAPI->WindowResize(width, height); 
+        }
+
         inline static void DrawIndexed(const Ref<VertexArray>& vertexArray)
         {
             s_renderAPI->DrawIndexed(vertexArray);

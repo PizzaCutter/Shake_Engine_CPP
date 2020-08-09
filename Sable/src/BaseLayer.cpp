@@ -12,8 +12,6 @@ BaseLayer::BaseLayer() : Layer("Base"),
                          m_playerPosition(0.0f),
                          m_editableColor(SVector3(1.0f))
 {
-    Shake::RenderCommand::Initialize();
-
     m_vertexArray.reset(Shake::VertexArray::Create());
 
     // Index buffer

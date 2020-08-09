@@ -23,6 +23,11 @@ namespace Shake
        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
     }
 
+    void OpenGLRenderAPI::WindowResize(int32_t width, int32_t height)
+    {
+        glViewport(0, 0, width, height); 
+    }
+
     void OpenGLRenderAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
     {
         glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr); 

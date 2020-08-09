@@ -3,6 +3,7 @@
 
 #include "Log.h"
 #include "GLFW/glfw3.h"
+#include "Shake/Renderer/RenderCommand.h"
 
 
 namespace Shake
@@ -20,6 +21,8 @@ namespace Shake
         m_Window = std::unique_ptr<Window>(Window::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
+        RenderCommand::Initialize();
+        
         m_imGuiLayer = new ImGuiLayer();
         PushOverlay(m_imGuiLayer);
     }
@@ -33,6 +36,7 @@ namespace Shake
     {
         EventDispatcher dispatcher(event);
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClosed));
+        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResizeCallback));
 
         for(Layer* layer : m_LayerStack)
         {
@@ -85,5 +89,19 @@ namespace Shake
     {
         m_running = false;
         return true;
+    }
+
+    bool Application::OnWindowResizeCallback(WindowResizeEvent& event)
+    {
+        if(event.GetWidth() == 0 && event.GetHeight() == 0)
+        {
+            m_minimized = true;
+            return false; 
+        }
+        
+        m_minimized = false;
+        RenderCommand::WindowResize(event.GetWidth(), event.GetHeight());
+        
+        return false;
     }
 }
