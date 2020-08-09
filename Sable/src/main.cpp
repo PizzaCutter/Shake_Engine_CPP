@@ -49,9 +49,10 @@ public:
         Shake::Ref<Shake::IndexBuffer> indexBuffer;
         indexBuffer.reset(Shake::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
         m_vertexArray->SetIndexBuffer(indexBuffer);
-       
-        m_Shader.reset(Shake::Shader::Create("Content/Shaders/Texture.glsl"));        
-
+        
+        m_shaderLibrary.Load("Content/Shaders/Texture.glsl");
+        //m_shaderLibrary.Load("Content/Shaders/Texture.glsl");
+        
         m_Texture = Shake::Texture2D::Create("Content/Textures/grid.png");
         m_TransparentTexture = Shake::Texture2D::Create("Content/Textures/Test.png");
     }
@@ -106,14 +107,16 @@ public:
         Shake::RenderCommand::Clear();
 
         Shake::Renderer::BeginScene(m_orthoCamera);
-       
-        m_Shader->UploadUniformFloat3("u_color", m_editableColor);
-        m_Shader->UploadUniformInt("u_sampler", 0);
+        
+        Shake::Ref<Shake::Shader> shader = m_shaderLibrary.Get("Texture");
+        shader->UploadUniformFloat3("u_color", m_editableColor);
+        shader->UploadUniformInt("u_sampler", 0);
+        
+        //Shake::Ref<Shake::Shader> test = m_shaderLibrary.Get("Nope");
         
         SMat4 transform = SMath::Translate(SMat4(1.0f), m_playerPosition);
         transform = SMath::Scale(transform, SVector3(0.5f));
 
-        
         m_Texture->Bind();
         //Shake::Renderer::Submit(m_vertexArray, m_Shader, transform);
 
@@ -127,12 +130,12 @@ public:
                 SMat4 tempTransform = SMath::Translate(SMat4(1.0f), tilePosition);
                 tempTransform = SMath::Scale(tempTransform, SVector3(0.1f));
                    
-                Shake::Renderer::Submit(m_vertexArray, m_Shader, tempTransform);
+                Shake::Renderer::Submit(m_vertexArray, shader, tempTransform);
             } 
         }
         
         m_TransparentTexture->Bind();
-        Shake::Renderer::Submit(m_vertexArray, m_Shader, transform);
+        Shake::Renderer::Submit(m_vertexArray, shader, transform);
 
         Shake::Renderer::EndScene();
     }
@@ -153,8 +156,8 @@ public:
 
 private:
     Shake::OrthographicCamera m_orthoCamera;
+    Shake::ShaderLibrary m_shaderLibrary;
 
-    Shake::Ref<Shake::Shader> m_Shader;
     Shake::Ref<Shake::Texture2D> m_Texture;
     Shake::Ref<Shake::Texture2D> m_TransparentTexture;
     Shake::Ref<Shake::VertexArray> m_vertexArray;

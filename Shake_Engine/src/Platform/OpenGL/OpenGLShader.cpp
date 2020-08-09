@@ -16,6 +16,12 @@ namespace Shake
         const std::string fileAsString = ReadFile(filePath);
         const std::unordered_map<GLenum, std::string> processedData = PreProcess(fileAsString);
         Compile(processedData);
+
+        // Contents/Shaders/Texture.glsl extract name from this
+        const size_t lastSlash = filePath.find_last_of("/");
+        const size_t lastDot = filePath.find_last_of(".");
+        const size_t beginIndex = lastSlash + 1;
+        m_name = filePath.substr(beginIndex, lastDot - beginIndex);
     }
 
     OpenGLShader::~OpenGLShader()
@@ -78,7 +84,7 @@ namespace Shake
     std::string OpenGLShader::ReadFile(const std::string& filePath)
     {
         std::string result;
-        std::ifstream in(filePath, std::ios::in, std::ios::binary);
+        std::ifstream in(filePath, std::ios::in | std::ios::binary);
         if(in)
         {
             in.seekg(0, std::ios::end);
@@ -112,11 +118,11 @@ namespace Shake
         
         const std::string typeThing = "#type"; 
 
-        unsigned int index = 0;
-        while(index != -1)
+        size_t index = 0;
+        while(index != std::string::npos)
         {
             const std::string::size_type foundIndex = source.find(typeThing, index) + typeThing.length();
-            const std::string::size_type endOfTypeIndex = source.find("\n", index);
+            const std::string::size_type endOfTypeIndex = source.find("\r", index);
             const std::string::size_type nextShaderIndex = source.find(typeThing, endOfTypeIndex);
 
             std::string shaderTypeString = source.substr(foundIndex + 1, endOfTypeIndex - (foundIndex + 1));
@@ -136,6 +142,7 @@ namespace Shake
     {
         GLuint program = glCreateProgram();
         std::vector<GLuint> openGLShaders;
+        openGLShaders.reserve(input.size());
         
         for (auto& shaderInput: input)
         {

@@ -15,6 +15,7 @@ namespace Shake
 
         void Bind() const override;
         void Unbind() const override;
+        std::string GetName() const override { return m_name; } 
         
         void UploadUniformInt(const std::string& name, int value) override;
 
@@ -28,6 +29,7 @@ namespace Shake
 
     private:
         uint32_t m_ShaderId = -1;
+        std::string m_name = ""; 
 
         std::string ReadFile(const std::string& filePath);
         std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
