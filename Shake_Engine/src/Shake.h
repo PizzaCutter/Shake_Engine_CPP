@@ -22,7 +22,7 @@
 #include "Shake/Renderer/Shader.h"
 #include "Shake/Renderer/Texture.h"
 
-#include "Shake/Renderer/OrthographicCamera.h"
+#include "Shake/Renderer/Camera/OrthographicCamera.h"
 
 
 // ------------- ENTRY POINT --------

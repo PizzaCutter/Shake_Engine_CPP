@@ -1,5 +1,6 @@
 #pragma once
 #include "Shake.h"
+#include "Shake/Renderer/Camera/OrthographicCameraController.h"
 
 namespace Shake {
     class VertexArray;
@@ -18,7 +19,9 @@ public:
     void OnEvent(Shake::Event& event) override;
 
 private:
-    Shake::OrthographicCamera m_orthoCamera;
+    Shake::OrthographicCameraController m_orthoCameraController;
+
+    float m_playerMovementSpeed = 5.0f;
     SVector3 m_playerPosition;
     SVector3 m_editableColor;
 

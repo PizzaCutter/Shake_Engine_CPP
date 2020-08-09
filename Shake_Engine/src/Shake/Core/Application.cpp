@@ -11,7 +11,6 @@ namespace Shake
 
     Application* Application::s_Instance = nullptr;
 
-
     Application::Application(const std::string& applicationName)
     {
         //SE_CORE_ASSERT(s_Instance != nullptr, "Application already exists");

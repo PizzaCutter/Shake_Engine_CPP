@@ -7,7 +7,8 @@ namespace Shake
     class OrthographicCamera
     {
     public:
-        OrthographicCamera(float left, float right, float bottom, float top);     
+        OrthographicCamera(float left, float right, float bottom, float top);
+        void SetProjection(float left, float right, float bottom, float top);
         
         const SVector3 GetPosition() const { return m_position; }
         void SetPosition(const SVector3& position)

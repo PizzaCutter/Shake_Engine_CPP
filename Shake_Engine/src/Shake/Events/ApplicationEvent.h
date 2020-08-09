@@ -12,8 +12,8 @@ namespace Shake
             
         }
 
-        unsigned int GetWidth() { return Width; }
-        unsigned int GetHeight() { return Height; }
+        unsigned int GetWidth() const { return Width; }
+        unsigned int GetHeight() const { return Height; }
 
         std::string ToString() const override
         {

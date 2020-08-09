@@ -8,7 +8,7 @@
 
 
 BaseLayer::BaseLayer() : Layer("Base"),
-                         m_orthoCamera(-1.6f, 1.6f, -0.9f, 0.9f),
+                         m_orthoCameraController(1280.0f / 720.0f),
                          m_playerPosition(0.0f),
                          m_editableColor(SVector3(1.0f))
 {
@@ -39,7 +39,6 @@ BaseLayer::BaseLayer() : Layer("Base"),
     m_vertexArray->SetIndexBuffer(indexBuffer);
 
     m_shaderLibrary.Load("Content/Shaders/Texture.glsl");
-    //m_shaderLibrary.Load("Content/Shaders/Texture.glsl");
 
     m_Texture = Shake::Texture2D::Create("Content/Textures/grid.png");
     m_TransparentTexture = Shake::Texture2D::Create("Content/Textures/Test.png");
@@ -59,65 +58,38 @@ void BaseLayer::OnDetach()
 
 auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
 {
-    const float cameraMovementSpeed = 5.0f;
-    if (Shake::Input::IsKeyPressed(Shake::KeyCode::W))
-    {
-        SVector3 pos = m_orthoCamera.GetPosition();
-        pos += SVector3(0.0f, cameraMovementSpeed, 0.0f) * timeStep.GetSeconds();
-        m_orthoCamera.SetPosition(pos);
-    }
-    if (Shake::Input::IsKeyPressed(Shake::KeyCode::S))
-    {
-        SVector3 pos = m_orthoCamera.GetPosition();
-        pos += SVector3(0.0f, -cameraMovementSpeed, 0.0f) * timeStep.GetSeconds();
-        m_orthoCamera.SetPosition(pos);
-    }
-    if (Shake::Input::IsKeyPressed(Shake::KeyCode::A))
-    {
-        SVector3 pos = m_orthoCamera.GetPosition();
-        pos += SVector3(-cameraMovementSpeed, 0.0f, 0.0f) * timeStep.GetSeconds();
-        m_orthoCamera.SetPosition(pos);
-    }
-    if (Shake::Input::IsKeyPressed(Shake::KeyCode::D))
-    {
-        SVector3 pos = m_orthoCamera.GetPosition();
-        pos += SVector3(cameraMovementSpeed, 0.0f, 0.0f) * timeStep.GetSeconds();
-        m_orthoCamera.SetPosition(pos);
-    }
-
     if (Shake::Input::IsKeyPressed(Shake::KeyCode::L))
     {
-        m_playerPosition.x += cameraMovementSpeed * timeStep.GetSeconds();
+        m_playerPosition.x += m_playerMovementSpeed * timeStep.GetSeconds();
     }
     if (Shake::Input::IsKeyPressed(Shake::KeyCode::J))
     {
-        m_playerPosition.x -= cameraMovementSpeed * timeStep.GetSeconds();
+        m_playerPosition.x -= m_playerMovementSpeed * timeStep.GetSeconds();
     }
     if (Shake::Input::IsKeyPressed(Shake::KeyCode::I))
     {
-        m_playerPosition.y += cameraMovementSpeed * timeStep.GetSeconds();
+        m_playerPosition.y += m_playerMovementSpeed * timeStep.GetSeconds();
     }
     if (Shake::Input::IsKeyPressed(Shake::KeyCode::K))
     {
-        m_playerPosition.y -= cameraMovementSpeed * timeStep.GetSeconds();
+        m_playerPosition.y -= m_playerMovementSpeed * timeStep.GetSeconds();
     }
+
+    m_orthoCameraController.OnUpdate(timeStep); 
 
     Shake::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
     Shake::RenderCommand::Clear();
 
-    Shake::Renderer::BeginScene(m_orthoCamera);
+    Shake::Renderer::BeginScene(m_orthoCameraController.GetCamera());
 
     Shake::Ref<Shake::Shader> shader = m_shaderLibrary.Get("Texture");
     shader->UploadUniformFloat3("u_color", m_editableColor);
     shader->UploadUniformInt("u_sampler", 0);
 
-    //Shake::Ref<Shake::Shader> test = m_shaderLibrary.Get("Nope");
-
     SMat4 transform = SMath::Translate(SMat4(1.0f), m_playerPosition);
     transform = SMath::Scale(transform, SVector3(0.5f));
 
     m_Texture->Bind();
-    //Shake::Renderer::Submit(m_vertexArray, m_Shader, transform);
 
     int gridSize = 10;
     float tileOffset = 0.15f;
@@ -150,4 +122,5 @@ void BaseLayer::OnImGuiRender()
 
 void BaseLayer::OnEvent(Shake::Event& event)
 {
+    m_orthoCameraController.OnEvent(event);
 }

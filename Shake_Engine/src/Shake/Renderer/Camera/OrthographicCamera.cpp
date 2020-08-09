@@ -16,6 +16,12 @@ namespace Shake
         RecalculateViewMatrix();
     }
 
+    void OrthographicCamera::SetProjection(float left, float right, float bottom, float top)
+    {
+        m_projectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+        RecalculateViewMatrix();
+    }
+
     void OrthographicCamera::RecalculateViewMatrix()
     {
         SMat4 transform = SMath::Translate(SMat4(1.0f), m_position) * SMath::Rotate(SMat4(1.0f), glm::radians(m_rotation), SVector3(0,0,1));
