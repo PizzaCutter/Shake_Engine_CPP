@@ -12,8 +12,8 @@ namespace Shake
     struct Renderer2DStorage
     {
         Ref<VertexArray> m_vertexArray;
-        Ref<Shader> m_flatShader;
         Ref<Shader> m_textureShader;
+        Ref<Texture2D> m_whiteTexture;
     };
 
     class Renderer2D
@@ -26,7 +26,7 @@ namespace Shake
         static void EndScene();
 
         static void DrawQuad(const SVector3& position, const SVector2& size, const SVector4& color);
-        static void DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture);
+        static void DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture, const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const SVector2& tilingSize = {1.0f, 1.0f});
 
        static Renderer2DStorage* m_rendererStorage; 
     };

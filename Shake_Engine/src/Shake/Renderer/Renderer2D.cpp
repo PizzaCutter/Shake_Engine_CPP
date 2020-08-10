@@ -37,8 +37,11 @@ namespace Shake
         indexBuffer.reset(Shake::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
         m_rendererStorage->m_vertexArray->SetIndexBuffer(indexBuffer);
 
-        m_rendererStorage->m_flatShader = Shader::Create("Content/Shaders/FlatShader.glsl");
         m_rendererStorage->m_textureShader = Shader::Create("Content/Shaders/Texture.glsl");
+
+        m_rendererStorage->m_whiteTexture = Texture2D::Create(1, 1);
+        uint32_t whiteTextureData = 0xffffffff;
+        m_rendererStorage->m_whiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
     }
 
     void Renderer2D::Shutdown()
@@ -49,9 +52,6 @@ namespace Shake
 
     void Renderer2D::BeginScene(OrthographicCamera& camera)
     {
-         m_rendererStorage->m_flatShader->Bind();
-         m_rendererStorage->m_flatShader->UploadUniformMat4("u_viewProjection", camera.GetViewProjectionMatrix());
-
          m_rendererStorage->m_textureShader->Bind();
          m_rendererStorage->m_textureShader->UploadUniformMat4("u_viewProjection", camera.GetViewProjectionMatrix());
     }
@@ -63,25 +63,18 @@ namespace Shake
 
     void Renderer2D::DrawQuad(const SVector3& position, const SVector2& size, const SVector4& color)
     {
-        SMat4 transform = SMath::Translate(SMat4(1.0f), position);
-        transform = SMath::Scale(transform, SVector3(size.x, size.y, 1.0f));
-        
-        m_rendererStorage->m_flatShader->Bind();
-        m_rendererStorage->m_flatShader->UploadUniformMat4("u_Transform", transform);
-        m_rendererStorage->m_flatShader->UploadUniformFloat4("u_color", color);
-
-        m_rendererStorage->m_vertexArray->Bind();
-        RenderCommand::DrawIndexed(m_rendererStorage->m_vertexArray);
+        DrawQuadTextured(position, size, m_rendererStorage->m_whiteTexture, color);
     }
 
-    void Renderer2D::DrawQuadTextured(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D> texture)
+    void Renderer2D::DrawQuadTextured(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D> texture, const SVector4& color, const SVector2& tilingSize)
     {
         SMat4 transform = SMath::Translate(SMat4(1.0f), position);
         transform = SMath::Scale(transform, SVector3(size.x, size.y, 1.0f));
 
         m_rendererStorage->m_textureShader->Bind();
         m_rendererStorage->m_textureShader->UploadUniformMat4("u_Transform", transform);
-        m_rendererStorage->m_textureShader->UploadUniformFloat4("u_color", {1.0f, 1.0f, 1.0f, 1.0f});
+        m_rendererStorage->m_textureShader->UploadUniformFloat4("u_color", color);
+        m_rendererStorage->m_textureShader->UploadUniformFloat2("u_tilingSize", tilingSize);
         m_rendererStorage->m_textureShader->UploadUniformInt("u_sampler",0);
 
         texture->Bind();

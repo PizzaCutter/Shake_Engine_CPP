@@ -7,6 +7,22 @@
 
 namespace Shake
 {
+    OpenGLTexture::OpenGLTexture(uint32_t width, uint32_t height)
+        : m_width(width), m_height(height)
+    {
+        glCreateTextures(GL_TEXTURE_2D, 1, &m_rendererId);
+        glTextureStorage2D(m_rendererId, 1, GL_RGBA8, m_width, m_height);
+
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+        // glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        // glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
+    }
+
     OpenGLTexture::OpenGLTexture(const std::string& path)
         : m_path(path)
     {
@@ -39,6 +55,11 @@ namespace Shake
     OpenGLTexture::~OpenGLTexture()
     {
         glDeleteBuffers(1, &m_rendererId); 
+    }
+
+    void OpenGLTexture::SetData(void* data, int32_t size)
+    {
+        glTextureSubImage2D(m_rendererId, 0, 0, 0, m_width, m_height, GL_RGBA, GL_UNSIGNED_BYTE, data); 
     }
 
     void OpenGLTexture::Bind(int32_t slot)

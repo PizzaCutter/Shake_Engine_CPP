@@ -27,13 +27,13 @@ in vec3 out_position;
 in vec2 out_texcoord;
 
 uniform vec4 u_color;
+uniform vec2 u_tilingSize;
 uniform sampler2D u_sampler;
 
 void main()
 {
-	color = texture(u_sampler, out_texcoord);
+	color = texture(u_sampler, out_texcoord * u_tilingSize);
 	color *= u_color;
-    //color *= vec4(out_texcoord * u_color.xy, 0.0, u_color.w);
 } 
 
 

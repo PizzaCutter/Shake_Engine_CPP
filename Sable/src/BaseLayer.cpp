@@ -38,6 +38,8 @@ auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
 
     Shake::Renderer2D::DrawQuad({0.5f,0.0f,0.0f}, {0.5f, 0.5f}, {1.0f, 0.2f, 0.2f, 1.0f});
     Shake::Renderer2D::DrawQuadTextured({-0.5f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_TestTexture);
+    Shake::Renderer2D::DrawQuadTextured({0.0f, 0.5f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {1.0f, 1.0f, 1.0f, 1.0f},
+                                        {10.0f, 10.0f});
 
     Shake::Renderer2D::EndScene();
 }
