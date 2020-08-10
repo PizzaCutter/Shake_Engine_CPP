@@ -9,27 +9,29 @@ namespace Shake
 {
     void OpenGLRenderAPI::SetClearColor(const glm::vec4& color)
     {
-       glClearColor(color.r, color.g, color.b, color.a); 
+        glClearColor(color.r, color.g, color.b, color.a);
     }
 
     void OpenGLRenderAPI::Clear()
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void OpenGLRenderAPI::Initialize()
     {
-       glEnable(GL_BLEND);
-       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glEnable(GL_DEPTH_TEST);
     }
 
     void OpenGLRenderAPI::WindowResize(int32_t width, int32_t height)
     {
-        glViewport(0, 0, width, height); 
+        glViewport(0, 0, width, height);
     }
 
     void OpenGLRenderAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
     {
-        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr); 
+        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
     }
 }

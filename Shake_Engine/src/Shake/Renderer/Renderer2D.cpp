@@ -4,6 +4,7 @@
 
 #include "RenderCommand.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "VertexArray.h"
 #include "Camera/OrthographicCamera.h"
 
@@ -36,7 +37,8 @@ namespace Shake
         indexBuffer.reset(Shake::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
         m_rendererStorage->m_vertexArray->SetIndexBuffer(indexBuffer);
 
-        m_rendererStorage->m_flatShader = Shader::Create("Content/Shaders/Texture.glsl");
+        m_rendererStorage->m_flatShader = Shader::Create("Content/Shaders/FlatShader.glsl");
+        m_rendererStorage->m_textureShader = Shader::Create("Content/Shaders/Texture.glsl");
     }
 
     void Renderer2D::Shutdown()
@@ -49,6 +51,9 @@ namespace Shake
     {
          m_rendererStorage->m_flatShader->Bind();
          m_rendererStorage->m_flatShader->UploadUniformMat4("u_viewProjection", camera.GetViewProjectionMatrix());
+
+         m_rendererStorage->m_textureShader->Bind();
+         m_rendererStorage->m_textureShader->UploadUniformMat4("u_viewProjection", camera.GetViewProjectionMatrix());
     }
 
     void Renderer2D::EndScene()
@@ -66,6 +71,22 @@ namespace Shake
         m_rendererStorage->m_flatShader->UploadUniformFloat4("u_color", color);
 
         m_rendererStorage->m_vertexArray->Bind();
+        RenderCommand::DrawIndexed(m_rendererStorage->m_vertexArray);
+    }
+
+    void Renderer2D::DrawQuadTextured(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D> texture)
+    {
+        SMat4 transform = SMath::Translate(SMat4(1.0f), position);
+        transform = SMath::Scale(transform, SVector3(size.x, size.y, 1.0f));
+
+        m_rendererStorage->m_textureShader->Bind();
+        m_rendererStorage->m_textureShader->UploadUniformMat4("u_Transform", transform);
+        m_rendererStorage->m_textureShader->UploadUniformFloat4("u_color", {1.0f, 1.0f, 1.0f, 1.0f});
+        m_rendererStorage->m_textureShader->UploadUniformInt("u_sampler",0);
+
+        texture->Bind();
+        
+        m_rendererStorage->m_vertexArray->Bind(); 
         RenderCommand::DrawIndexed(m_rendererStorage->m_vertexArray);
     }
 }

@@ -4,6 +4,7 @@
 
 namespace Shake
 {
+    class Texture2D;
     class Shader;
     class VertexArray;
     class OrthographicCamera;
@@ -12,6 +13,7 @@ namespace Shake
     {
         Ref<VertexArray> m_vertexArray;
         Ref<Shader> m_flatShader;
+        Ref<Shader> m_textureShader;
     };
 
     class Renderer2D
@@ -24,6 +26,7 @@ namespace Shake
         static void EndScene();
 
         static void DrawQuad(const SVector3& position, const SVector2& size, const SVector4& color);
+        static void DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture);
 
        static Renderer2DStorage* m_rendererStorage; 
     };

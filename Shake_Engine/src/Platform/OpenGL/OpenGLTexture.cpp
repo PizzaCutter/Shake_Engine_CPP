@@ -29,7 +29,7 @@ namespace Shake
         // glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTextureSubImage2D(m_rendererId, 0, 0, 0, m_width, m_height, channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);
 
