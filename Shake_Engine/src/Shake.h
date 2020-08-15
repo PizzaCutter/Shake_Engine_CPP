@@ -24,6 +24,8 @@
 
 #include "Shake/Renderer/Camera/OrthographicCamera.h"
 
+// ----------- HELPERS -------------
+#include "Shake/Helpers/Timer.h"
 
 // ------------- ENTRY POINT --------
 //#include "Shake/Core/EntryPoint.h"

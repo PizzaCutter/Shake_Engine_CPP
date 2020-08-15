@@ -23,6 +23,14 @@ private:
 
     Shake::ShaderLibrary m_shaderLibrary;
     Shake::Ref<Shake::Texture2D> m_TestTexture;
+
+    struct ProfileResult
+    {
+        const char* m_name;
+        float m_duration;
+    };
+
+    std::vector<ProfileResult> m_profileResults;
     
     SVector4 m_editableColor;
 };
