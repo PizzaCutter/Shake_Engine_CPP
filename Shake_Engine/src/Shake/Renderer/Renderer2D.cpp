@@ -66,7 +66,13 @@ namespace Shake
         DrawQuadTextured(position, size, m_rendererStorage->m_whiteTexture, color);
     }
 
-    void Renderer2D::DrawQuadTextured(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D> texture, const SVector4& color, const SVector2& tilingSize)
+    void Renderer2D::DrawRotatedQuad(const SVector3& position, const SVector2& size, float rotation,
+        const SVector4& color)
+    {
+       DrawRotatedQuadTextured(position, size, rotation, m_rendererStorage->m_whiteTexture, color); 
+    }
+
+    void Renderer2D::DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture, const SVector4& color, const SVector2& tilingSize)
     {
         SMat4 transform = SMath::Translate(SMat4(1.0f), position);
         transform = SMath::Scale(transform, SVector3(size.x, size.y, 1.0f));
@@ -81,5 +87,24 @@ namespace Shake
         
         m_rendererStorage->m_vertexArray->Bind(); 
         RenderCommand::DrawIndexed(m_rendererStorage->m_vertexArray);
+    }
+
+    void Renderer2D::DrawRotatedQuadTextured(const SVector3& position, const SVector2& size, float rotation,
+        const Ref<Texture2D> texture, const SVector2& tilingSize ,const SVector4& color)
+    {
+         SMat4 transform = SMath::Translate(SMat4(1.0f), position);
+         transform = SMath::Scale(transform, SVector3(size.x, size.y, 1.0f));
+         transform = SMath::Rotate(transform, rotation, SVector3(0.0f, 0.0f, 1.0f));
+ 
+         m_rendererStorage->m_textureShader->Bind();
+         m_rendererStorage->m_textureShader->UploadUniformMat4("u_Transform", transform);
+         m_rendererStorage->m_textureShader->UploadUniformFloat4("u_color", color);
+         m_rendererStorage->m_textureShader->UploadUniformFloat2("u_tilingSize", tilingSize);
+         m_rendererStorage->m_textureShader->UploadUniformInt("u_sampler",0);
+ 
+         texture->Bind();
+         
+         m_rendererStorage->m_vertexArray->Bind(); 
+         RenderCommand::DrawIndexed(m_rendererStorage->m_vertexArray);
     }
 }

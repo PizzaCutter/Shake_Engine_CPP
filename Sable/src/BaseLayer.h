@@ -25,4 +25,6 @@ private:
     Shake::Ref<Shake::Texture2D> m_TestTexture;
 
     SVector4 m_editableColor;
+
+    float m_rotation = 0.0f;
 };

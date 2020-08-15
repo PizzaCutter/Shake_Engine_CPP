@@ -19,5 +19,6 @@ namespace SMath
     static SMat4 Scale(const SMat4& matrix, const SVector3& inVector) { return glm::scale(matrix, inVector); }
     static SMat4 Rotate(const SMat4& matrix, const float& inFloat, const SVector3& rotationVector) { return glm::rotate(matrix, inFloat, rotationVector); }
     static SMat4 Inverse(const SMat4& matrix) { return glm::inverse(matrix); }
+    static float Radians(const float rotation) { return glm::radians(rotation); }
 }
 

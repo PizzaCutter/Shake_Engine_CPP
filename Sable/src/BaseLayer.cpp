@@ -29,10 +29,11 @@ void BaseLayer::OnDetach()
 auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
 {
     SE_PROFILE_FUNCTION()
-    
+
     {
         SE_PROFILE_SCOPE("Gameplay update");
         m_orthoCameraController.OnUpdate(timeStep);
+        m_rotation += 10.0f * timeStep.GetSeconds();
     }
 
     {
@@ -49,6 +50,8 @@ auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
         Shake::Renderer2D::DrawQuadTextured({-0.5f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_TestTexture);
         Shake::Renderer2D::DrawQuadTextured({0.0f, 0.5f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {1.0f, 1.0f, 1.0f, 1.0f},
                                             {10.0f, 10.0f});
+        Shake::Renderer2D::DrawRotatedQuad({0.5f, 0.5f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), {1.0f, 0.2f, 0.2f, 1.0f});
+        Shake::Renderer2D::DrawRotatedQuadTextured({0.5f, -0.5f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), m_TestTexture);
     }
 
     {
