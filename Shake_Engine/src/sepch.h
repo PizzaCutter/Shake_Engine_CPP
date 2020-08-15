@@ -13,6 +13,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Shake/Debug/Instrumentor.h"
+
 #ifdef SE_PLATFORM_WINDOWS
     #include <Windows.h>
 #endif

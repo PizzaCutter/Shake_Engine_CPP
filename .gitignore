@@ -41,3 +41,6 @@
 *.out
 *.app
 *.sln
+Sable/update-profile.json
+Sable/startup-profile.json
+Sable/shutdown-profile.json
