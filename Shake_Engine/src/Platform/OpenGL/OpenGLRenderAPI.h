@@ -11,6 +11,6 @@ namespace Shake
         void Clear() override;
         void Initialize() override;
         void WindowResize(int32_t width, int32_t height) override;
-        void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
+        void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) override;
     };
 }

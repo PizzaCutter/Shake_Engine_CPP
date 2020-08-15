@@ -15,6 +15,7 @@ namespace Shake
 
         void Bind() const override;
         void UnBind() const override;
+        
         void AddVertexBuffer(const Ref<VertexBuffer>& newVertexBuffer) override;
         void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) override;
 

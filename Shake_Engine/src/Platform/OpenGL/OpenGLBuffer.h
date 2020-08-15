@@ -6,8 +6,11 @@ namespace Shake
     class OpenGLVertexBuffer : public VertexBuffer
     {
     public:
+        OpenGLVertexBuffer(uint32_t size);
         OpenGLVertexBuffer(float* vertices, uint32_t size);
         virtual ~OpenGLVertexBuffer();
+        
+        void SetData(const void* data, uint32_t size) override;
         
         void Bind() override;
         void UnBind() override;
@@ -28,7 +31,7 @@ namespace Shake
             void Bind() override;
             void UnBind() override;
 
-            uint32_t GetCount() const { return m_count; }
+            uint32_t GetCount() const override { return m_count; }
         private:
             uint32_t m_rendererID;
             uint32_t m_count;

@@ -7,13 +7,31 @@ namespace Shake
     class Texture2D;
     class Shader;
     class VertexArray;
+    class VertexBuffer;
     class OrthographicCamera;
+
+    struct QuadVertex
+    {
+        SVector3 m_position;
+        SVector4 m_color;
+        SVector2 m_texCoord;
+    };
 
     struct Renderer2DStorage
     {
+        const uint32_t MaxQuads = 10000;
+        const uint32_t MaxVertices = MaxQuads * 4;
+        const uint32_t MaxIndices = MaxQuads * 6; 
+        
         Ref<VertexArray> m_vertexArray;
+        Ref<VertexBuffer> m_vertexBuffer;
+        
         Ref<Shader> m_textureShader;
         Ref<Texture2D> m_whiteTexture;
+
+        uint32_t m_quadIndexCount = 0;
+        QuadVertex* m_quadVertexBufferBase = nullptr;
+        QuadVertex* m_quadVertexBufferPtr = nullptr;
     };
 
     class Renderer2D
@@ -25,12 +43,14 @@ namespace Shake
         static void BeginScene(OrthographicCamera& camera);
         static void EndScene();
 
+        static void Flush();
+
         static void DrawQuad(const SVector3& position, const SVector2& size, const SVector4& color);
         static void DrawRotatedQuad(const SVector3& position, const SVector2& size, float rotation, const SVector4& color = SVector4(1.0f, 1.0f, 1.0f, 1.0f));
         
         static void DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture, const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const SVector2& tilingSize = {1.0f, 1.0f});
         static void DrawRotatedQuadTextured(const SVector3& position, const SVector2& size, float rotation, const Ref<Texture2D> texture, const SVector2& tilingSize = {1.0f, 1.0f} , const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f});
 
-       static Renderer2DStorage* m_rendererStorage; 
+        static Renderer2DStorage m_rendererStorage; 
     };
 }

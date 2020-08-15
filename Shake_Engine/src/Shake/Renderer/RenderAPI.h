@@ -24,7 +24,7 @@ namespace Shake
 
         virtual void WindowResize(int32_t width, int32_t height) = 0;
 
-        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
+        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) = 0;
 
         inline static API GetAPI() { return s_api; }
     private:
