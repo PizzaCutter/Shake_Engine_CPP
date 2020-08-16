@@ -16,6 +16,7 @@ namespace Shake
         SVector4 m_color;
         SVector2 m_texCoord;
         float m_textureSlot;
+        SVector2 m_tillingSize;
     };
 
     struct Renderer2DStorage

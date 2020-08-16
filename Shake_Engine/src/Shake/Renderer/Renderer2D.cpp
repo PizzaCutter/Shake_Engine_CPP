@@ -21,7 +21,8 @@ namespace Shake
             {"a_position", ShaderDataType::Float3},
             {"a_color", ShaderDataType::Float4},
             {"a_texcoord", ShaderDataType::Float2},
-            {"a_textureslot", ShaderDataType::Float}
+            {"a_textureslot", ShaderDataType::Float},
+            {"a_tillingSize", ShaderDataType::Float2}
         };
         m_rendererStorage.m_vertexBuffer->SetLayout(layout);
         m_rendererStorage.m_vertexArray->AddVertexBuffer(m_rendererStorage.m_vertexBuffer);
@@ -142,24 +143,28 @@ namespace Shake
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize;
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[1];
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize; 
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[2];
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 1.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize; 
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[3];
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 1.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize;
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadIndexCount += 6;
@@ -194,24 +199,28 @@ namespace Shake
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize; 
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[1];
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize; 
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[2];
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 1.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize; 
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[3];
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 1.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize; 
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadIndexCount += 6;
