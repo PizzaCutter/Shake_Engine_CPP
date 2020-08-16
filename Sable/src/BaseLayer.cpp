@@ -47,12 +47,9 @@ auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
     {
         SE_PROFILE_SCOPE("Rendering - Draw");
         Shake::Renderer2D::DrawQuad({0.5f,0.0f,0.0f}, {0.5f, 0.5f}, {1.0f, 0.2f, 0.2f, 1.0f});
-        //Shake::Rnederer2D::DrawQuad({})
         Shake::Renderer2D::DrawQuadTextured({-0.5f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {0.2f, 1.0f, 0.2f, 1.0f});
-        //Shake::Renderer2D::DrawQuadTextured({0.0f, 0.5f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {1.0f, 1.0f, 1.0f, 1.0f},
-        //                                   {10.0f, 10.0f});
-        //Shake::Renderer2D::DrawRotatedQuad({0.5f, 0.5f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), {1.0f, 0.2f, 0.2f, 1.0f});
-        //Shake::Renderer2D::DrawRotatedQuadTextured({0.5f, -0.5f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), m_TestTexture);
+        Shake::Renderer2D::DrawRotatedQuad({0.5f, 0.75f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), {0.2f, 0.2f, 1.0f, 1.0f});
+        Shake::Renderer2D::DrawRotatedQuadTextured({-0.5f, 0.75f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), m_TestTexture);
     }
 
     {

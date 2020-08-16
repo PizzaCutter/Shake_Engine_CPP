@@ -37,6 +37,8 @@ namespace Shake
 
         uint32_t m_textureSlotIndexCount = 1;
         std::array<Ref<Texture2D>, MaxTextureSlots> m_textures;
+
+        SVector4 m_vertices[4];
     };
 
     class Renderer2D

@@ -63,6 +63,11 @@ namespace Shake
             samplerSlots[i] = i; 
         }
         m_rendererStorage.m_textureShader->UploadUniformIntArray("u_sampler", samplerSlots, m_rendererStorage.MaxTextureSlots);
+        
+        m_rendererStorage.m_vertices[0] = {-0.5f, -0.5f, 0.0f, 1.0f};
+        m_rendererStorage.m_vertices[1] = {0.5f, -0.5f, 0.0f, 1.0f};
+        m_rendererStorage.m_vertices[2] = {0.5f, 0.5f, 0.0f, 1.0f};
+        m_rendererStorage.m_vertices[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
     }
 
     void Renderer2D::Shutdown()
@@ -107,6 +112,7 @@ namespace Shake
     void Renderer2D::DrawRotatedQuad(const SVector3& position, const SVector2& size, float rotation,
                                      const SVector4& color)
     {
+        DrawRotatedQuadTextured(position, size, rotation, m_rendererStorage.m_whiteTexture, {1.0f, 1.0f}, color);
     }
 
     void Renderer2D::DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture,
@@ -129,25 +135,28 @@ namespace Shake
             m_rendererStorage.m_textureSlotIndexCount++;
         }
 
-        m_rendererStorage.m_quadVertexBufferPtr->m_position = {position.x, position.y, position.z};
+        const SMat4 transform = SMath::Translate(SMat4(1.0f), position)
+        * SMath::Scale(SMat4(1.0f), {size.x, size.y, 1.0f});
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[0];
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
         m_rendererStorage.m_quadVertexBufferPtr++;
 
-        m_rendererStorage.m_quadVertexBufferPtr->m_position = {position.x + size.x, position.y, position.z};
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[1];
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
         m_rendererStorage.m_quadVertexBufferPtr++;
 
-        m_rendererStorage.m_quadVertexBufferPtr->m_position = {position.x + size.x, position.y + size.y, position.z};
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[2];
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 1.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
         m_rendererStorage.m_quadVertexBufferPtr++;
 
-        m_rendererStorage.m_quadVertexBufferPtr->m_position = {position.x, position.y + size.y, position.z};
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[3];
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 1.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
@@ -160,5 +169,51 @@ namespace Shake
                                              const Ref<Texture2D> texture, const SVector2& tilingSize,
                                              const SVector4& color)
     {
+        float textureSlot = -1.0f;
+        for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
+        {
+            if (*m_rendererStorage.m_textures[i].get() == *texture.get())
+            {
+                textureSlot = static_cast<float>(i);
+                break;
+            }
+        }
+
+        if (textureSlot < 0.0f)
+        {
+            m_rendererStorage.m_textures[m_rendererStorage.m_textureSlotIndexCount] = texture;
+            textureSlot = m_rendererStorage.m_textureSlotIndexCount;
+            m_rendererStorage.m_textureSlotIndexCount++;
+        }
+
+        const SMat4 transform = SMath::Translate(SMat4(1.0f), position)
+            * SMath::Rotate(SMat4(1.0f), rotation, SVector3(0.0f, 0.0f, 1.0f))
+            * SMath::Scale(SMat4(1.0f), {size.x, size.y, 1.0f});
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[0];
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[1];
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[2];
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 1.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[3];
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 1.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadIndexCount += 6;
     }
 }
