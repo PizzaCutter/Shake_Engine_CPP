@@ -17,6 +17,12 @@ namespace Shake
 
         void SetData(void* data, int32_t size) override;
         void Bind(int32_t slot = 0) override;
+
+        bool operator==(const Texture& other) override
+        {
+            // ReSharper disable once CppCStyleCast
+            return m_rendererId == ((OpenGLTexture&)other).GetRendererId();  
+        }
     private:
         std::string m_path = "";
         

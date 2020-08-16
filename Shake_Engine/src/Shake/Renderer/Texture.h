@@ -13,6 +13,8 @@ namespace Shake
 
         virtual void SetData(void* data, int32_t size) = 0;
         virtual void Bind(int32_t slot = 0) = 0;
+
+        virtual bool operator==(const Texture& other) = 0;
     };
 
     class Texture2D : public Texture

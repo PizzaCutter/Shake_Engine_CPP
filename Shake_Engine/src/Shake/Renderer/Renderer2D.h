@@ -15,13 +15,15 @@ namespace Shake
         SVector3 m_position;
         SVector4 m_color;
         SVector2 m_texCoord;
+        float m_textureSlot;
     };
 
     struct Renderer2DStorage
     {
         const uint32_t MaxQuads = 10000;
         const uint32_t MaxVertices = MaxQuads * 4;
-        const uint32_t MaxIndices = MaxQuads * 6; 
+        const uint32_t MaxIndices = MaxQuads * 6;
+        static const uint32_t MaxTextureSlots = 32;
         
         Ref<VertexArray> m_vertexArray;
         Ref<VertexBuffer> m_vertexBuffer;
@@ -32,6 +34,9 @@ namespace Shake
         uint32_t m_quadIndexCount = 0;
         QuadVertex* m_quadVertexBufferBase = nullptr;
         QuadVertex* m_quadVertexBufferPtr = nullptr;
+
+        uint32_t m_textureSlotIndexCount = 1;
+        std::array<Ref<Texture2D>, MaxTextureSlots> m_textures;
     };
 
     class Renderer2D

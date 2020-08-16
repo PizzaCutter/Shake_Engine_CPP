@@ -45,6 +45,12 @@ namespace Shake
          glUniform1i(uniformLocation, value);
     }
 
+    void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t size)
+    {
+        GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
+        glUniform1iv(uniformLocation, size, values);
+    }
+
     void OpenGLShader::UploadUniformMat3(const std::string& name, const SMat3& matrix)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());

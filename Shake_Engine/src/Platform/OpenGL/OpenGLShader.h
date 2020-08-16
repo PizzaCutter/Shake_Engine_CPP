@@ -16,8 +16,9 @@ namespace Shake
         void Bind() const override;
         void Unbind() const override;
         std::string GetName() const override { return m_name; } 
-        
+
         void UploadUniformInt(const std::string& name, int value) override;
+        void UploadUniformIntArray(const std::string& name, int* values, uint32_t size) override;
 
         void UploadUniformMat3(const std::string& name, const SMat3& matrix) override;
         void UploadUniformMat4(const std::string& name, const SMat4& matrix) override;

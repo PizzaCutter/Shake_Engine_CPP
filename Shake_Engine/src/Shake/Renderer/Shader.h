@@ -16,6 +16,7 @@ namespace Shake
         virtual std::string GetName() const = 0;
 
         virtual void UploadUniformInt(const std::string& name, int value) = 0;
+        virtual void UploadUniformIntArray(const std::string& name, int* values, uint32_t size) = 0;
 
         virtual void UploadUniformMat3(const std::string& name, const SMat3& matrix) = 0;
         virtual void UploadUniformMat4(const std::string& name, const SMat4& matrix) = 0;

@@ -20,14 +20,15 @@ namespace Shake
         const BufferLayout layout = {
             {"a_position", ShaderDataType::Float3},
             {"a_color", ShaderDataType::Float4},
-            {"a_texcoord", ShaderDataType::Float2}
+            {"a_texcoord", ShaderDataType::Float2},
+            {"a_textureslot", ShaderDataType::Float}
         };
         m_rendererStorage.m_vertexBuffer->SetLayout(layout);
         m_rendererStorage.m_vertexArray->AddVertexBuffer(m_rendererStorage.m_vertexBuffer);
 
         m_rendererStorage.m_quadVertexBufferBase = new QuadVertex[m_rendererStorage.MaxVertices];
 
-        // TODO[rsmekens]: change to heap allocation
+        // SETTING UP INDEX BUFFER
         uint32_t* indices = new uint32_t[m_rendererStorage.MaxIndices];
         uint32_t offset = 0;
         for (uint32_t i = 0; i < m_rendererStorage.MaxIndices; i += 6)
@@ -45,15 +46,23 @@ namespace Shake
 
         const Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(indices, m_rendererStorage.MaxIndices);
         m_rendererStorage.m_vertexArray->SetIndexBuffer(indexBuffer);
-
         delete[] indices;
-
-        m_rendererStorage.m_textureShader = Shader::Create("Content/Shaders/Texture.glsl");
 
         // Creating white texture for rendering just color quads
         m_rendererStorage.m_whiteTexture = Texture2D::Create(1, 1);
         uint32_t whiteTextureData = 0xffffffff;
         m_rendererStorage.m_whiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+        m_rendererStorage.m_textures[0] = m_rendererStorage.m_whiteTexture;
+
+        // SETTING UP DEFAULT TEXTURE SHADER
+        m_rendererStorage.m_textureShader = Shader::Create("Content/Shaders/Texture.glsl");
+        m_rendererStorage.m_textureShader->Bind();
+        int32_t samplerSlots[m_rendererStorage.MaxTextureSlots];
+        for (int i = 0; i < m_rendererStorage.MaxTextureSlots; ++i)
+        {
+            samplerSlots[i] = i; 
+        }
+        m_rendererStorage.m_textureShader->UploadUniformIntArray("u_sampler", samplerSlots, m_rendererStorage.MaxTextureSlots);
     }
 
     void Renderer2D::Shutdown()
@@ -67,12 +76,14 @@ namespace Shake
 
         m_rendererStorage.m_quadIndexCount = 0;
         m_rendererStorage.m_quadVertexBufferPtr = m_rendererStorage.m_quadVertexBufferBase;
+
+        m_rendererStorage.m_textureSlotIndexCount = 1;
     }
 
     void Renderer2D::EndScene()
     {
-        const uint32_t dataSize = reinterpret_cast<uint8_t*>(m_rendererStorage.m_quadVertexBufferPtr) - reinterpret_cast<
-            uint8_t*>(m_rendererStorage.m_quadVertexBufferBase);
+        const uint32_t dataSize = reinterpret_cast<uint8_t*>(m_rendererStorage.m_quadVertexBufferPtr) - reinterpret_cast
+        <uint8_t*>(m_rendererStorage.m_quadVertexBufferBase);
         m_rendererStorage.m_vertexBuffer->SetData(m_rendererStorage.m_quadVertexBufferBase, dataSize);
 
         Flush();
@@ -80,6 +91,11 @@ namespace Shake
 
     void Renderer2D::Flush()
     {
+        for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
+        {
+            m_rendererStorage.m_textures[i]->Bind(i);
+        }
+
         RenderCommand::DrawIndexed(m_rendererStorage.m_vertexArray, m_rendererStorage.m_quadIndexCount);
     }
 
@@ -96,24 +112,45 @@ namespace Shake
     void Renderer2D::DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture,
                                       const SVector4& color, const SVector2& tilingSize)
     {
+        float textureSlot = -1.0f;
+        for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
+        {
+            if (*m_rendererStorage.m_textures[i].get() == *texture.get())
+            {
+                textureSlot = static_cast<float>(i);
+                break;
+            }
+        }
+
+        if(textureSlot < 0.0f)
+        {
+            m_rendererStorage.m_textures[m_rendererStorage.m_textureSlotIndexCount] = texture;
+            textureSlot = m_rendererStorage.m_textureSlotIndexCount;
+            m_rendererStorage.m_textureSlotIndexCount++;
+        }
+
         m_rendererStorage.m_quadVertexBufferPtr->m_position = {position.x, position.y, position.z};
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadVertexBufferPtr->m_position = {position.x + size.x, position.y, position.z};
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadVertexBufferPtr->m_position = {position.x + size.x, position.y + size.y, position.z};
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 1.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadVertexBufferPtr->m_position = {position.x, position.y + size.y, position.z};
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 1.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadIndexCount += 6;
