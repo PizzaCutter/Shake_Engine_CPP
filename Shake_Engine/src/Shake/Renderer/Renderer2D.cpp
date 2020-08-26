@@ -91,24 +91,37 @@ namespace Shake
 
     void Renderer2D::EndScene()
     {
-        const uint32_t dataSize = reinterpret_cast<uint8_t*>(m_rendererStorage.m_quadVertexBufferPtr) - reinterpret_cast
-        <uint8_t*>(m_rendererStorage.m_quadVertexBufferBase);
-        m_rendererStorage.m_vertexBuffer->SetData(m_rendererStorage.m_quadVertexBufferBase, dataSize);
-
-        Flush();
+        FlushAndReset();
     }
 
     void Renderer2D::Flush()
     {
+        FlushAndReset(); 
+    }
+
+    void Renderer2D::FlushAndReset()
+    {
+        // UPLOADING VERTEX BUFFER DATA 
+        const uint32_t dataSize = reinterpret_cast<uint8_t*>(m_rendererStorage.m_quadVertexBufferPtr) - reinterpret_cast
+            <uint8_t*>(m_rendererStorage.m_quadVertexBufferBase);
+            m_rendererStorage.m_vertexBuffer->SetData(m_rendererStorage.m_quadVertexBufferBase, dataSize);
+        
+        // BINDING TEXTURES AND ACTUALLY RENDERING 
         for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
         {
             m_rendererStorage.m_textures[i]->Bind(i);
         }
-        
+
         RenderCommand::DrawIndexed(m_rendererStorage.m_vertexArray, m_rendererStorage.m_quadIndexCount);
-        
+
+        // UPDATE RENDER STAT DATA
         m_rendererStatistics.BatchCount++;
         m_rendererStatistics.TextureCount += m_rendererStorage.m_textureSlotIndexCount;
+
+        // RESET RENDERING DATA
+        m_rendererStorage.m_quadIndexCount = 0;
+        m_rendererStorage.m_quadVertexBufferPtr = m_rendererStorage.m_quadVertexBufferBase;
+        m_rendererStorage.m_textureSlotIndexCount = 1;
     }
 
     void Renderer2D::DrawQuad(const SVector3& position, const SVector2& size, const SVector4& color)
@@ -125,6 +138,11 @@ namespace Shake
     void Renderer2D::DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture,
                                       const SVector4& color, const SVector2& tilingSize)
     {
+        if(m_rendererStorage.m_quadIndexCount >= m_rendererStorage.MaxIndices)
+        {
+            FlushAndReset();
+        }
+        
         float textureSlot = -1.0f;
         for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
         {
@@ -182,6 +200,11 @@ namespace Shake
                                              const Ref<Texture2D> texture, const SVector2& tilingSize,
                                              const SVector4& color)
     {
+        if (m_rendererStorage.m_quadIndexCount >= m_rendererStorage.MaxIndices)
+        {
+            FlushAndReset();
+        }
+        
         float textureSlot = -1.0f;
         for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
         {

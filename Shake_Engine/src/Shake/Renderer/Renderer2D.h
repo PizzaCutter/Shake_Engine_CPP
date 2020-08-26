@@ -60,6 +60,8 @@ namespace Shake
         static void EndScene();
 
         static void Flush();
+        // When we have reached maximum quad count we render and then start a new batch
+        static void FlushAndReset();
 
         static void DrawQuad(const SVector3& position, const SVector2& size, const SVector4& color);
         static void DrawRotatedQuad(const SVector3& position, const SVector2& size, float rotation, const SVector4& color = SVector4(1.0f, 1.0f, 1.0f, 1.0f));

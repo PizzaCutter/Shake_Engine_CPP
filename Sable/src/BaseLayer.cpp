@@ -49,10 +49,10 @@ auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
         Shake::Renderer2D::DrawQuad({0.5f,0.0f,0.0f}, {0.2f, 0.2f}, {1.0f, 0.2f, 0.2f, 1.0f});
 
         Shake::Renderer2D::DrawQuad({-0.6f, 0.0f, -0.1f}, {0.6f, 0.6f}, {0.2f, 1.0f, 0.2f, 1.0f});
-        Shake::Renderer2D::DrawQuadTextured({-0.8f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {0.2f, 1.0f, 0.2f, 1.0f});
+        Shake::Renderer2D::DrawQuadTextured({-0.9f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {1.0f, 0.2f, 0.2f, 1.0f});
         
-        Shake::Renderer2D::DrawRotatedQuad({1.0f, 0.0f, 0.0f}, {0.2f, 0.2f}, SMath::Radians(0.0f), {0.2f, 0.2f, 1.0f, 1.0f});
-        Shake::Renderer2D::DrawRotatedQuadTextured({-0.5f, 0.75f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), m_TestTexture, {10.f, 10.0f});
+        Shake::Renderer2D::DrawRotatedQuad({1.0f, 0.0f, 0.0f}, {0.2f, 0.2f}, SMath::Radians(m_rotation), {0.2f, 0.2f, 1.0f, 1.0f});
+        Shake::Renderer2D::DrawRotatedQuadTextured({-0.5f, 0.7f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), m_TestTexture, {10.f, 10.0f});
 
         // for(float y = -5.0f; y < 5.0f; y += 0.5f)
         // {
