@@ -46,10 +46,22 @@ auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
 
     {
         SE_PROFILE_SCOPE("Rendering - Draw");
-        Shake::Renderer2D::DrawQuad({0.5f,0.0f,0.0f}, {0.5f, 0.5f}, {1.0f, 0.2f, 0.2f, 1.0f});
-        Shake::Renderer2D::DrawQuadTextured({-0.5f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {0.2f, 1.0f, 0.2f, 1.0f});
-        Shake::Renderer2D::DrawRotatedQuad({0.5f, 0.75f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), {0.2f, 0.2f, 1.0f, 1.0f});
+        Shake::Renderer2D::DrawQuad({0.5f,0.0f,0.0f}, {0.2f, 0.2f}, {1.0f, 0.2f, 0.2f, 1.0f});
+
+        Shake::Renderer2D::DrawQuad({-0.6f, 0.0f, -0.1f}, {0.6f, 0.6f}, {0.2f, 1.0f, 0.2f, 1.0f});
+        Shake::Renderer2D::DrawQuadTextured({-0.8f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {0.2f, 1.0f, 0.2f, 1.0f});
+        
+        Shake::Renderer2D::DrawRotatedQuad({1.0f, 0.0f, 0.0f}, {0.2f, 0.2f}, SMath::Radians(0.0f), {0.2f, 0.2f, 1.0f, 1.0f});
         Shake::Renderer2D::DrawRotatedQuadTextured({-0.5f, 0.75f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), m_TestTexture, {10.f, 10.0f});
+
+        // for(float y = -5.0f; y < 5.0f; y += 0.5f)
+        // {
+        //    for(float x = -5.0f; x < 5.0f; x += 0.5f)
+        //    {
+        //        glm::vec4 color = {(x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 1.0f};
+        //        Shake::Renderer2D::DrawQuad({x,y, -0.5f}, {0.45f, 0.45f}, color);
+        //    }
+        // }
     }
 
     {
@@ -63,6 +75,13 @@ void BaseLayer::OnImGuiRender()
     ImGui::Begin("Settings");
 
     ImGui::ColorEdit4("Square Color", glm::value_ptr(m_editableColor));
+    
+    const Shake::RenderStatistics& renderStats = Shake::Renderer2D::GetRenderStats();
+    ImGui::Text("Renderer2D Stats:");
+    ImGui::Text("Draw Calls: %d", renderStats.BatchCount);
+    ImGui::Text("Quad Count: %d", renderStats.QuadCount);
+    ImGui::Text("Index Count: %d", renderStats.IndexCount);
+    ImGui::Text("Texture Count: %d", renderStats.TextureCount);
 
     ImGui::End();
 }

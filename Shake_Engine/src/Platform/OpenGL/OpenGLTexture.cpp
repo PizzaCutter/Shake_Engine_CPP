@@ -19,7 +19,7 @@ namespace Shake
         // glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         // glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
     }
 
@@ -36,7 +36,7 @@ namespace Shake
         SE_CORE_ASSERT(data, "COULD NOT LOAD TEXTURE");
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_rendererId);
-        glTextureStorage2D(m_rendererId, 1, channels == 4? GL_RGBA8 : GL_RGB8, m_width, m_height);
+        glTextureStorage2D(m_rendererId, 1, channels == 4 ? GL_RGBA8 : GL_RGB8, m_width, m_height);
 
         glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -44,7 +44,7 @@ namespace Shake
         // glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         // glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTextureSubImage2D(m_rendererId, 0, 0, 0, m_width, m_height, channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);

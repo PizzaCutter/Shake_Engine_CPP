@@ -11,6 +11,7 @@
 namespace Shake
 {
     Renderer2DStorage Renderer2D::m_rendererStorage = Renderer2DStorage();
+    RenderStatistics Renderer2D::m_rendererStatistics = RenderStatistics();
 
     void Renderer2D::Initialize()
     {
@@ -77,6 +78,8 @@ namespace Shake
 
     void Renderer2D::BeginScene(OrthographicCamera& camera)
     {
+        m_rendererStatistics = RenderStatistics();
+        
         m_rendererStorage.m_textureShader->Bind();
         m_rendererStorage.m_textureShader->UploadUniformMat4("u_viewProjection", camera.GetViewProjectionMatrix());
 
@@ -101,8 +104,11 @@ namespace Shake
         {
             m_rendererStorage.m_textures[i]->Bind(i);
         }
-
+        
         RenderCommand::DrawIndexed(m_rendererStorage.m_vertexArray, m_rendererStorage.m_quadIndexCount);
+        
+        m_rendererStatistics.BatchCount++;
+        m_rendererStatistics.TextureCount += m_rendererStorage.m_textureSlotIndexCount;
     }
 
     void Renderer2D::DrawQuad(const SVector3& position, const SVector2& size, const SVector4& color)
@@ -136,31 +142,30 @@ namespace Shake
             m_rendererStorage.m_textureSlotIndexCount++;
         }
 
-        const SMat4 transform = SMath::Translate(SMat4(1.0f), position)
-        * SMath::Scale(SMat4(1.0f), {size.x, size.y, 1.0f});
+        const SVector2 halfSize = size * 0.5f;
 
-        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[0];
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = position + SVector3(-halfSize.x, -halfSize.y, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
         m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize;
         m_rendererStorage.m_quadVertexBufferPtr++;
 
-        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[1];
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = position + SVector3(halfSize.x, -halfSize.y, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
         m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize; 
         m_rendererStorage.m_quadVertexBufferPtr++;
 
-        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[2];
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = position + SVector3(halfSize.x, halfSize.y, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 1.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
         m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize; 
         m_rendererStorage.m_quadVertexBufferPtr++;
 
-        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[3];
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = position + SVector3(-halfSize.x, halfSize.y, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
         m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 1.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
@@ -168,6 +173,9 @@ namespace Shake
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadIndexCount += 6;
+
+        m_rendererStatistics.QuadCount++;
+        m_rendererStatistics.IndexCount += 6;
     }
 
     void Renderer2D::DrawRotatedQuadTextured(const SVector3& position, const SVector2& size, float rotation,
@@ -224,5 +232,13 @@ namespace Shake
         m_rendererStorage.m_quadVertexBufferPtr++;
 
         m_rendererStorage.m_quadIndexCount += 6;
+        
+        m_rendererStatistics.QuadCount++;
+        m_rendererStatistics.IndexCount += 6;
+    }
+
+    RenderStatistics Renderer2D::GetRenderStats()
+    {
+       return m_rendererStatistics; 
     }
 }

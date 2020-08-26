@@ -42,6 +42,14 @@ namespace Shake
         SVector4 m_vertices[4];
     };
 
+    struct RenderStatistics
+    {
+        uint32_t BatchCount = 0;
+        uint32_t QuadCount = 0;
+        uint32_t IndexCount = 0;
+        uint32_t TextureCount = 0;
+    };
+
     class Renderer2D
     {
     public:
@@ -59,6 +67,9 @@ namespace Shake
         static void DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture, const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const SVector2& tilingSize = {1.0f, 1.0f});
         static void DrawRotatedQuadTextured(const SVector3& position, const SVector2& size, float rotation, const Ref<Texture2D> texture, const SVector2& tilingSize = {1.0f, 1.0f} , const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f});
 
-        static Renderer2DStorage m_rendererStorage; 
+        static RenderStatistics GetRenderStats();
+
+        static Renderer2DStorage m_rendererStorage;
+        static RenderStatistics m_rendererStatistics;
     };
 }
