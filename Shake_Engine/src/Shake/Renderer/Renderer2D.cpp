@@ -1,9 +1,9 @@
 ﻿#include "sepch.h"
 #include "Renderer2D.h"
 
-
 #include "RenderCommand.h"
 #include "Shader.h"
+#include "SubTexture2D.h"
 #include "Texture.h"
 #include "VertexArray.h"
 #include "Camera/OrthographicCamera.h"
@@ -195,6 +195,71 @@ namespace Shake
         m_rendererStatistics.QuadCount++;
         m_rendererStatistics.IndexCount += 6;
     }
+    
+   void Renderer2D::DrawQuadSubTexture(const SVector3& position, const SVector2& size, const Ref<SubTexture2D> subTexture2D,
+                                      const SVector4& color, const SVector2& tilingSize)
+    {
+        if(m_rendererStorage.m_quadIndexCount >= m_rendererStorage.MaxIndices)
+        {
+            FlushAndReset();
+        }
+        
+        float textureSlot = -1.0f;
+        for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
+        {
+            if (*m_rendererStorage.m_textures[i].get() == *subTexture2D->GetTexture().get())
+            {
+                textureSlot = static_cast<float>(i);
+                break;
+            }
+        }
+
+        if(textureSlot < 0.0f)
+        {
+            m_rendererStorage.m_textures[m_rendererStorage.m_textureSlotIndexCount] = subTexture2D->GetTexture();
+            textureSlot = m_rendererStorage.m_textureSlotIndexCount;
+            m_rendererStorage.m_textureSlotIndexCount++;
+        }
+
+        const SVector2 halfSize = size * 0.5f;
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = position + SVector3(-halfSize.x, -halfSize.y, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(subTexture2D->GetNormalizedXCoord(), subTexture2D->GetNormalizedYCoord());
+        //m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize;
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = position + SVector3(halfSize.x, -halfSize.y, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(subTexture2D->GetNormalizedXCoord() + subTexture2D->GetNormalizedCellWidth(), subTexture2D->GetNormalizedYCoord());
+        //m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize; 
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = position + SVector3(halfSize.x, halfSize.y, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(subTexture2D->GetNormalizedXCoord() + subTexture2D->GetNormalizedCellWidth(), subTexture2D->GetNormalizedYCoord() + subTexture2D->GetNormalizedCellHeight());
+        //m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 1.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize; 
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = position + SVector3(-halfSize.x, halfSize.y, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(subTexture2D->GetNormalizedXCoord(),subTexture2D->GetNormalizedYCoord() + subTexture2D->GetNormalizedCellHeight());
+        //m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 1.0f); 
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = tilingSize;
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadIndexCount += 6;
+
+        m_rendererStatistics.QuadCount++;
+        m_rendererStatistics.IndexCount += 6;
+    } 
 
     void Renderer2D::DrawRotatedQuadTextured(const SVector3& position, const SVector2& size, float rotation,
                                              const Ref<Texture2D> texture, const SVector2& tilingSize,

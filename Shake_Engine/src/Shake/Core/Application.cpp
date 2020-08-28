@@ -70,7 +70,7 @@ namespace Shake
             }
 
             m_imGuiLayer->Begin();
-            for(Layer* layer : m_LayerStack)
+            for (Layer* layer : m_LayerStack)
             {
                 layer->OnImGuiRender();
             }

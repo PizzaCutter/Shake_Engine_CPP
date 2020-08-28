@@ -1,5 +1,6 @@
 #pragma once
 #include "Shake.h"
+#include "Shake/Renderer/SubTexture2D.h"
 #include "Shake/Renderer/Camera/OrthographicCameraController.h"
 
 namespace Shake {
@@ -23,6 +24,8 @@ private:
 
     Shake::ShaderLibrary m_shaderLibrary;
     Shake::Ref<Shake::Texture2D> m_TestTexture;
+    Shake::Ref<Shake::Texture2D> m_SpriteSheet;
+    Shake::Ref<Shake::SubTexture2D> m_SubTextureTest;
 
     SVector4 m_editableColor;
 

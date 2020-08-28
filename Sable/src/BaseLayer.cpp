@@ -12,6 +12,8 @@ BaseLayer::BaseLayer() : Layer("Base"),
                          m_editableColor(SVector4(1.0f))
 {
     m_TestTexture = Shake::Texture2D::Create("Content/Textures/Test.png");
+    m_SpriteSheet = Shake::Texture2D::Create("Content/Game/Textures/industrial.v2.png");
+    m_SubTextureTest = Shake::SubTexture2D::CreateSubTexture(m_SpriteSheet, Shake::SubTextureData(2, 13, 16, 16));
 }
 
 BaseLayer::~BaseLayer()
@@ -48,11 +50,13 @@ auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
         SE_PROFILE_SCOPE("Rendering - Draw");
         Shake::Renderer2D::DrawQuad({0.5f,0.0f,0.0f}, {0.2f, 0.2f}, {1.0f, 0.2f, 0.2f, 1.0f});
 
-        Shake::Renderer2D::DrawQuad({-0.6f, 0.0f, -0.1f}, {0.6f, 0.6f}, {0.2f, 1.0f, 0.2f, 1.0f});
-        Shake::Renderer2D::DrawQuadTextured({-0.9f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {1.0f, 0.2f, 0.2f, 1.0f});
+        //Shake::Renderer2D::DrawQuadTextured({-0.9f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {1.0f, 0.2f, 0.2f, 1.0f});
         
         Shake::Renderer2D::DrawRotatedQuad({1.0f, 0.0f, 0.0f}, {0.2f, 0.2f}, SMath::Radians(m_rotation), {0.2f, 0.2f, 1.0f, 1.0f});
-        Shake::Renderer2D::DrawRotatedQuadTextured({-0.5f, 0.7f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), m_TestTexture, {10.f, 10.0f});
+        Shake::Renderer2D::DrawRotatedQuadTextured({0.5f, 0.7f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation), m_TestTexture, {10.f, 10.0f});
+        
+        Shake::Renderer2D::DrawQuad({-0.9f, 0.0f, -0.1f}, {0.5f, 0.5f}, {0.2f, 1.0f, 0.2f, 1.0f});
+        Shake::Renderer2D::DrawQuadSubTexture({-0.9f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_SubTextureTest, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f});
 
         // for(float y = -5.0f; y < 5.0f; y += 0.5f)
         // {
@@ -62,6 +66,8 @@ auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
         //        Shake::Renderer2D::DrawQuad({x,y, -0.5f}, {0.45f, 0.45f}, color);
         //    }
         // }
+        
+        //Shake::Renderer2D::DrawQuadTextured({0.9f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_SpriteSheet, {1.0f, 1.0f, 1.0f, 1.0f});
     }
 
     {

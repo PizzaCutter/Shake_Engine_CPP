@@ -4,6 +4,7 @@
 
 namespace Shake
 {
+    class SubTexture2D;
     class Texture2D;
     class Shader;
     class VertexArray;
@@ -67,6 +68,7 @@ namespace Shake
         static void DrawRotatedQuad(const SVector3& position, const SVector2& size, float rotation, const SVector4& color = SVector4(1.0f, 1.0f, 1.0f, 1.0f));
         
         static void DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture, const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const SVector2& tilingSize = {1.0f, 1.0f});
+        static void DrawQuadSubTexture(const SVector3& position, const SVector2& size, const Ref<SubTexture2D> subTexture2D, const SVector4& color, const SVector2& tilingSize = {1.0f, 1.0f});        
         static void DrawRotatedQuadTextured(const SVector3& position, const SVector2& size, float rotation, const Ref<Texture2D> texture, const SVector2& tilingSize = {1.0f, 1.0f} , const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f});
 
         static RenderStatistics GetRenderStats();
