@@ -1,5 +1,5 @@
 #include "sepch.h"
-#include "BaseLayer.h"
+#include "EditorLayer.h"
 
 #include "Shake/Core/Timestep.h"
 
@@ -8,7 +8,7 @@
 #include "Shake/Renderer/FrameBuffer.h"
 #include "Shake/Renderer/Renderer2D.h"
 
-BaseLayer::BaseLayer() : Layer("Base"),
+EditorLayer::EditorLayer() : Layer("EditorLayer"),
                          m_orthoCameraController(1280.0f / 720.0f),
                          m_editableColor(SVector4(1.0f))
 {
@@ -17,11 +17,11 @@ BaseLayer::BaseLayer() : Layer("Base"),
     m_SubTextureTest = Shake::SubTexture2D::CreateSubTexture(m_SpriteSheet, Shake::SubTextureData(2, 14, 16, 16));
 }
 
-BaseLayer::~BaseLayer()
+EditorLayer::~EditorLayer()
 {
 }
 
-void BaseLayer::OnAttach()
+void EditorLayer::OnAttach()
 {
    Shake::FramebufferSpecifications spec;
     spec.width = 1280;
@@ -29,11 +29,11 @@ void BaseLayer::OnAttach()
     m_frameBuffer = Shake::FrameBuffer::Create(spec);
 }
 
-void BaseLayer::OnDetach()
+void EditorLayer::OnDetach()
 {
 }
 
-auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
+auto EditorLayer::OnUpdate(Shake::Timestep timeStep) -> void
 {
     SE_PROFILE_FUNCTION()
 
@@ -87,7 +87,7 @@ auto BaseLayer::OnUpdate(Shake::Timestep timeStep) -> void
     }
 }
 
-void BaseLayer::OnImGuiRender()
+void EditorLayer::OnImGuiRender()
 {
      bool p_open = true;
      static bool opt_fullscreen_persistant = true;
@@ -166,18 +166,29 @@ void BaseLayer::OnImGuiRender()
          ImGui::Text("Quad Count: %d", renderStats.QuadCount);
          ImGui::Text("Index Count: %d", renderStats.IndexCount);
          ImGui::Text("Texture Count: %d", renderStats.TextureCount);
-    
-         uint32_t textureID = m_frameBuffer->GetColorAttachmentRendererID();
-         // textureID = m_TestTexture->GetRendererID();
-         // ImGui::Image((void*)textureID, ImVec2(64.f, 64.f), ImVec2(0, 1), ImVec2(1, 0));
-         ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2(1280.f, 720.0f), ImVec2(0, 1), ImVec2(1, 0));
+         ImGui::End();
+
+         ImGui::Begin("Viewport");
+         ImVec2 viewportSize = ImGui::GetContentRegionAvail();
+         
+         m_viewportSize.x = viewportSize.x;
+         m_viewportSize.y = viewportSize.y;
+         if(viewportSize.x != m_viewportSize.x || viewportSize.y != m_viewportSize.y)
+         {
+             
+         }
+         
+         //SE_WARN("Viewport Size: {0}, {1}", viewportSize.x, viewportSize.y);
+         
+         uint32_t rendererID = m_frameBuffer->GetColorAttachmentRendererID();
+         ImGui::Image((void*)rendererID, ImVec2(1280.f, 720.f), ImVec2(0,1), ImVec2(1, 0));
          ImGui::End();
      }
 
     ImGui::End();
 }
 
-void BaseLayer::OnEvent(Shake::Event& event)
+void EditorLayer::OnEvent(Shake::Event& event)
 {
     m_orthoCameraController.OnEvent(event);
 }

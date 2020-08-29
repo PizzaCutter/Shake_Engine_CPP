@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW", "Shake_Engine\vendor
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "Shake_Engine\vendor\imgui\ImGui.vcxproj", "{C0FF640D-2C14-8DBE-F595-301E616989EF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shake-Editor", "Shake-Editor\Shake-Editor.vcxproj", "{C5A66E03-B109-FEA7-5A8F-365E46D1C92A}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shake_Engine", "Shake_Engine\Shake_Engine.vcxproj", "{C631020D-B294-91B1-5B1A-CA67475C5D34}"
 EndProject
 Global
@@ -44,6 +46,12 @@ Global
 		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.Build.0 = Release|x64
 		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Shipping|x64.ActiveCfg = Shipping|x64
 		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Shipping|x64.Build.0 = Shipping|x64
+		{C5A66E03-B109-FEA7-5A8F-365E46D1C92A}.Debug|x64.ActiveCfg = Debug|x64
+		{C5A66E03-B109-FEA7-5A8F-365E46D1C92A}.Debug|x64.Build.0 = Debug|x64
+		{C5A66E03-B109-FEA7-5A8F-365E46D1C92A}.Release|x64.ActiveCfg = Release|x64
+		{C5A66E03-B109-FEA7-5A8F-365E46D1C92A}.Release|x64.Build.0 = Release|x64
+		{C5A66E03-B109-FEA7-5A8F-365E46D1C92A}.Shipping|x64.ActiveCfg = Shipping|x64
+		{C5A66E03-B109-FEA7-5A8F-365E46D1C92A}.Shipping|x64.Build.0 = Shipping|x64
 		{C631020D-B294-91B1-5B1A-CA67475C5D34}.Debug|x64.ActiveCfg = Debug|x64
 		{C631020D-B294-91B1-5B1A-CA67475C5D34}.Debug|x64.Build.0 = Debug|x64
 		{C631020D-B294-91B1-5B1A-CA67475C5D34}.Release|x64.ActiveCfg = Release|x64

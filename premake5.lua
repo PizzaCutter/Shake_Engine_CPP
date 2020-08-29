@@ -149,4 +149,50 @@ project "Sable"
 		defines "SE_SHIPPING"
 		optimize "On"
 		
+project "Shake-Editor"
+	location "Shake-Editor"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"Shake_Engine/vendor/spdlog/include",
+		"Shake_Engine/src",
+		"Shake_Engine/vendor",
+		"%{IncludeDir.GLM}"
+	}
+
+	links
+	{
+		"Shake_Engine"
+	}
+
+	filter "system:windows"
+		systemversion "10.0.18362.0"
+
+		defines
+		{
+			"SE_PLATFORM_WINDOWS",
+		}
+	
+	filter "configurations:Debug"
+		defines "SE_DEBUG"
+		symbols "On"
+	filter "configurations:Release"
+		defines "SE_RELEASE"
+		optimize "On"
+	filter "configurations:Shipping"
+		defines "SE_SHIPPING"
+		optimize "On"
+		

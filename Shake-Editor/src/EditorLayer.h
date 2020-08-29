@@ -9,11 +9,11 @@ namespace Shake {
     class Texture2D;
 }
 
-class BaseLayer : public Shake::Layer
+class EditorLayer : public Shake::Layer
 {
 public:
-    BaseLayer();
-    ~BaseLayer() override;
+    EditorLayer();
+    ~EditorLayer() override;
     void OnAttach() override;
     void OnDetach() override;
     void OnUpdate(Shake::Timestep timeStep) override;
@@ -28,6 +28,8 @@ private:
     Shake::Ref<Shake::Texture2D> m_SpriteSheet;
     Shake::Ref<Shake::SubTexture2D> m_SubTextureTest;
     Shake::Ref<Shake::FrameBuffer> m_frameBuffer;
+
+    SVector2 m_viewportSize;
 
     SVector4 m_editableColor;
 

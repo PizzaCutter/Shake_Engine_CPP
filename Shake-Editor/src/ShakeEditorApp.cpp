@@ -5,20 +5,20 @@
 #include "EditorLayer.h"
 
 
-class Sable : public Shake::Application
+class ShakeEditor : public Shake::Application
 {
 public:
-    Sable(const std::string& applicationName) : Application(applicationName)
+    ShakeEditor(const std::string& applicationName) : Application(applicationName)
     {
         PushLayer(new EditorLayer());
     }
 
-    ~Sable()
+    ~ShakeEditor()
     {
     }
 };
 
 Shake::Application* Shake::CreateApplication()
 {
-    return new Sable("Sable");
+    return new ShakeEditor("Sable");
 }
