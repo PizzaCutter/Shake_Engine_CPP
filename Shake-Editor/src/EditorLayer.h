@@ -29,7 +29,7 @@ private:
     Shake::Ref<Shake::SubTexture2D> m_SubTextureTest;
     Shake::Ref<Shake::FrameBuffer> m_frameBuffer;
 
-    SVector2 m_viewportSize;
+    SVector2 m_viewportSize = SVector2(0.0f, 0.0f);
 
     SVector4 m_editableColor;
 

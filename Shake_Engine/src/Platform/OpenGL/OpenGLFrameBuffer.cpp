@@ -15,10 +15,19 @@ namespace Shake
     OpenGLFrameBuffer::~OpenGLFrameBuffer()
     {
         glDeleteFramebuffers(1, &m_rendererID);
+        glDeleteTextures(1, &m_colorAttachment);
+        glDeleteTextures(1, &m_depthAttachment);
     }
 
     void OpenGLFrameBuffer::Invalidate()
     {
+       if(m_rendererID)
+       {
+          glDeleteFramebuffers(1, &m_rendererID);
+          glDeleteTextures(1, &m_colorAttachment);
+          glDeleteTextures(1, &m_depthAttachment); 
+       } 
+          
        glCreateFramebuffers(1, &m_rendererID); 
        glBindFramebuffer(GL_FRAMEBUFFER, m_rendererID);
        
@@ -44,12 +53,21 @@ namespace Shake
     void OpenGLFrameBuffer::Bind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, m_rendererID); 
+        glViewport(0, 0, m_frameBufferSpecification.width, m_frameBufferSpecification.height);
     }
 
     void OpenGLFrameBuffer::Unbind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
+    
+    void OpenGLFrameBuffer::Resize(int32_t width, int32_t height)
+    {
+        m_frameBufferSpecification.width = width;
+        m_frameBufferSpecification.height = height;
+        
+        Invalidate();  
+    } 
 
     uint32_t OpenGLFrameBuffer::GetColorAttachmentRendererID() const
     {

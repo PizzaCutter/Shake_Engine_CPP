@@ -14,7 +14,8 @@ namespace Shake
 
         void OnUpdate(Timestep timeStep);
         void OnEvent(Event& e);
-        
+
+        void OnResize(float width, float height);
 
         OrthographicCamera& GetCamera() { return m_orthoCamera; }
 

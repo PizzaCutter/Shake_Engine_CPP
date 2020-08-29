@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Shake/Core/Core.h"
+#include "Shake/Math/SMath.h"
 
 namespace Shake
 {
@@ -18,6 +19,8 @@ namespace Shake
 
         virtual void Bind() = 0;
         virtual void Unbind() = 0;
+
+        virtual void Resize(int32_t width, int32_t height) = 0;
 
         virtual uint32_t GetColorAttachmentRendererID() const = 0;
 

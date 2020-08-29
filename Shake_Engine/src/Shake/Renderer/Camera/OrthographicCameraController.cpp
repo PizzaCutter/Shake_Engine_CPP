@@ -70,6 +70,12 @@ namespace Shake
         dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OrthographicCameraController::OnMouseMovedCallback));
     }
 
+    void OrthographicCameraController::OnResize(float width, float height)
+    {
+        m_aspectRatio = width / height;
+        m_orthoCamera.SetProjection(-m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel, -m_zoomLevel, m_zoomLevel); 
+    }
+
     bool OrthographicCameraController::OnMouseScrolledCallback(const MouseScrolledEvent& event)
     {
         m_zoomLevel -= event.GetYOffset() * m_zoomInSpeed;
@@ -80,8 +86,7 @@ namespace Shake
     
     bool OrthographicCameraController::OnWindowResizedCallback(const WindowResizeEvent& event)
     {
-        m_aspectRatio = static_cast<float>(event.GetWidth()) / static_cast<float>(event.GetHeight());
-        m_orthoCamera.SetProjection(-m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel, -m_zoomLevel, m_zoomLevel);
+        OnResize(static_cast<float>(event.GetWidth()), static_cast<float>(event.GetHeight()));
         return true; 
     }
 

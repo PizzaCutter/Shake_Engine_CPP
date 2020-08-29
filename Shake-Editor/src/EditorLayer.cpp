@@ -168,21 +168,25 @@ void EditorLayer::OnImGuiRender()
          ImGui::Text("Texture Count: %d", renderStats.TextureCount);
          ImGui::End();
 
+         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0,0)); // Removes padding around the window
          ImGui::Begin("Viewport");
+         
          ImVec2 viewportSize = ImGui::GetContentRegionAvail();
          
-         m_viewportSize.x = viewportSize.x;
-         m_viewportSize.y = viewportSize.y;
          if(viewportSize.x != m_viewportSize.x || viewportSize.y != m_viewportSize.y)
          {
-             
+             m_viewportSize.x = viewportSize.x;
+             m_viewportSize.y = viewportSize.y;
+             m_frameBuffer->Resize(static_cast<uint32_t>(m_viewportSize.x), static_cast<uint32_t>(m_viewportSize.y));
+
+             m_orthoCameraController.OnResize(m_viewportSize.x, m_viewportSize.y);
          }
-         
-         //SE_WARN("Viewport Size: {0}, {1}", viewportSize.x, viewportSize.y);
-         
+
          uint32_t rendererID = m_frameBuffer->GetColorAttachmentRendererID();
-         ImGui::Image((void*)rendererID, ImVec2(1280.f, 720.f), ImVec2(0,1), ImVec2(1, 0));
+         ImGui::Image((void*)rendererID, ImVec2(viewportSize.x, viewportSize.y), ImVec2(0,1), ImVec2(1, 0));
+      
          ImGui::End();
+         ImGui::PopStyleVar();
      }
 
     ImGui::End();
