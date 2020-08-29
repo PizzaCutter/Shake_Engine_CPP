@@ -20,7 +20,9 @@ namespace Shake
     class Texture2D : public Texture
     {
     public:
-        ~Texture2D() = default; 
+        ~Texture2D() = default;
+
+        virtual uint32_t GetRendererID() const = 0;
 
         static Ref<Texture2D> Create(uint32_t width, uint32_t height);
         static Ref<Texture2D> Create(const std::string& path);

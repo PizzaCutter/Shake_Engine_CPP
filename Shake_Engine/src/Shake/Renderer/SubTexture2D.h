@@ -24,8 +24,6 @@ namespace Shake
    public:
       SubTexture2D(Ref<Texture2D> inTexture, float xCoord, float yCoord, float width, float height);
 
-      void IncrementCellIndex(int xIncrement, int yIncrement);
-
       Ref<Texture2D> GetTexture() const { return m_texture; }
 
       float GetNormalizedXCoord() const { return m_normalizedXCoord; }
@@ -36,6 +34,7 @@ namespace Shake
       static Ref<SubTexture2D> CreateSubTexture(Ref<Texture2D> inTexture, const SubTextureData& subTextureData);
 
    private:
+      // TODO[rsmekens]: move to vector2 instead of individual floats 
       float m_normalizedXCoord = 0.0f;
       float m_normalizedYCoord = 0.0f;
       float m_normalizedCellWidth = 0.0f;

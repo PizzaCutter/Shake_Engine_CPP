@@ -4,6 +4,7 @@
 #include "Shake/Renderer/Camera/OrthographicCameraController.h"
 
 namespace Shake {
+    class FrameBuffer;
     class VertexArray;
     class Texture2D;
 }
@@ -26,6 +27,7 @@ private:
     Shake::Ref<Shake::Texture2D> m_TestTexture;
     Shake::Ref<Shake::Texture2D> m_SpriteSheet;
     Shake::Ref<Shake::SubTexture2D> m_SubTextureTest;
+    Shake::Ref<Shake::FrameBuffer> m_frameBuffer;
 
     SVector4 m_editableColor;
 

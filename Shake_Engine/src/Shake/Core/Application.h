@@ -27,6 +27,8 @@ namespace Shake
         static Application& Get() { return *s_Instance; } 
         inline Window& GetWindow() { return *m_Window; }
 
+        void Close();
+
     private:
         bool OnWindowClosed(WindowCloseEvent& event);
         bool OnWindowResizeCallback(WindowResizeEvent& event);

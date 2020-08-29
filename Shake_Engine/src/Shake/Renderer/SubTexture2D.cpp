@@ -25,10 +25,4 @@ namespace Shake
         m_normalizedCellWidth = width;
         m_normalizedCellHeight = height;
     }
-
-    void SubTexture2D::IncrementCellIndex(int xIncrement, int yIncrement)
-    {
-        m_normalizedXCoord += xIncrement * m_normalizedCellWidth;
-        m_normalizedYCoord += yIncrement * m_normalizedCellHeight;
-    }
 }

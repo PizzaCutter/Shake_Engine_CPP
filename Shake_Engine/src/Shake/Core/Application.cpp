@@ -85,6 +85,11 @@ namespace Shake
     {
     }
 
+    void Application::Close()
+    {
+        m_running = false;
+    }
+
     bool Application::OnWindowClosed(WindowCloseEvent& event)
     {
         m_running = false;

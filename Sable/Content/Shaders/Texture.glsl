@@ -42,6 +42,7 @@ uniform sampler2D[32] u_sampler;
 
 void main()
 {
+    // TODO[rsmekens]: we might need to use a switch statement since this could be broken for other GPU's
 	color = texture(u_sampler[int(out_textureslot)], out_texcoord * out_tillingSize); 
 	color *= out_color;
 } 
