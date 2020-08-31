@@ -73,7 +73,6 @@ namespace Shake
             return GetCategoryFlags() & category;
         }
 
-    protected:
         bool Handled = false;
     };
 

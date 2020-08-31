@@ -30,6 +30,8 @@ private:
     Shake::Ref<Shake::FrameBuffer> m_frameBuffer;
 
     SVector2 m_viewportSize = SVector2(0.0f, 0.0f);
+    bool m_viewportFocused = false;
+    bool m_viewportHovered = false;
 
     SVector4 m_editableColor;
 

@@ -38,10 +38,14 @@ namespace Shake
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClosed));
         dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResizeCallback));
 
-        for(Layer* layer : m_LayerStack)
+        for(auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
         {
-            layer->OnEvent(event);
-        }
+           if(event.Handled)
+           {
+               break;
+           }
+            (*it)->OnEvent(event);
+        } 
     }
 
     void Application::PushLayer(Layer* layer)

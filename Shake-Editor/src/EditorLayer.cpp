@@ -39,7 +39,12 @@ auto EditorLayer::OnUpdate(Shake::Timestep timeStep) -> void
 
     {
         SE_PROFILE_SCOPE("Gameplay update");
-        m_orthoCameraController.OnUpdate(timeStep);
+        
+        if(m_viewportFocused)
+        {
+            m_orthoCameraController.OnUpdate(timeStep);
+        }
+        
         m_rotation += 10.0f * timeStep.GetSeconds();
     }
 
@@ -170,9 +175,12 @@ void EditorLayer::OnImGuiRender()
 
          ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0,0)); // Removes padding around the window
          ImGui::Begin("Viewport");
+
+         m_viewportFocused = ImGui::IsWindowFocused();
+         m_viewportHovered = ImGui::IsWindowHovered();
+         Shake::Application::Get().GetImGuiLayer()->BlockEvents(!m_viewportFocused || !m_viewportHovered);
          
          ImVec2 viewportSize = ImGui::GetContentRegionAvail();
-         
          if(viewportSize.x != m_viewportSize.x || viewportSize.y != m_viewportSize.y)
          {
              m_viewportSize.x = viewportSize.x;
