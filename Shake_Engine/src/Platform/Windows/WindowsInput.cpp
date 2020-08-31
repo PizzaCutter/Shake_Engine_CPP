@@ -1,28 +1,28 @@
 ﻿#include "sepch.h"
-#include "WindowsInput.h"
 
+#include "Shake/Core/Input.h"
+
+#include "GLFW/glfw3.h"
 #include "Shake/Window.h"
 #include "Shake/Core/Application.h"
 
 namespace Shake
 {
-    Input* Input::s_Instance = new WindowsInput();
-    
-    bool WindowsInput::IsKeyPressedImpl(KeyCode keycode)
+    bool Input::IsKeyPressed(KeyCode keycode)
     {
         GLFWwindow* glfwWindow = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
         const int state = glfwGetKey(glfwWindow, static_cast<int>(keycode));
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
-    bool WindowsInput::IsMouseButtonPressedImpl(MouseCode mouseCode)
+    bool Input::IsMouseButtonPressed(MouseCode mouseCode)
     {
         GLFWwindow* glfwWindow = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
         const int state = glfwGetMouseButton(glfwWindow, static_cast<int>(mouseCode));
         return state == GLFW_PRESS;
     }
 
-    std::pair<float, float> WindowsInput::GetMousePosImpl()
+    std::pair<float, float> Input::GetMousePos()
     {
         GLFWwindow* glfwWindow = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
         double xPos;
@@ -31,13 +31,13 @@ namespace Shake
         return std::make_pair<float, float>(static_cast<float>(xPos), static_cast<float>(yPos));
     }
 
-    float WindowsInput::GetMouseXImpl()
+    float Input::GetMouseX()
     {
-        return GetMousePosImpl().first;
+        return GetMousePos().first;
     }
 
-    float WindowsInput::GetMouseYImpl()
+    float Input::GetMouseY()
     {
-        return GetMousePosImpl().second;
+        return GetMousePos().second;
     }
 }
