@@ -15,7 +15,7 @@ namespace Shake
     class FrameBuffer
     {
     public:
-        virtual const FramebufferSpecifications& GetSpecification() const = 0;
+        virtual ~FrameBuffer() {};
 
         virtual void Bind() = 0;
         virtual void Unbind() = 0;
@@ -23,6 +23,7 @@ namespace Shake
         virtual void Resize(int32_t width, int32_t height) = 0;
 
         virtual uint32_t GetColorAttachmentRendererID() const = 0;
+        virtual const FramebufferSpecifications& GetSpecification() const = 0;
 
         static Ref<FrameBuffer> Create(const FramebufferSpecifications& spec);
     };

@@ -38,6 +38,8 @@ namespace Shake
     {
         friend class EventDispatcher;
     public:
+        virtual ~Event() {};
+        
         virtual EventType GetEventType() const = 0;
 
         virtual int GetCategoryFlags() const = 0;
