@@ -181,7 +181,7 @@ void EditorLayer::OnImGuiRender()
          Shake::Application::Get().GetImGuiLayer()->BlockEvents(!m_viewportFocused || !m_viewportHovered);
          
          ImVec2 viewportSize = ImGui::GetContentRegionAvail();
-         if(viewportSize.x != m_viewportSize.x || viewportSize.y != m_viewportSize.y)
+         if((viewportSize.x != m_viewportSize.x || viewportSize.y != m_viewportSize.y) && viewportSize.x > 0 && viewportSize.y > 0)
          {
              m_viewportSize.x = viewportSize.x;
              m_viewportSize.y = viewportSize.y;

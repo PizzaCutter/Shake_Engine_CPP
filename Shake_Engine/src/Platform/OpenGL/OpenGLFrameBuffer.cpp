@@ -6,6 +6,10 @@
 
 namespace Shake
 {
+    // GET MAX FRAME BUFFER SIZE FROM THE GPU
+    static const uint32_t MaxFrameBufferWidth = 8192;
+    static const uint32_t MaxFrameBufferHeight = 4096; 
+    
     OpenGLFrameBuffer::OpenGLFrameBuffer(const FramebufferSpecifications& spec)
     : m_frameBufferSpecification(spec)
     {
@@ -63,6 +67,12 @@ namespace Shake
     
     void OpenGLFrameBuffer::Resize(int32_t width, int32_t height)
     {
+        if(width == 0 || height == 0 || width > MaxFrameBufferWidth || height > MaxFrameBufferHeight)
+        {
+            SE_CORE_ASSERT("Attempted to resize framebuffer to {0}, {1}", width, height);
+            return;
+        }
+        
         m_frameBufferSpecification.width = width;
         m_frameBufferSpecification.height = height;
         
