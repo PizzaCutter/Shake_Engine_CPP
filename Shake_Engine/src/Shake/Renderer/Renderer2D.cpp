@@ -124,6 +124,64 @@ namespace Shake
         m_rendererStorage.m_textureSlotIndexCount = 1;
     }
 
+    void Renderer2D::DrawQuad(const SMat4& transform, const SVector4& color)
+    {
+        if (m_rendererStorage.m_quadIndexCount >= m_rendererStorage.MaxIndices)
+        {
+            FlushAndReset();
+        }
+        
+        float textureSlot = -1.0f;
+        for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
+        {
+            if (*m_rendererStorage.m_textures[i].get() == *m_rendererStorage.m_whiteTexture.get())
+            {
+                textureSlot = static_cast<float>(i);
+                break;
+            }
+        }
+
+        if (textureSlot < 0.0f)
+        {
+            m_rendererStorage.m_textures[m_rendererStorage.m_textureSlotIndexCount] = m_rendererStorage.m_whiteTexture;
+            textureSlot = m_rendererStorage.m_textureSlotIndexCount;
+            m_rendererStorage.m_textureSlotIndexCount++;
+        }
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[0];
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = SVector2(1.0f, 1.0f); 
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[1];
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 0.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = SVector2(1.0f, 1.0f); 
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[2];
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(1.0f, 1.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = SVector2(1.0f, 1.0f); 
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadVertexBufferPtr->m_position = transform * m_rendererStorage.m_vertices[3];
+        m_rendererStorage.m_quadVertexBufferPtr->m_color = color;
+        m_rendererStorage.m_quadVertexBufferPtr->m_texCoord = SVector2(0.0f, 1.0f);
+        m_rendererStorage.m_quadVertexBufferPtr->m_textureSlot = textureSlot;
+        m_rendererStorage.m_quadVertexBufferPtr->m_tillingSize = SVector2(1.0f, 1.0f); 
+        m_rendererStorage.m_quadVertexBufferPtr++;
+
+        m_rendererStorage.m_quadIndexCount += 6;
+        
+        m_rendererStatistics.QuadCount++;
+        m_rendererStatistics.IndexCount += 6; 
+    }
+
     void Renderer2D::DrawQuad(const SVector3& position, const SVector2& size, const SVector4& color)
     {
         DrawQuadTextured(position, size, m_rendererStorage.m_whiteTexture, color);

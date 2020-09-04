@@ -10,7 +10,7 @@ class ShakeEditor : public Shake::Application
 public:
     ShakeEditor(const std::string& applicationName) : Application(applicationName)
     {
-        PushLayer(new EditorLayer());
+        PushLayer(new Shake::EditorLayer());
     }
 
     ~ShakeEditor()

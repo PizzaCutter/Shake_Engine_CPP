@@ -4,30 +4,31 @@
 #include "Shake/Renderer/Camera/OrthographicCameraController.h"
 
 namespace Shake {
+    class Scene;
     class FrameBuffer;
     class VertexArray;
     class Texture2D;
-}
 
-class EditorLayer : public Shake::Layer
+class EditorLayer : public Layer
 {
 public:
     EditorLayer();
     ~EditorLayer() override;
     void OnAttach() override;
     void OnDetach() override;
-    void OnUpdate(Shake::Timestep timeStep) override;
+    void OnUpdate(Timestep timeStep) override;
     void OnImGuiRender() override;
-    void OnEvent(Shake::Event& event) override;
+    void OnEvent(Event& event) override;
 
 private:
-    Shake::OrthographicCameraController m_orthoCameraController;
+    OrthographicCameraController m_orthoCameraController;
 
-    Shake::ShaderLibrary m_shaderLibrary;
-    Shake::Ref<Shake::Texture2D> m_TestTexture;
-    Shake::Ref<Shake::Texture2D> m_SpriteSheet;
-    Shake::Ref<Shake::SubTexture2D> m_SubTextureTest;
-    Shake::Ref<Shake::FrameBuffer> m_frameBuffer;
+    Ref<Texture2D> m_TestTexture;
+    Ref<Texture2D> m_SpriteSheet;
+    Ref<SubTexture2D> m_SubTextureTest;
+    Ref<FrameBuffer> m_frameBuffer;
+
+    Ref<Scene> m_scene;
 
     SVector2 m_viewportSize = SVector2(0.0f, 0.0f);
     bool m_viewportFocused = false;
@@ -37,3 +38,4 @@ private:
 
     float m_rotation = 0.0f;
 };
+}
