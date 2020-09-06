@@ -38,6 +38,32 @@ namespace Shake
             testEntity.AddComponent<TransformComponent>();
             testEntity.AddComponent<SpriteComponent>(SVector4(1.0f, 0.2f, 0.2f, 1.0f));
         }
+
+        class CameraController : public ScriptableEntity 
+        {
+            public:
+            void OnCreate()
+            {
+                //auto& transform = GetComponent<TransformComponent>();
+            }
+
+            void OnDestroy()
+            {
+            }
+
+            void OnUpdate(Timestep ts)
+            {
+            }
+        };
+        
+        // CREATING PRIMARY CAMERA
+        {
+            m_cameraEntity = m_scene->CreateEntity();
+            m_cameraEntity.AddComponent<TransformComponent>();
+            auto& cameraComponent = m_cameraEntity.AddComponent<CameraComponent>();
+            cameraComponent.Primary = true;
+            m_cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+        }
     }
 
     void EditorLayer::OnDetach()
@@ -53,7 +79,9 @@ namespace Shake
 
             if (m_viewportFocused)
             {
-                m_orthoCameraController.OnUpdate(timeStep);
+               
+                
+                //m_orthoCameraController.OnUpdate(timeStep);
             }
 
             m_rotation += 10.0f * timeStep.GetSeconds();
@@ -66,7 +94,7 @@ namespace Shake
             RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
             RenderCommand::Clear();
 
-            Renderer2D::BeginScene(m_orthoCameraController.GetCamera());
+            //Renderer2D::BeginScene(m_orthoCameraController.GetCamera());
         }
         
 
@@ -102,7 +130,7 @@ namespace Shake
 
         {
             SE_PROFILE_SCOPE("Rendering - Shutdown");
-            Renderer2D::EndScene();
+            //Renderer2D::EndScene();
 
             m_frameBuffer->Unbind();
         }
@@ -203,8 +231,9 @@ namespace Shake
                 m_viewportSize.x = viewportSize.x;
                 m_viewportSize.y = viewportSize.y;
                 m_frameBuffer->Resize(static_cast<uint32_t>(m_viewportSize.x), static_cast<uint32_t>(m_viewportSize.y));
-
                 m_orthoCameraController.OnResize(m_viewportSize.x, m_viewportSize.y);
+
+                m_scene->OnViewportResize((uint32_t)m_viewportSize.x, (uint32_t)m_viewportSize.y);
             }
 
             uint32_t rendererID = m_frameBuffer->GetColorAttachmentRendererID();

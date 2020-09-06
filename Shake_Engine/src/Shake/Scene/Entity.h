@@ -47,11 +47,12 @@ namespace Shake
             return m_scene->GetRegistry().remove<T>(m_entityId);
         }
 
-        operator bool() const { return m_entityId == entt::null; }
+        operator bool() const { return m_entityId == EmptyEntityHandle; }
         operator uint32_t() const { return static_cast<uint32_t>(m_entityId); }
 
     private:
         EntityHandle m_entityId { EmptyEntityHandle };
         Scene* m_scene = nullptr;
     };
+
 }

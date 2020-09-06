@@ -4,6 +4,7 @@
 
 namespace Shake
 {
+    class Camera;
     class SubTexture2D;
     class Texture2D;
     class Shader;
@@ -57,7 +58,7 @@ namespace Shake
         static void Initialize();
         static void Shutdown();
         
-        static void BeginScene(OrthographicCamera& camera);
+        static void BeginScene(Camera& camera);
         static void EndScene();
 
         static void Flush();

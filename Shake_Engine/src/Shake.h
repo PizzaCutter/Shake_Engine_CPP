@@ -25,6 +25,8 @@
 #include "Shake/Renderer/Camera/OrthographicCamera.h"
 
 #include "Shake/Scene/Scene.h"
+#include "Shake/Scene/Entity.h"
+#include "Shake/Scene/ScriptableEntity.h"
 #include "Shake/Scene/Components.h"
 
 // ----------- HELPERS -------------

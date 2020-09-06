@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "VertexArray.h"
 #include "Camera/OrthographicCamera.h"
+#include "Shake/Scene/Camera.h"
 
 namespace Shake
 {
@@ -76,12 +77,12 @@ namespace Shake
     {
     }
 
-    void Renderer2D::BeginScene(OrthographicCamera& camera)
+    void Renderer2D::BeginScene(Camera& camera)
     {
         m_rendererStatistics = RenderStatistics();
         
         m_rendererStorage.m_textureShader->Bind();
-        m_rendererStorage.m_textureShader->UploadUniformMat4("u_viewProjection", camera.GetViewProjectionMatrix());
+        m_rendererStorage.m_textureShader->UploadUniformMat4("u_viewProjection", camera.GetViewProjection());
 
         m_rendererStorage.m_quadIndexCount = 0;
         m_rendererStorage.m_quadVertexBufferPtr = m_rendererStorage.m_quadVertexBufferBase;

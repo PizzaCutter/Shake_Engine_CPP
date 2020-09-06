@@ -2,6 +2,7 @@
 #include "Shake.h"
 #include "Shake/Renderer/SubTexture2D.h"
 #include "Shake/Renderer/Camera/OrthographicCameraController.h"
+#include "Shake/Scene/Entity.h"
 
 namespace Shake {
     class Scene;
@@ -29,6 +30,7 @@ private:
     Ref<FrameBuffer> m_frameBuffer;
 
     Ref<Scene> m_scene;
+    Entity m_cameraEntity;
 
     SVector2 m_viewportSize = SVector2(0.0f, 0.0f);
     bool m_viewportFocused = false;
