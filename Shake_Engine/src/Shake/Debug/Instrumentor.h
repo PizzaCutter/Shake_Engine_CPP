@@ -25,14 +25,14 @@ namespace Shake
 {
     struct ProfileResult
     {
-        std::string Name;
+        SString Name;
         long long Start, End;
         uint32_t ThreadID;
     };
 
     struct InstrumentationSession
     {
-        std::string Name;
+        SString Name;
     };
 
     class Instrumentor
@@ -47,7 +47,7 @@ namespace Shake
         {
         }
 
-        void BeginSession(const std::string& name, const std::string& filepath = "results.json")
+        void BeginSession(const SString& name, const SString& filepath = "results.json")
         {
             m_OutputStream.open(filepath);
             WriteHeader();
@@ -68,7 +68,7 @@ namespace Shake
             if (m_ProfileCount++ > 0)
                 m_OutputStream << ",";
 
-            std::string name = result.Name;
+            SString name = result.Name;
             std::replace(name.begin(), name.end(), '"', '\'');
 
             m_OutputStream << "{";

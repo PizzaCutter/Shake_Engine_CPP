@@ -8,7 +8,7 @@
 class Sable : public Shake::Application
 {
 public:
-    Sable(const std::string& applicationName) : Application(applicationName)
+    Sable(const SString& applicationName) : Application(applicationName)
     {
         PushLayer(new EditorLayer());
     }

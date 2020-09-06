@@ -3,6 +3,7 @@
 #include <string>
 
 #include "imgui/imgui.h"
+#include "Shake/Strings/SString.h"
 
 namespace Shake
 {
@@ -31,7 +32,7 @@ namespace Shake
 
     void SceneHierarchyPanel::DrawEntityNode(Entity entity)
     {
-        std::string s = std::to_string(entity.GetEntityId());
+        SString s = std::to_string(entity.GetEntityId());
         ImGuiTreeNodeFlags flags = ((m_selectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;// | ImGuiTreeNodeFlags_OpenOnDoubleClick;
         bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity.GetEntityId(), flags , s.c_str());
 

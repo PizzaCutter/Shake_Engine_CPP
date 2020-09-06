@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Shake/Core/Core.h"
+#include "Shake/Strings/SString.h"
 
 namespace Shake
 {
@@ -66,7 +67,7 @@ namespace Shake
             }
             return "NOT IMPLEMENTED";
         };
-        virtual std::string ToString() const { return GetName(); };
+        virtual SString ToString() const { return GetName(); };
 
         bool IsInCategory(EventCategory category) const
         {

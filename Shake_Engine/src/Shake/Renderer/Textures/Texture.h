@@ -25,6 +25,6 @@ namespace Shake
         virtual uint32_t GetRendererID() const = 0;
 
         static SharedPtr<Texture2D> Create(uint32_t width, uint32_t height);
-        static SharedPtr<Texture2D> Create(const std::string& path);
+        static SharedPtr<Texture2D> Create(const SString& path);
     };
 }

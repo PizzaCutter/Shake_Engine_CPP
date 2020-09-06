@@ -13,7 +13,7 @@ namespace Shake
     class Application
     {
     public:
-        Application(const std::string& applicationName);
+        Application(const SString& applicationName);
         virtual ~Application();
 
         void OnEvent(Event& event);
@@ -35,7 +35,7 @@ namespace Shake
         bool OnWindowClosed(WindowCloseEvent& event);
         bool OnWindowResizeCallback(WindowResizeEvent& event);
 
-        std::string ApplicationName = "";
+        SString ApplicationName = "";
         std::unique_ptr<Window> m_Window;
         ImGuiLayer* m_imGuiLayer;
         bool m_running = true;

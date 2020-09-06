@@ -45,13 +45,13 @@ namespace Shake
 
     struct BufferElement
     {
-        std::string m_name;
+        SString m_name;
         ShaderDataType m_type;
         uint32_t m_size;
         uint32_t m_offset;
         bool m_normalized;
 
-        BufferElement(const std::string& name, ShaderDataType type, bool normalized = false)
+        BufferElement(const SString& name, ShaderDataType type, bool normalized = false)
             : m_name(name), m_type(type), m_size(ShaderDataTypeSize(type)), m_offset(0), m_normalized(normalized)
         {
             

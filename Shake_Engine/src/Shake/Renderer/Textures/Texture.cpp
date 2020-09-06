@@ -18,7 +18,7 @@ namespace Shake
         return nullptr;
     }
     
-    SharedPtr<Texture2D> Texture2D::Create(const std::string& path)
+    SharedPtr<Texture2D> Texture2D::Create(const SString& path)
     {
         switch(Renderer::GetRenderAPI())
         {

@@ -6,9 +6,9 @@ namespace Shake
     class FileReader
     {
     public:
-        static std::string ReadFile(std::string filePath);
+        static SString ReadFile(SString filePath);
 
     private:
-        static std::string m_AdditionalDirectoryPath;
+        static SString m_AdditionalDirectoryPath;
     };
 }

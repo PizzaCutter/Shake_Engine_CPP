@@ -31,7 +31,7 @@ namespace Shake
 
         int GetRepeatCount() const { return m_repeatCount; }
 
-        std::string ToString() const override
+        SString ToString() const override
         {
             std::stringstream ss;
             ss << "KeyPressedEvent: " << m_keyCode << " (" << m_repeatCount << " repeats)";
@@ -52,7 +52,7 @@ namespace Shake
         static EventType GetStaticType() { return EventType::KeyReleased; }
         EventType GetEventType() const override { return EventType::KeyReleased; }
 
-        std::string ToString() const override
+        SString ToString() const override
         {
             std::stringstream ss;
             ss << "KeyReleasedEvent: " << m_keyCode;
@@ -70,7 +70,7 @@ namespace Shake
         static EventType GetStaticType() { return EventType::KeyTyped; }
         EventType GetEventType() const override { return EventType::KeyTyped; }
 
-        std::string ToString() const override
+        SString ToString() const override
         {
             std::stringstream ss;
             ss << "KeyPressedEvent: " << m_keyCode;

@@ -9,10 +9,10 @@
 
 namespace Shake
 {
-    OpenGLShader::OpenGLShader(const std::string& filePath)
+    OpenGLShader::OpenGLShader(const SString& filePath)
     {
-        const std::string fileAsString = ReadFile(filePath);
-        const std::unordered_map<GLenum, std::string> processedData = PreProcess(fileAsString);
+        const SString fileAsString = ReadFile(filePath);
+        const std::unordered_map<GLenum, SString> processedData = PreProcess(fileAsString);
         Compile(processedData);
 
         // Contents/Shaders/Texture.glsl extract name from this
@@ -37,57 +37,57 @@ namespace Shake
         glUseProgram(0);
     }
 
-    void OpenGLShader::UploadUniformInt(const std::string& name, const int value)
+    void OpenGLShader::UploadUniformInt(const SString& name, const int value)
     {
          GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
          glUniform1i(uniformLocation, value);
     }
 
-    void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t size)
+    void OpenGLShader::UploadUniformIntArray(const SString& name, int* values, uint32_t size)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniform1iv(uniformLocation, size, values);
     }
 
-    void OpenGLShader::UploadUniformMat3(const std::string& name, const SMat3& matrix)
+    void OpenGLShader::UploadUniformMat3(const SString& name, const SMat3& matrix)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniformMatrix3fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
-    void OpenGLShader::UploadUniformMat4(const std::string& name, const SMat4& matrix)
+    void OpenGLShader::UploadUniformMat4(const SString& name, const SMat4& matrix)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
-    void OpenGLShader::UploadUniformFloat(const std::string& name, float value)
+    void OpenGLShader::UploadUniformFloat(const SString& name, float value)
     {
          GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
          glUniform1f(uniformLocation, value);
     }
 
-    void OpenGLShader::UploadUniformFloat2(const std::string& name, const SVector2& data)
+    void OpenGLShader::UploadUniformFloat2(const SString& name, const SVector2& data)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniform2f(uniformLocation, data.x, data.y);
     }
 
-    void OpenGLShader::UploadUniformFloat3(const std::string& name, const SVector3& data)
+    void OpenGLShader::UploadUniformFloat3(const SString& name, const SVector3& data)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniform3f(uniformLocation, data.x, data.y, data.z);
     }
 
-    void OpenGLShader::UploadUniformFloat4(const std::string& name, const SVector4& vector)
+    void OpenGLShader::UploadUniformFloat4(const SString& name, const SVector4& vector)
     {
         GLint uniformLocation = glGetUniformLocation(m_ShaderId, name.c_str());
         glUniform4f(uniformLocation, vector.x, vector.y, vector.z, vector.w);
     }
 
-    std::string OpenGLShader::ReadFile(const std::string& filePath)
+    SString OpenGLShader::ReadFile(const SString& filePath)
     {
-        std::string result;
+        SString result;
         std::ifstream in(filePath, std::ios::in | std::ios::binary);
         if(in)
         {
@@ -103,7 +103,7 @@ namespace Shake
         return result;
     }
 
-    GLenum OpenGLShader::GetShaderTypeFromString(const std::string& shaderTypeAsString)
+    GLenum OpenGLShader::GetShaderTypeFromString(const SString& shaderTypeAsString)
     {
         if(shaderTypeAsString == "vertex")
         {
@@ -116,21 +116,21 @@ namespace Shake
         return GL_VERTEX_SHADER; 
     }
     
-    std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
+    std::unordered_map<GLenum, SString> OpenGLShader::PreProcess(const SString& source)
     {
-        std::unordered_map<GLenum, std::string> thing = {};
+        std::unordered_map<GLenum, SString> thing = {};
         
-        const std::string typeThing = "#type"; 
+        const SString typeThing = "#type"; 
 
         size_t index = 0;
-        while(index != std::string::npos)
+        while(index != SString::npos)
         {
-            const std::string::size_type foundIndex = source.find(typeThing, index) + typeThing.length();
-            const std::string::size_type endOfTypeIndex = source.find("\r", index);
-            const std::string::size_type nextShaderIndex = source.find(typeThing, endOfTypeIndex);
+            const SString::size_type foundIndex = source.find(typeThing, index) + typeThing.length();
+            const SString::size_type endOfTypeIndex = source.find("\r", index);
+            const SString::size_type nextShaderIndex = source.find(typeThing, endOfTypeIndex);
 
-            std::string shaderTypeString = source.substr(foundIndex + 1, endOfTypeIndex - (foundIndex + 1));
-            const std::string shaderSource = source.substr(endOfTypeIndex, nextShaderIndex - endOfTypeIndex);
+            SString shaderTypeString = source.substr(foundIndex + 1, endOfTypeIndex - (foundIndex + 1));
+            const SString shaderSource = source.substr(endOfTypeIndex, nextShaderIndex - endOfTypeIndex);
 
             const GLenum shaderType = GetShaderTypeFromString(shaderTypeString);
             //TODO[rsmekens]: check shader types 
@@ -142,7 +142,7 @@ namespace Shake
         return thing;
     }
     
-    void OpenGLShader::Compile(std::unordered_map<GLenum, std::string> input)
+    void OpenGLShader::Compile(std::unordered_map<GLenum, SString> input)
     {
         GLuint program = glCreateProgram();
         std::vector<GLuint> openGLShaders;
@@ -155,7 +155,7 @@ namespace Shake
             openGLShaders.push_back(openGLShader);
 
             // Send the vertex shader source code to GL
-            // Note that std::string's .c_str is NULL character terminated.
+            // Note that SString's .c_str is NULL character terminated.
             const GLchar* source = shaderInput.second.c_str();
             glShaderSource(openGLShader, 1, &source, 0);
 

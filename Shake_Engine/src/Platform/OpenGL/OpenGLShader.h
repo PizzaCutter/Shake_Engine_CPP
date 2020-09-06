@@ -10,32 +10,32 @@ namespace Shake
     class OpenGLShader : public Shader
     {
     public:
-        OpenGLShader(const std::string& filePath);
+        OpenGLShader(const SString& filePath);
         virtual ~OpenGLShader();
 
         void Bind() const override;
         void Unbind() const override;
-        std::string GetName() const override { return m_name; } 
+        SString GetName() const override { return m_name; } 
 
-        void UploadUniformInt(const std::string& name, int value) override;
-        void UploadUniformIntArray(const std::string& name, int* values, uint32_t size) override;
+        void UploadUniformInt(const SString& name, int value) override;
+        void UploadUniformIntArray(const SString& name, int* values, uint32_t size) override;
 
-        void UploadUniformMat3(const std::string& name, const SMat3& matrix) override;
-        void UploadUniformMat4(const std::string& name, const SMat4& matrix) override;
+        void UploadUniformMat3(const SString& name, const SMat3& matrix) override;
+        void UploadUniformMat4(const SString& name, const SMat4& matrix) override;
 
-        void UploadUniformFloat(const std::string& name, float value) override;
-        void UploadUniformFloat2(const std::string& name, const SVector2& data) override;
-        void UploadUniformFloat3(const std::string& name, const SVector3& data) override;
-        void UploadUniformFloat4(const std::string& name, const SVector4& vector) override;
+        void UploadUniformFloat(const SString& name, float value) override;
+        void UploadUniformFloat2(const SString& name, const SVector2& data) override;
+        void UploadUniformFloat3(const SString& name, const SVector3& data) override;
+        void UploadUniformFloat4(const SString& name, const SVector4& vector) override;
 
     private:
         uint32_t m_ShaderId = -1;
-        std::string m_name = ""; 
+        SString m_name = ""; 
 
-        std::string ReadFile(const std::string& filePath);
-        std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
-        void Compile(std::unordered_map<GLenum, std::string> input);
+        SString ReadFile(const SString& filePath);
+        std::unordered_map<GLenum, SString> PreProcess(const SString& source);
+        void Compile(std::unordered_map<GLenum, SString> input);
 
-        static GLenum GetShaderTypeFromString(const std::string& shaderTypeAsString);
+        static GLenum GetShaderTypeFromString(const SString& shaderTypeAsString);
     };
 }

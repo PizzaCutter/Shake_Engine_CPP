@@ -7,9 +7,9 @@
 
 namespace Shake
 {
-    std::string FileReader::m_AdditionalDirectoryPath = "Content/"; 
+    SString FileReader::m_AdditionalDirectoryPath = "Content/"; 
     
-    std::string FileReader::ReadFile(std::string fileName)
+    SString FileReader::ReadFile(SString fileName)
     {
         WCHAR rawPathData[MAX_PATH];
         GetModuleFileNameW(NULL, rawPathData, MAX_PATH);
@@ -18,15 +18,15 @@ namespace Shake
         char defaultChar = ' ';
         WideCharToMultiByte(CP_ACP, 0, rawPathData, -1, charPath, MAX_PATH, &defaultChar, NULL);
         
-        std::string filePath = charPath;
+        SString filePath = charPath;
         // Hardcoded until content copy step works
         filePath = "E:/Documents/github/Shake_Engine_CPP/Shake_Engine/";
-        const std::string completeFilePath = filePath + m_AdditionalDirectoryPath + fileName;
+        const SString completeFilePath = filePath + m_AdditionalDirectoryPath + fileName;
         std::ifstream file (completeFilePath);
         
-        std::string outString;
+        SString outString;
         
-        std::string outLine;
+        SString outLine;
         while(getline(file, outLine))
         {
             outString += outLine + '\n';  

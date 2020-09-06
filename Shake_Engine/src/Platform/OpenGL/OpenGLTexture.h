@@ -8,7 +8,7 @@ namespace Shake
     {
     public:
         OpenGLTexture(uint32_t width, uint32_t height);
-        OpenGLTexture(const std::string& path);
+        OpenGLTexture(const SString& path);
         ~OpenGLTexture();
         
         int32_t GetWidth() const override { return m_width; };
@@ -24,7 +24,7 @@ namespace Shake
             return m_rendererId == ((OpenGLTexture&)other).GetRendererID();  
         }
     private:
-        std::string m_path = "";
+        SString m_path = "";
         
         unsigned int m_width = 0;
         unsigned int m_height = 0;

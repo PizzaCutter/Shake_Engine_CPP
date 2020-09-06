@@ -19,7 +19,7 @@ namespace Shake
         glTextureParameteri(m_rendererId, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
     }
 
-    OpenGLTexture::OpenGLTexture(const std::string& path)
+    OpenGLTexture::OpenGLTexture(const SString& path)
         : m_path(path)
     {
         int width, height, channels;

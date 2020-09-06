@@ -3,7 +3,7 @@
 
 namespace Shake
 {
-    Layer::Layer(const std::string& debugName) : m_DebugName(debugName)
+    Layer::Layer(const SString& debugName) : m_DebugName(debugName)
     {
         
     }

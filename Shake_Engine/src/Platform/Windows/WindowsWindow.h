@@ -36,7 +36,7 @@ namespace Shake
         
         struct WindowData
         {
-            std::string Title;
+            SString Title;
             unsigned int Width, Height;
             bool VSync;
 

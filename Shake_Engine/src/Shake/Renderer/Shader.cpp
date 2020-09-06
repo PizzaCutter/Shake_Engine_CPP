@@ -7,7 +7,7 @@
 
 namespace Shake
 {
-    SharedPtr<Shader> Shader::Create(const std::string& path)
+    SharedPtr<Shader> Shader::Create(const SString& path)
     {
          switch(Renderer::GetRenderAPI())
          {
@@ -19,7 +19,7 @@ namespace Shake
          return nullptr;
     }
 
-    void ShaderLibrary::Load(const std::string& filepath)
+    void ShaderLibrary::Load(const SString& filepath)
     {
         SharedPtr<Shader> shader = Shader::Create(filepath);
         const auto foundIterator = m_shaderReferences.find(shader->GetName());
@@ -27,7 +27,7 @@ namespace Shake
         m_shaderReferences.emplace(shader->GetName(), shader); 
     }
 
-    SharedPtr<Shader> ShaderLibrary::Get(const std::string& shaderName)
+    SharedPtr<Shader> ShaderLibrary::Get(const SString& shaderName)
     {
         const auto foundIterator = m_shaderReferences.find(shaderName);
         SE_CORE_ASSERT(foundIterator != m_shaderReferences.end(), "Shader does not exist");

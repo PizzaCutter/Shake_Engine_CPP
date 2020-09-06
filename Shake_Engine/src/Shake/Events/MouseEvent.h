@@ -18,7 +18,7 @@ namespace Shake
         EventType GetEventType() const override { return EventType::MouseMoved; };
         int GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; };
         
-        std::string ToString() const override
+        SString ToString() const override
         {
             std::stringstream ss;
             ss << "MouseMovedEvent: " << m_mouseX << ", " << m_mouseY;
@@ -42,7 +42,7 @@ namespace Shake
         EventType GetEventType() const override { return EventType::MouseScrolled; }
         int GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
         
-        std::string ToString() const override
+        SString ToString() const override
         {
             std::stringstream ss;
             ss << "MouseScrolledEvent: " << GetXOffset() << ", " << GetYOffset();
@@ -71,7 +71,7 @@ namespace Shake
     public:
         MouseButtonPressedEvent(MouseCode button) : MouseButtonEvent(button) {}
 
-        std::string ToString() const override
+        SString ToString() const override
         {
             std::stringstream ss;
             ss << "MouseButtonPressedEvent: " << m_button;
@@ -87,7 +87,7 @@ namespace Shake
     public:
         MouseButtonReleasedEvent(MouseCode button) : MouseButtonEvent(button) {}
 
-        std::string ToString() const override
+        SString ToString() const override
         {
             std::stringstream ss;
             ss << "MouseButtonReleasedEvent: " << m_button;
