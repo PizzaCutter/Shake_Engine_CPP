@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "SceneCamera.h"
-#include "ScriptableEntity.h"
+#include "Shake/Scene/Cameras/SceneCamera.h"
+#include "Shake/Scene/Entities/ScriptableEntity.h"
 #include "Shake/Math/SMath.h"
 
 namespace Shake

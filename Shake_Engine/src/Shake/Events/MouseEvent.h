@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Shake/Events/Event.h"
-#include "Shake/Core/MouseCodes.h"
+#include "Shake/Core/Input/MouseCodes.h"
 
 namespace Shake
 {

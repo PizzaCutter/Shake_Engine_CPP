@@ -1,8 +1,8 @@
 #pragma once
 #include "Shake.h"
-#include "Shake/Renderer/SubTexture2D.h"
+#include "Shake/Renderer/Textures/SubTexture2D.h"
 #include "Shake/Renderer/Camera/OrthographicCameraController.h"
-#include "Shake/Scene/Entity.h"
+#include "Shake/Scene/Entities/Entity.h"
 #include "Panels/SceneHierarchyPanel.h"
 
 namespace Shake {

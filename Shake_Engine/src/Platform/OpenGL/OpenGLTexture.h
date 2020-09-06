@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Shake/Core/Core.h"
-#include "Shake/Renderer/Texture.h"
+#include "Shake/Renderer/Textures/Texture.h"
 
 namespace Shake
 {

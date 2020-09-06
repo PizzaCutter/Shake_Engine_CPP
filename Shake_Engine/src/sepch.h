@@ -14,7 +14,7 @@
 #include <unordered_set>
 
 // ------------- DEBUG ----------------
-#include "Shake/Core/Log.h"
+#include "Shake/Debug/Log.h"
 #include "Shake/Debug/Asserts.h"
 
 // ------------- PROFILING ------------

@@ -1,7 +1,7 @@
 ﻿#include "sepch.h"
 #include "Texture.h"
 
-#include "Renderer.h"
+#include "Shake/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
 
 namespace Shake

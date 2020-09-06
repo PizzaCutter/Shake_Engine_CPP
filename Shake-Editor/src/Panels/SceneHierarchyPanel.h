@@ -1,9 +1,8 @@
 ﻿#pragma once
 
-#include <imgui/imgui.h>
 #include "Shake/Scene/Scene.h"
 #include "Shake/Core/Core.h"
-#include "Shake/Scene/Entity.h"
+#include "Shake/Scene/Entities/Entity.h"
 
 namespace Shake
 {

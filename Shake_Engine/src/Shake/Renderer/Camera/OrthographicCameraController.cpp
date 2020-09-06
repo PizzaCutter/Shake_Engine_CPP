@@ -1,13 +1,11 @@
 ﻿#include "sepch.h"
 #include "OrthographicCameraController.h"
-#include "Shake/Core/Input.h"
+#include "Shake/Core/Input/Input.h"
 #include "Shake/Events/ApplicationEvent.h"
 #include "Shake/Events/MouseEvent.h"
 
 namespace Shake
 {
-#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
-    
     OrthographicCameraController::OrthographicCameraController(float aspectRatio)
         : m_aspectRatio(aspectRatio),
           m_orthoCamera(-m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel, -m_zoomLevel, m_zoomLevel)
@@ -65,9 +63,9 @@ namespace Shake
     void OrthographicCameraController::OnEvent(Event& e)
     {
         EventDispatcher dispatcher(e);
-        dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolledCallback));
-        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OrthographicCameraController::OnWindowResizedCallback));
-        dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OrthographicCameraController::OnMouseMovedCallback));
+        dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT(OrthographicCameraController::OnMouseScrolledCallback));
+        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT(OrthographicCameraController::OnWindowResizedCallback));
+        dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT(OrthographicCameraController::OnMouseMovedCallback));
     }
 
     void OrthographicCameraController::OnResize(float width, float height)

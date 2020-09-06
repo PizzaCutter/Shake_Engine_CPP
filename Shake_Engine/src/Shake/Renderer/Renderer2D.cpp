@@ -3,11 +3,11 @@
 
 #include "RenderCommand.h"
 #include "Shader.h"
-#include "SubTexture2D.h"
-#include "Texture.h"
+#include "Textures/SubTexture2D.h"
+#include "Textures/Texture.h"
 #include "VertexArray.h"
 #include "Camera/OrthographicCamera.h"
-#include "Shake/Scene/Camera.h"
+#include "Shake/Scene/Cameras/Camera.h"
 
 namespace Shake
 {

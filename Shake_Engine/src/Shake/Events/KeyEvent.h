@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Shake/Events/Event.h"
-#include "Shake/Core/KeyCodes.h"
+#include "Shake/Core/Input/KeyCodes.h"
 
 namespace Shake
 {

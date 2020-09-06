@@ -1,15 +1,11 @@
 ﻿#include "sepch.h"
 #include "Application.h"
 
-#include "Log.h"
 #include "GLFW/glfw3.h"
 #include "Shake/Renderer/RenderCommand.h"
 
-
 namespace Shake
 {
-#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
-
     Application* Application::s_Instance = nullptr;
 
     Application::Application(const std::string& applicationName)
@@ -19,7 +15,7 @@ namespace Shake
         
         ApplicationName = applicationName;
         m_Window = std::unique_ptr<Window>(Window::Create());
-        m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+        m_Window->SetEventCallback(BIND_EVENT(Application::OnEvent));
 
         RenderCommand::Initialize();
         
@@ -35,8 +31,8 @@ namespace Shake
     void Application::OnEvent(Event& event)
     {
         EventDispatcher dispatcher(event);
-        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClosed));
-        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResizeCallback));
+        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT(Application::OnWindowClosed));
+        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT(Application::OnWindowResizeCallback));
 
         for(auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
         {

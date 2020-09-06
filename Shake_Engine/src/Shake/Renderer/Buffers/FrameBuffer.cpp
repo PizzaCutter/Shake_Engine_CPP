@@ -1,7 +1,7 @@
 ﻿#include "sepch.h"
 #include "FrameBuffer.h"
 
-#include "Renderer.h"
+#include "Shake/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLFrameBuffer.h"
 
 namespace Shake

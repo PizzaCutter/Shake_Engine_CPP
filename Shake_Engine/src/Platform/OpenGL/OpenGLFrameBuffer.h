@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Shake/Renderer/FrameBuffer.h"
+#include "Shake/Renderer/Buffers/FrameBuffer.h"
 
 namespace Shake
 {

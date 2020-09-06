@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Timestep.h"
+#include "Shake/Core/Timestep.h"
 #include "Shake/Events/Event.h"
 
 namespace Shake

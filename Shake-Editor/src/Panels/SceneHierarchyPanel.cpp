@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "imgui/imgui.h"
+
 namespace Shake
 {
     SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& scene)

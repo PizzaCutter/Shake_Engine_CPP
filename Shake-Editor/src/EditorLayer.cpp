@@ -5,9 +5,9 @@
 
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui/imgui.h"
-#include "Shake/Renderer/FrameBuffer.h"
+#include "Shake/Renderer/Buffers/FrameBuffer.h"
 #include "Shake/Renderer/Renderer2D.h"
-#include "Shake/Scene/Entity.h"
+#include "Shake/Scene/Entities/Entity.h"
 
 namespace Shake
 {

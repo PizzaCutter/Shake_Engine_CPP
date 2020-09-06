@@ -1,7 +1,7 @@
 ﻿#include "sepch.h"
 #include "Buffer.h"
 
-#include "Renderer.h"
+#include "Shake/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLBuffer.h"
 #include "Shake/Core/Core.h"
 

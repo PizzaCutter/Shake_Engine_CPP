@@ -1,6 +1,6 @@
 ﻿#include "sepch.h"
 
-#include "Shake/Core/Input.h"
+#include "Shake/Core/Input/Input.h"
 
 #include "GLFW/glfw3.h"
 #include "Shake/Window.h"

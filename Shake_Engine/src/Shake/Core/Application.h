@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "Core.h"
-#include "Layer.h"
-#include "LayerStack.h"
+#include "Layers/Layer.h"
+#include "Layers/LayerStack.h"
 #include "Shake/Window.h"
 #include "Shake/Events/ApplicationEvent.h"
 #include "Shake/IMGUI/ImGuiLayer.h"

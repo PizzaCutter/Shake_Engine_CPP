@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Scene.h"
+#include "Shake/Scene/Scene.h"
 #include "entt.hpp"
 
 using EntityHandle = entt::entity;

@@ -9,4 +9,4 @@
 
 #include "Shake/Core/Pointer.h"
 
-#define BIND_EVENT(x) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args).x..); } 
+#define BIND_EVENT(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); } 

@@ -1,10 +1,10 @@
 ﻿#include "sepch.h"
 #include "Scene.h"
 
-#include "Components.h"
+#include "Shake/Scene/Components/Components.h"
 #include "Shake/Renderer/Renderer2D.h"
 
-#include "Shake/Scene/Entity.h"
+#include "Shake/Scene/Entities/Entity.h"
 
 namespace Shake
 {

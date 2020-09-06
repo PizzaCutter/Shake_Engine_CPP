@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "sepch.h"
-#include "Shake/Core/Layer.h"
+#include "Layer.h"
 
 namespace Shake
 {
