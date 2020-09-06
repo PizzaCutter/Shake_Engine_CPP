@@ -64,6 +64,8 @@ namespace Shake
             cameraComponent.Primary = true;
             m_cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
         }
+
+        m_sceneHierarchyPanel.SetContext(m_scene); 
     }
 
     void EditorLayer::OnDetach()
@@ -205,6 +207,8 @@ namespace Shake
             }
             ImGui::EndMenuBar();
         }
+
+        m_sceneHierarchyPanel.OnImGuiRender();
 
         {
             ImGui::Begin("Settings");

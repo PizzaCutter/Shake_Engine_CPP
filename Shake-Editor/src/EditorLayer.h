@@ -3,6 +3,7 @@
 #include "Shake/Renderer/SubTexture2D.h"
 #include "Shake/Renderer/Camera/OrthographicCameraController.h"
 #include "Shake/Scene/Entity.h"
+#include "Panels/SceneHierarchyPanel.h"
 
 namespace Shake {
     class Scene;
@@ -39,5 +40,7 @@ private:
     SVector4 m_editableColor;
 
     float m_rotation = 0.0f;
+
+    SceneHierarchyPanel m_sceneHierarchyPanel;
 };
 }

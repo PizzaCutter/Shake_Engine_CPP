@@ -49,7 +49,10 @@ namespace Shake
 
         operator bool() const { return m_entityId == EmptyEntityHandle; }
         operator uint32_t() const { return static_cast<uint32_t>(m_entityId); }
+        bool operator==(const Entity& other) const { return (m_entityId == other.m_entityId && m_scene == other.m_scene); }
+        bool operator!=(const Entity& other) const { return !(*this == other); }
 
+        const uint32_t GetEntityId() const { return static_cast<uint32_t>(m_entityId); }
     private:
         EntityHandle m_entityId { EmptyEntityHandle };
         Scene* m_scene = nullptr;
