@@ -100,7 +100,7 @@ namespace Shake
             in.close();
         }else
         {
-            SE_CORE_ERROR("Could not open file '{0}'", filePath);
+            SE_ENGINE_LOG(LogVerbosity::Error, "Could not open file '{0}'", filePath);
         }
         return result;
     }
@@ -178,7 +178,7 @@ namespace Shake
                 // We don't need the shader anymore.
                 glDeleteShader(openGLShader);
 
-                SE_CORE_ERROR("{0}", infoLog.data());
+                SE_ENGINE_LOG(LogVerbosity::Error,"{0}", infoLog.data());
                 SE_CORE_ASSERT(false, "Vertex shader compilation failure!");
                 return;
             }
@@ -217,7 +217,7 @@ namespace Shake
                 glDeleteShader(element);
             }
 
-            SE_CORE_ERROR("{0}", infoLog.data());
+            SE_ENGINE_LOG(LogVerbosity::Error,"{0}", infoLog.data());
             SE_CORE_ASSERT(false, "OpenGLShader link failure!");
 
             return;

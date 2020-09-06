@@ -4,6 +4,7 @@
 #include "stb_image.h"
 #include "glad/glad.h"
 #include "Shake/Core/Log.h"
+#include "Shake/Debug/Asserts.h"
 
 namespace Shake
 {
@@ -30,7 +31,7 @@ namespace Shake
         m_width = width;
         m_height = height;
 
-        SE_CORE_ASSERT(data, "COULD NOT LOAD TEXTURE");
+        SE_CORE_ASSERT(data != nullptr, "COULD NOT LOAD TEXTURE");
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_rendererId);
         glTextureStorage2D(m_rendererId, 1, channels == 4 ? GL_RGBA8 : GL_RGB8, m_width, m_height);

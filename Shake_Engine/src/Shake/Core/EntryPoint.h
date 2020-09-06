@@ -8,8 +8,9 @@
     {
         Shake::Log::Init();
         
-        SE_CORE_WARN("Initialized Log System");
-        SE_INFO("App Starting = {0}", 1);
+        SE_ENGINE_LOG(Shake::LogVerbosity::Info, "Initialized Log System");
+        //SE_INFO("App Starting = {0}", 1);
+        SELOG(Shake::LogVerbosity::Info, "App Starting = {0}", 1);
         
         SE_PROFILE_BEGIN_SESSION("Startup", "startup-profile.json");
         Shake::Application* app = Shake::CreateApplication();
