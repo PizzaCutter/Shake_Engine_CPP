@@ -3,7 +3,6 @@
 
 #include "Renderer.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
-#include "Shake/Core/Log.h"
 
 namespace Shake
 {

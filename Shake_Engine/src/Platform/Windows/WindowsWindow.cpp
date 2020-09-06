@@ -4,7 +4,6 @@
 #include "GLFW/glfw3.h"
 #include "Platform/OpenGL/OpenGLContext.h"
 
-#include "Shake/Core/Log.h"
 #include "Shake/Events/ApplicationEvent.h"
 #include "Shake/Events/KeyEvent.h"
 #include "Shake/Events/MouseEvent.h"

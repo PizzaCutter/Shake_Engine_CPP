@@ -3,8 +3,6 @@
 
 #include "stb_image.h"
 #include "glad/glad.h"
-#include "Shake/Core/Log.h"
-#include "Shake/Debug/Asserts.h"
 
 namespace Shake
 {

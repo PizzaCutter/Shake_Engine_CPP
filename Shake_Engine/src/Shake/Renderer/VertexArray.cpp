@@ -4,8 +4,6 @@
 #include "Renderer.h"
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 #include "Shake/Core/Core.h"
-#include "Shake/Core/Log.h"
-
 
 namespace Shake
 {

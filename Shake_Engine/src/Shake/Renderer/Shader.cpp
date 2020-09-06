@@ -4,7 +4,6 @@
 #include "Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 #include "Shake/Core/Core.h"
-#include "Shake/Core/Log.h"
 
 namespace Shake
 {

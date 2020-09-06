@@ -2,7 +2,6 @@
 #include "OpenGLFrameBuffer.h"
 
 #include "glad/glad.h"
-#include "Shake/Core/Log.h"
 
 namespace Shake
 {

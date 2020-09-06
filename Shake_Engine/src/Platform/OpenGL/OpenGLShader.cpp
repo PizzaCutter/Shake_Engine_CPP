@@ -6,8 +6,6 @@
 
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
-#include "Shake/Core/Log.h"
-#include "Shake/Helpers/FileReader.h"
 
 namespace Shake
 {
