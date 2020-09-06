@@ -7,12 +7,12 @@
 
 namespace Shake
 {
-    Ref<VertexArray> VertexArray::Create()
+    SharedPtr<VertexArray> VertexArray::Create()
     {
         switch(Renderer::GetRenderAPI())
         {
            case RenderAPI::API::None: SE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-           case RenderAPI::API::OpenGL: return std::make_shared<OpenGLVertexArray>(OpenGLVertexArray());
+           case RenderAPI::API::OpenGL: return CreateSharedPtr<OpenGLVertexArray>(OpenGLVertexArray());
         }
 
         SE_CORE_ASSERT(false, "Unknown RendererAPI!");

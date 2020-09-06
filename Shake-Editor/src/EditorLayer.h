@@ -25,12 +25,12 @@ public:
 private:
     OrthographicCameraController m_orthoCameraController;
 
-    Ref<Texture2D> m_TestTexture;
-    Ref<Texture2D> m_SpriteSheet;
-    Ref<SubTexture2D> m_SubTextureTest;
-    Ref<FrameBuffer> m_frameBuffer;
+    SharedPtr<Texture2D> m_TestTexture;
+    SharedPtr<Texture2D> m_SpriteSheet;
+    SharedPtr<SubTexture2D> m_SubTextureTest;
+    SharedPtr<FrameBuffer> m_frameBuffer;
 
-    Ref<Scene> m_scene;
+    SharedPtr<Scene> m_scene;
     Entity m_cameraEntity;
 
     SVector2 m_viewportSize = SVector2(0.0f, 0.0f);

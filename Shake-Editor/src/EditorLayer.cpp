@@ -1,8 +1,6 @@
 #include "sepch.h"
 #include "EditorLayer.h"
 
-#include "Shake/Core/Timestep.h"
-
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui/imgui.h"
 #include "Shake/Renderer/Buffers/FrameBuffer.h"
@@ -15,9 +13,9 @@ namespace Shake
                                  m_orthoCameraController(1280.0f / 720.0f),
                                  m_editableColor(SVector4(1.0f))
     {
-        m_TestTexture = Shake::Texture2D::Create("Content/Textures/Test.png");
-        m_SpriteSheet = Shake::Texture2D::Create("Content/Game/Textures/industrial.v2.png");
-        m_SubTextureTest = Shake::SubTexture2D::CreateSubTexture(m_SpriteSheet, Shake::SubTextureData(2, 14, 16, 16));
+        m_TestTexture = Texture2D::Create("Content/Textures/Test.png");
+        m_SpriteSheet = Texture2D::Create("Content/Game/Textures/industrial.v2.png");
+        m_SubTextureTest = SubTexture2D::CreateSubTexture(m_SpriteSheet, Shake::SubTextureData(2, 14, 16, 16));
     }
 
     EditorLayer::~EditorLayer()
@@ -26,12 +24,12 @@ namespace Shake
 
     void EditorLayer::OnAttach()
     {
-        Shake::FramebufferSpecifications spec;
+        FramebufferSpecifications spec;
         spec.width = 1280;
         spec.height = 720;
-        m_frameBuffer = Shake::FrameBuffer::Create(spec);
+        m_frameBuffer = FrameBuffer::Create(spec);
 
-        m_scene = std::make_shared<Scene>();
+        m_scene = CreateSharedPtr<Scene>();
         
         {
             Entity testEntity = m_scene->CreateEntity();
@@ -95,8 +93,6 @@ namespace Shake
             m_frameBuffer->Bind();
             RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
             RenderCommand::Clear();
-
-            //Renderer2D::BeginScene(m_orthoCameraController.GetCamera());
         }
         
 
@@ -104,30 +100,6 @@ namespace Shake
             SE_PROFILE_SCOPE("Rendering - Draw");
             
             m_scene->OnUpdate(timeStep);
-            
-            // Shake::Renderer2D::DrawQuad({0.5f, 0.0f, 0.0f}, {0.2f, 0.2f}, {1.0f, 0.2f, 0.2f, 1.0f});
-            //
-            // //Shake::Renderer2D::DrawQuadTextured({-0.9f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_TestTexture, {1.0f, 0.2f, 0.2f, 1.0f});
-            //
-            // Shake::Renderer2D::DrawRotatedQuad({1.0f, 0.0f, 0.0f}, {0.2f, 0.2f}, SMath::Radians(m_rotation),
-            //                                    {0.2f, 0.2f, 1.0f, 1.0f});
-            // Shake::Renderer2D::DrawRotatedQuadTextured({0.5f, 0.7f, 0.0f}, {0.5f, 0.5f}, SMath::Radians(m_rotation),
-            //                                            m_TestTexture, {10.f, 10.0f});
-            //
-            // Shake::Renderer2D::DrawQuad({-0.9f, 0.0f, -0.1f}, {0.5f, 0.5f}, {0.2f, 1.0f, 0.2f, 1.0f});
-            // Shake::Renderer2D::DrawQuadSubTexture({-0.9f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_SubTextureTest,
-            //                                       {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f});
-
-            // for(float y = -5.0f; y < 5.0f; y += 0.5f)
-            // {
-            //    for(float x = -5.0f; x < 5.0f; x += 0.5f)
-            //    {
-            //        glm::vec4 color = {(x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 1.0f};
-            //        Shake::Renderer2D::DrawQuad({x,y, -0.5f}, {0.45f, 0.45f}, color);
-            //    }
-            // }
-
-            //Shake::Renderer2D::DrawQuadTextured({0.9f, 0.0f, 0.0f}, {0.5f, 0.5f}, m_SpriteSheet, {1.0f, 1.0f, 1.0f, 1.0f});
         }
 
         {
@@ -241,7 +213,7 @@ namespace Shake
             }
 
             uint32_t rendererID = m_frameBuffer->GetColorAttachmentRendererID();
-            ImGui::Image((void*)rendererID, ImVec2(viewportSize.x, viewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
+            ImGui::Image(INT2VOIDP(rendererID), ImVec2(viewportSize.x, viewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
 
             ImGui::End();
             ImGui::PopStyleVar();

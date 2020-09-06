@@ -50,7 +50,7 @@ namespace Shake
         glBindVertexArray(0);
     }
 
-    void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& newVertexBuffer) 
+    void OpenGLVertexArray::AddVertexBuffer(const SharedPtr<VertexBuffer>& newVertexBuffer) 
     {
         glBindVertexArray(m_rendererId);
         newVertexBuffer->Bind();
@@ -66,14 +66,14 @@ namespace Shake
                                   ShaderDataTypeToOpenGLBaseType(element.m_type),
                                   element.m_normalized ? GL_TRUE : GL_FALSE,
                                   layout.GetStride(),
-                                  reinterpret_cast<const void*>(element.m_offset));
+                                  INT2VOIDP(element.m_offset));
             index++;
         }
         
         m_vertexBuffers.push_back(newVertexBuffer);
     }
 
-    void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
+    void OpenGLVertexArray::SetIndexBuffer(const SharedPtr<IndexBuffer>& indexBuffer)
     {
         glBindVertexArray(m_rendererId);
         indexBuffer->Bind();

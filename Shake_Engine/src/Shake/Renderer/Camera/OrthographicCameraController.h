@@ -1,12 +1,13 @@
 ﻿#pragma once
 #include "OrthographicCamera.h"
-#include "Shake/Core/Timestep.h"
 #include "Shake/Events/ApplicationEvent.h"
 #include "Shake/Events/Event.h"
 #include "Shake/Events/MouseEvent.h"
 
 namespace Shake
 {
+    class Timestep;
+
     class OrthographicCameraController
     {
     public:

@@ -5,7 +5,7 @@
 #include "Shake/Core/Layers/Layer.h"
 #include "Shake/IMGUI/ImGuiLayer.h"
 
-#include "Shake/Core/Timestep.h"
+#include "Shake/Core/Utils/Timestep.h"
 
 #include "Shake/Math/SMath.h"
 

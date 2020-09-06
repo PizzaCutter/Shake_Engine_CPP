@@ -30,7 +30,7 @@ namespace Shake
             s_renderAPI->WindowResize(width, height); 
         }
 
-        inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0)
+        inline static void DrawIndexed(const SharedPtr<VertexArray>& vertexArray, uint32_t indexCount = 0)
         {
             s_renderAPI->DrawIndexed(vertexArray, indexCount);
         }

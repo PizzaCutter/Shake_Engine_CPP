@@ -7,13 +7,13 @@
 
 namespace Shake
 {
-    Ref<Shader> Shader::Create(const std::string& path)
+    SharedPtr<Shader> Shader::Create(const std::string& path)
     {
          switch(Renderer::GetRenderAPI())
          {
          case RenderAPI::API::None: SE_CORE_ASSERT(false, "RenderAPI:::None is currently not supported")
              break;
-         case RenderAPI::API::OpenGL: return std::make_shared<OpenGLShader>(path);
+         case RenderAPI::API::OpenGL: return CreateSharedPtr<OpenGLShader>(path);
          default: ;
          }
          return nullptr;
@@ -21,13 +21,13 @@ namespace Shake
 
     void ShaderLibrary::Load(const std::string& filepath)
     {
-        Ref<Shader> shader = Shader::Create(filepath);
+        SharedPtr<Shader> shader = Shader::Create(filepath);
         const auto foundIterator = m_shaderReferences.find(shader->GetName());
         SE_CORE_ASSERT(foundIterator == m_shaderReferences.end(), "Shader already loaded");
         m_shaderReferences.emplace(shader->GetName(), shader); 
     }
 
-    Ref<Shader> ShaderLibrary::Get(const std::string& shaderName)
+    SharedPtr<Shader> ShaderLibrary::Get(const std::string& shaderName)
     {
         const auto foundIterator = m_shaderReferences.find(shaderName);
         SE_CORE_ASSERT(foundIterator != m_shaderReferences.end(), "Shader does not exist");

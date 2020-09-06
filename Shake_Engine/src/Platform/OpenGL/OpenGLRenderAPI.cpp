@@ -30,7 +30,7 @@ namespace Shake
         glViewport(0, 0, width, height);
     }
 
-    void OpenGLRenderAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
+    void OpenGLRenderAPI::DrawIndexed(const SharedPtr<VertexArray>& vertexArray, uint32_t indexCount)
     {
         const uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);

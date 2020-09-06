@@ -6,12 +6,12 @@
 
 namespace Shake
 {
-    SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& scene)
+    SceneHierarchyPanel::SceneHierarchyPanel(const SharedPtr<Scene>& scene)
     {
         SetContext(scene);
     }
 
-    void SceneHierarchyPanel::SetContext(const Ref<Scene>& scene)
+    void SceneHierarchyPanel::SetContext(const SharedPtr<Scene>& scene)
     {
         m_context = scene;    
     }

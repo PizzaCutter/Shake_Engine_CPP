@@ -10,15 +10,15 @@ namespace Shake
     {
     public:
         SceneHierarchyPanel() {}
-        SceneHierarchyPanel(const Ref<Scene>& scene);
+        SceneHierarchyPanel(const SharedPtr<Scene>& scene);
 
-        void SetContext(const Ref<Scene>& scene);
+        void SetContext(const SharedPtr<Scene>& scene);
 
         void OnImGuiRender();
     private:
         void DrawEntityNode(Entity entity);
         
-        Ref<Scene> m_context;
+        SharedPtr<Scene> m_context;
         Entity m_selectionContext;
     };
 }

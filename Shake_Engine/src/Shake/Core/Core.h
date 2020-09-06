@@ -7,6 +7,8 @@
 
 #define BIT(x) (1 << x)
 
-#include "Shake/Core/Pointer.h"
+#include "Shake/Core/Utils/Pointer.h"
 
-#define BIND_EVENT(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); } 
+#define BIND_EVENT(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+
+#define INT2VOIDP(i) (void*)(uintptr_t)(i)

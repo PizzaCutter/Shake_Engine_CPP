@@ -13,6 +13,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Shake/Core/Utils/Timestep.h"
+
 // ------------- DEBUG ----------------
 #include "Shake/Debug/Log.h"
 #include "Shake/Debug/Asserts.h"

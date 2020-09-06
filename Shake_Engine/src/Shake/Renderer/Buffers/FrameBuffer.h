@@ -25,6 +25,6 @@ namespace Shake
         virtual uint32_t GetColorAttachmentRendererID() const = 0;
         virtual const FramebufferSpecifications& GetSpecification() const = 0;
 
-        static Ref<FrameBuffer> Create(const FramebufferSpecifications& spec);
+        static SharedPtr<FrameBuffer> Create(const FramebufferSpecifications& spec);
     };
 }

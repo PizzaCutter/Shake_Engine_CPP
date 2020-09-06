@@ -28,18 +28,18 @@ namespace Shake
         const uint32_t MaxIndices = MaxQuads * 6;
         static const uint32_t MaxTextureSlots = 32;
         
-        Ref<VertexArray> m_vertexArray;
-        Ref<VertexBuffer> m_vertexBuffer;
+        SharedPtr<VertexArray> m_vertexArray;
+        SharedPtr<VertexBuffer> m_vertexBuffer;
         
-        Ref<Shader> m_textureShader;
-        Ref<Texture2D> m_whiteTexture;
+        SharedPtr<Shader> m_textureShader;
+        SharedPtr<Texture2D> m_whiteTexture;
 
         uint32_t m_quadIndexCount = 0;
         QuadVertex* m_quadVertexBufferBase = nullptr;
         QuadVertex* m_quadVertexBufferPtr = nullptr;
 
         uint32_t m_textureSlotIndexCount = 1;
-        std::array<Ref<Texture2D>, MaxTextureSlots> m_textures;
+        std::array<SharedPtr<Texture2D>, MaxTextureSlots> m_textures;
 
         SVector4 m_vertices[4];
     };
@@ -70,9 +70,9 @@ namespace Shake
         static void DrawQuad(const SVector3& position, const SVector2& size, const SVector4& color);
         static void DrawRotatedQuad(const SVector3& position, const SVector2& size, float rotation, const SVector4& color = SVector4(1.0f, 1.0f, 1.0f, 1.0f));
         
-        static void DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture, const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const SVector2& tilingSize = {1.0f, 1.0f});
-        static void DrawQuadSubTexture(const SVector3& position, const SVector2& size, const Ref<SubTexture2D> subTexture2D, const SVector4& color, const SVector2& tilingSize = {1.0f, 1.0f});        
-        static void DrawRotatedQuadTextured(const SVector3& position, const SVector2& size, float rotation, const Ref<Texture2D> texture, const SVector2& tilingSize = {1.0f, 1.0f} , const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f});
+        static void DrawQuadTextured(const SVector3& position, const SVector2& size, const SharedPtr<Texture2D> texture, const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const SVector2& tilingSize = {1.0f, 1.0f});
+        static void DrawQuadSubTexture(const SVector3& position, const SVector2& size, const SharedPtr<SubTexture2D> subTexture2D, const SVector4& color, const SVector2& tilingSize = {1.0f, 1.0f});        
+        static void DrawRotatedQuadTextured(const SVector3& position, const SVector2& size, float rotation, const SharedPtr<Texture2D> texture, const SVector2& tilingSize = {1.0f, 1.0f} , const SVector4& color = {1.0f, 1.0f, 1.0f, 1.0f});
 
         static RenderStatistics GetRenderStats();
 

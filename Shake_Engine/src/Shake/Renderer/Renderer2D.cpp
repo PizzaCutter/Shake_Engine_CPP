@@ -47,7 +47,7 @@ namespace Shake
             offset += 4;
         }
 
-        const Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(indices, m_rendererStorage.MaxIndices);
+        const SharedPtr<IndexBuffer> indexBuffer = IndexBuffer::Create(indices, m_rendererStorage.MaxIndices);
         m_rendererStorage.m_vertexArray->SetIndexBuffer(indexBuffer);
         delete[] indices;
 
@@ -102,13 +102,16 @@ namespace Shake
 
     void Renderer2D::FlushAndReset()
     {
+#pragma warning( push )
+#pragma warning( disable : 4244 )
         // UPLOADING VERTEX BUFFER DATA 
-        const uint32_t dataSize = reinterpret_cast<uint8_t*>(m_rendererStorage.m_quadVertexBufferPtr) - reinterpret_cast
+        const uint32_t dataSize = reinterpret_cast<uint8_t*>(m_rendererStorage.m_quadVertexBufferPtr) - reinterpret_cast 
             <uint8_t*>(m_rendererStorage.m_quadVertexBufferBase);
             m_rendererStorage.m_vertexBuffer->SetData(m_rendererStorage.m_quadVertexBufferBase, dataSize);
+#pragma warning( pop )
         
         // BINDING TEXTURES AND ACTUALLY RENDERING 
-        for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
+        for (uint32_t i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
         {
             m_rendererStorage.m_textures[i]->Bind(i);
         }
@@ -133,7 +136,7 @@ namespace Shake
         }
         
         float textureSlot = -1.0f;
-        for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
+        for (uint32_t i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
         {
             if (*m_rendererStorage.m_textures[i].get() == *m_rendererStorage.m_whiteTexture.get())
             {
@@ -145,7 +148,7 @@ namespace Shake
         if (textureSlot < 0.0f)
         {
             m_rendererStorage.m_textures[m_rendererStorage.m_textureSlotIndexCount] = m_rendererStorage.m_whiteTexture;
-            textureSlot = m_rendererStorage.m_textureSlotIndexCount;
+            textureSlot = static_cast<float>(m_rendererStorage.m_textureSlotIndexCount);
             m_rendererStorage.m_textureSlotIndexCount++;
         }
 
@@ -194,7 +197,7 @@ namespace Shake
         DrawRotatedQuadTextured(position, size, rotation, m_rendererStorage.m_whiteTexture, {1.0f, 1.0f}, color);
     }
 
-    void Renderer2D::DrawQuadTextured(const SVector3& position, const SVector2& size, const Ref<Texture2D> texture,
+    void Renderer2D::DrawQuadTextured(const SVector3& position, const SVector2& size, const SharedPtr<Texture2D> texture,
                                       const SVector4& color, const SVector2& tilingSize)
     {
         if(m_rendererStorage.m_quadIndexCount >= m_rendererStorage.MaxIndices)
@@ -203,7 +206,7 @@ namespace Shake
         }
         
         float textureSlot = -1.0f;
-        for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
+        for (uint32_t i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
         {
             if (*m_rendererStorage.m_textures[i].get() == *texture.get())
             {
@@ -215,7 +218,7 @@ namespace Shake
         if(textureSlot < 0.0f)
         {
             m_rendererStorage.m_textures[m_rendererStorage.m_textureSlotIndexCount] = texture;
-            textureSlot = m_rendererStorage.m_textureSlotIndexCount;
+            textureSlot = static_cast<float>(m_rendererStorage.m_textureSlotIndexCount);
             m_rendererStorage.m_textureSlotIndexCount++;
         }
 
@@ -255,7 +258,7 @@ namespace Shake
         m_rendererStatistics.IndexCount += 6;
     }
     
-   void Renderer2D::DrawQuadSubTexture(const SVector3& position, const SVector2& size, const Ref<SubTexture2D> subTexture2D,
+   void Renderer2D::DrawQuadSubTexture(const SVector3& position, const SVector2& size, const SharedPtr<SubTexture2D> subTexture2D,
                                       const SVector4& color, const SVector2& tilingSize)
     {
         if(m_rendererStorage.m_quadIndexCount >= m_rendererStorage.MaxIndices)
@@ -264,7 +267,7 @@ namespace Shake
         }
         
         float textureSlot = -1.0f;
-        for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
+        for (uint32_t i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
         {
             if (*m_rendererStorage.m_textures[i].get() == *subTexture2D->GetTexture().get())
             {
@@ -276,7 +279,7 @@ namespace Shake
         if(textureSlot < 0.0f)
         {
             m_rendererStorage.m_textures[m_rendererStorage.m_textureSlotIndexCount] = subTexture2D->GetTexture();
-            textureSlot = m_rendererStorage.m_textureSlotIndexCount;
+            textureSlot = static_cast<float>(m_rendererStorage.m_textureSlotIndexCount);
             m_rendererStorage.m_textureSlotIndexCount++;
         }
 
@@ -321,7 +324,7 @@ namespace Shake
     } 
 
     void Renderer2D::DrawRotatedQuadTextured(const SVector3& position, const SVector2& size, float rotation,
-                                             const Ref<Texture2D> texture, const SVector2& tilingSize,
+                                             const SharedPtr<Texture2D> texture, const SVector2& tilingSize,
                                              const SVector4& color)
     {
         if (m_rendererStorage.m_quadIndexCount >= m_rendererStorage.MaxIndices)
@@ -330,7 +333,7 @@ namespace Shake
         }
         
         float textureSlot = -1.0f;
-        for (int i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
+        for (uint32_t i = 0; i < m_rendererStorage.m_textureSlotIndexCount; ++i)
         {
             if (*m_rendererStorage.m_textures[i].get() == *texture.get())
             {
@@ -342,7 +345,7 @@ namespace Shake
         if (textureSlot < 0.0f)
         {
             m_rendererStorage.m_textures[m_rendererStorage.m_textureSlotIndexCount] = texture;
-            textureSlot = m_rendererStorage.m_textureSlotIndexCount;
+            textureSlot = static_cast<float>(m_rendererStorage.m_textureSlotIndexCount);
             m_rendererStorage.m_textureSlotIndexCount++;
         }
 

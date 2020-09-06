@@ -3,7 +3,7 @@
 
 namespace Shake
 {
-    Ref<SubTexture2D> SubTexture2D::CreateSubTexture(Ref<Texture2D> inTexture,
+    SharedPtr<SubTexture2D> SubTexture2D::CreateSubTexture(SharedPtr<Texture2D> inTexture,
                                                 const SubTextureData& subTextureData)
     {
         const int32_t textureWidth = inTexture->GetWidth();
@@ -14,10 +14,10 @@ namespace Shake
         const float xCoord = subTextureData.cellXIndex * normalizedCellWidth;
         const float yCoord = subTextureData.cellYIndex * normalizedCellHeight;
         
-        return std::make_shared<SubTexture2D>(SubTexture2D(inTexture, xCoord, yCoord, normalizedCellWidth, normalizedCellHeight));
+        return CreateSharedPtr<SubTexture2D>(SubTexture2D(inTexture, xCoord, yCoord, normalizedCellWidth, normalizedCellHeight));
     }
 
-    SubTexture2D::SubTexture2D(Ref<Texture2D> inTexture, float xCoord, float yCoord, float width, float height)
+    SubTexture2D::SubTexture2D(SharedPtr<Texture2D> inTexture, float xCoord, float yCoord, float width, float height)
     {
         m_texture = inTexture;
         m_normalizedXCoord = xCoord;

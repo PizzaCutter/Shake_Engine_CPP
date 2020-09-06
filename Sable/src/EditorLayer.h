@@ -24,9 +24,9 @@ private:
     Shake::OrthographicCameraController m_orthoCameraController;
 
     Shake::ShaderLibrary m_shaderLibrary;
-    Shake::Ref<Shake::Texture2D> m_TestTexture;
-    Shake::Ref<Shake::Texture2D> m_SpriteSheet;
-    Shake::Ref<Shake::SubTexture2D> m_SubTextureTest;
+    Shake::SharedPtr<Shake::Texture2D> m_TestTexture;
+    Shake::SharedPtr<Shake::Texture2D> m_SpriteSheet;
+    Shake::SharedPtr<Shake::SubTexture2D> m_SubTextureTest;
 
     SVector4 m_editableColor;
 

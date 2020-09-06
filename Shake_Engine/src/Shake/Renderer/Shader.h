@@ -26,7 +26,7 @@ namespace Shake
         virtual void UploadUniformFloat3(const std::string& name, const SVector3& data) = 0;
         virtual void UploadUniformFloat4(const std::string& name, const SVector4& vector) = 0;
 
-        static Ref<Shader> Create(const std::string& path);
+        static SharedPtr<Shader> Create(const std::string& path);
     };
 
     class ShaderLibrary
@@ -34,9 +34,9 @@ namespace Shake
     public:
         void Load(const std::string& filepath);
         
-        Ref<Shader> Get(const std::string& shaderName);
+        SharedPtr<Shader> Get(const std::string& shaderName);
 
     private:
-        std::unordered_map<std::string, Ref<Shader>> m_shaderReferences;
+        std::unordered_map<std::string, SharedPtr<Shader>> m_shaderReferences;
     };
 }

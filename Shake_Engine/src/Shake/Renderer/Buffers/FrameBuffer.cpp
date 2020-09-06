@@ -6,12 +6,12 @@
 
 namespace Shake
 {
-Ref<FrameBuffer> FrameBuffer::Create(const FramebufferSpecifications& spec)
+SharedPtr<FrameBuffer> FrameBuffer::Create(const FramebufferSpecifications& spec)
 {
     switch (Renderer::GetRenderAPI())
     {
     case RenderAPI::API::None: SE_CORE_ASSERT(false, "RenderAPI::None is currently not supported");
-    case RenderAPI::API::OpenGL: return std::make_shared<OpenGLFrameBuffer>(spec);
+    case RenderAPI::API::OpenGL: return CreateSharedPtr<OpenGLFrameBuffer>(spec);
     }
     return nullptr;
 }

@@ -1,10 +1,10 @@
 ﻿#pragma once
 
 #include "entt.hpp"
-#include "Shake/Core/Timestep.h"
 
 namespace Shake
 {
+    class Timestep;
     class Entity;
     
     class Scene

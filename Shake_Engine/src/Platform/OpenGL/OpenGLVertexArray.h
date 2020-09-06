@@ -16,15 +16,15 @@ namespace Shake
         void Bind() const override;
         void UnBind() const override;
         
-        void AddVertexBuffer(const Ref<VertexBuffer>& newVertexBuffer) override;
-        void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) override;
+        void AddVertexBuffer(const SharedPtr<VertexBuffer>& newVertexBuffer) override;
+        void SetIndexBuffer(const SharedPtr<IndexBuffer>& indexBuffer) override;
 
-        const std::vector<Ref<VertexBuffer>>& GetVertexBuffer() const override { return m_vertexBuffers; };
-        const Ref<IndexBuffer>& GetIndexBuffer() const override { return m_indexBuffer; };
+        const std::vector<SharedPtr<VertexBuffer>>& GetVertexBuffer() const override { return m_vertexBuffers; };
+        const SharedPtr<IndexBuffer>& GetIndexBuffer() const override { return m_indexBuffer; };
         
     private:
        uint32_t m_rendererId; 
-       std::vector<Ref<VertexBuffer>> m_vertexBuffers;
-       Ref<IndexBuffer> m_indexBuffer;
+       std::vector<SharedPtr<VertexBuffer>> m_vertexBuffers;
+       SharedPtr<IndexBuffer> m_indexBuffer;
     };
 }
