@@ -6,7 +6,7 @@
 
 namespace Shake
 {
-    class SHAKE_API Log
+    class Log
     {
     public:
         static void Init();

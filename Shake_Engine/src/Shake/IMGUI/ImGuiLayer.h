@@ -4,7 +4,7 @@
 
 namespace Shake
 {
-    class SHAKE_API ImGuiLayer : public Layer
+    class ImGuiLayer : public Layer
     {
     public:
         ImGuiLayer();

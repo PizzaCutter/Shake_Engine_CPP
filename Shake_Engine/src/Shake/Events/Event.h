@@ -34,7 +34,7 @@ namespace Shake
         EventCategoryMouseButton = BIT(4)
     };
     
-    class SHAKE_API Event
+    class Event
     {
         friend class EventDispatcher;
     public:

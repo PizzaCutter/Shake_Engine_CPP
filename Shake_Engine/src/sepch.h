@@ -13,6 +13,11 @@
 #include <unordered_map>
 #include <unordered_set>
 
+// ------------- DEBUG ----------------
+#include "Shake/Core/Log.h"
+#include "Shake/Debug/Asserts.h"
+
+// ------------- PROFILING ------------
 #include "Shake/Debug/Instrumentor.h"
 
 #ifdef SE_PLATFORM_WINDOWS
