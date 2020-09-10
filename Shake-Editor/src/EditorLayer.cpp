@@ -4,6 +4,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui/imgui.h"
 #include "Panels/MenuBarPanel.h"
+#include "Shake/Events/KeyEvent.h"
 #include "Shake/Renderer/Buffers/FrameBuffer.h"
 #include "Shake/Renderer/Renderer2D.h"
 #include "Shake/Scene/Entities/Entity.h"
@@ -80,9 +81,15 @@ namespace Shake
         {
             SE_PROFILE_SCOPE("Gameplay update");
 
-            if (m_viewportFocused)
+            if(m_triggeredSave == false)
             {
-                //m_orthoCameraController.OnUpdate(timeStep);
+                if(Input::IsKeyPressed(KeyCode::LeftControl) && Input::IsKeyPressed(KeyCode::S))
+                {
+                    SaveScene();
+                }else
+                {
+                    m_triggeredSave = false;
+                }
             }
 
             m_rotation += 10.0f * timeStep.GetSeconds();
@@ -121,6 +128,18 @@ namespace Shake
         }
 
         ViewportPanel();
+
+        if(m_actionPanelEnabled)
+        {
+            ImGui::SetNextWindowPos(m_actionPanelLocation, ImGuiCond_Always, ImVec2(0.0f, 0.0f));
+            ImGui::Begin("Action Panel");
+            if(ImGui::Button("AddObject"))
+            {
+                AddObject();
+                m_actionPanelEnabled = false;
+            }
+            ImGui::End();
+        }
 
         ImGuiCloseDockSpace();
     }
@@ -210,8 +229,39 @@ namespace Shake
         ImGui::PopStyleVar();
     }
 
+    void EditorLayer::AddObject()
+    {
+        SE_ENGINE_LOG(LogVerbosity::Info, "Attempted to add object");
+    }
+    
     void EditorLayer::OnEvent(Shake::Event& event)
     {
         m_orthoCameraController.OnEvent(event);
+        
+        EventDispatcher dispatcher(event);
+        dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT(EditorLayer::OnMouseButtonPressedCallback));
+    }
+
+    bool EditorLayer::OnMouseButtonPressedCallback(const MouseButtonPressedEvent& eventData)
+    {
+        if(eventData.GetMouseButton() == MouseCode::ButtonRight)
+        {
+            m_actionPanelLocation = ImGui::GetMousePos();
+            m_actionPanelEnabled = !m_actionPanelEnabled;
+        }
+        if(eventData.GetMouseButton() == MouseCode::ButtonLeft)
+        {
+            m_actionPanelEnabled = false;
+        }
+        return true;
+    }
+
+    
+
+    void EditorLayer::SaveScene()
+    {
+        SE_ENGINE_LOG(LogVerbosity::Info, "Save Data");
+        m_triggeredSave = true;
+        // TODO[rsmekens]: save all entities if we are not in simulated mode
     }
 }

@@ -26,17 +26,22 @@ public:
     void OnImGuiRender() override;
 
     void OnEvent(Event& event) override;
+    bool OnMouseButtonPressedCallback(const MouseButtonPressedEvent& eventData);
 
 private:
     void ImGuiSetupDockspace();
     void ImGuiCloseDockSpace();
     void ViewportPanel();
     
+    void AddObject();
+    void SaveScene();
+
     OrthographicCameraController m_orthoCameraController;
 
     SharedPtr<Texture2D> m_TestTexture;
     SharedPtr<Texture2D> m_SpriteSheet;
     SharedPtr<SubTexture2D> m_SubTextureTest;
+    
     SharedPtr<FrameBuffer> m_frameBuffer;
 
     SharedPtr<Scene> m_scene;
@@ -51,5 +56,10 @@ private:
     float m_rotation = 0.0f;
 
     std::vector<SharedPtr<BasePanel>> m_editorPanels;
+
+    // TRYING TO CREATE AN ACTION PANEL
+    ImVec2 m_actionPanelLocation;
+    bool m_actionPanelEnabled = false;
+    bool m_triggeredSave = false;
 };
 }

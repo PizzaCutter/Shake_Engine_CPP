@@ -5,6 +5,7 @@
 #include "GLFW/glfw3.h"
 #include "Shake/Window.h"
 #include "Shake/Core/Application.h"
+#include "Shake/Math/SMath.h"
 
 namespace Shake
 {
@@ -22,22 +23,22 @@ namespace Shake
         return state == GLFW_PRESS;
     }
 
-    std::pair<float, float> Input::GetMousePos()
+    SVector2 Input::GetMousePos()
     {
         GLFWwindow* glfwWindow = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
         double xPos;
         double yPos;
         glfwGetCursorPos(glfwWindow, &xPos, &yPos); 
-        return std::make_pair<float, float>(static_cast<float>(xPos), static_cast<float>(yPos));
+        return SVector2(static_cast<float>(xPos), static_cast<float>(yPos));
     }
 
     float Input::GetMouseX()
     {
-        return GetMousePos().first;
+        return GetMousePos().x;
     }
 
     float Input::GetMouseY()
     {
-        return GetMousePos().second;
+        return GetMousePos().y;
     }
 }
