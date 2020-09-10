@@ -1,11 +1,14 @@
 #pragma once
 #include "Shake.h"
+#include "imgui/imgui.h"
 #include "Shake/Renderer/Textures/SubTexture2D.h"
 #include "Shake/Renderer/Camera/OrthographicCameraController.h"
 #include "Shake/Scene/Entities/Entity.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/SceneStatsPanel.h"
 
 namespace Shake {
+    class BasePanel;
     class Scene;
     class FrameBuffer;
     class VertexArray;
@@ -19,10 +22,16 @@ public:
     void OnAttach() override;
     void OnDetach() override;
     void OnUpdate(Timestep timeStep) override;
+
     void OnImGuiRender() override;
+
     void OnEvent(Event& event) override;
 
 private:
+    void ImGuiSetupDockspace();
+    void ImGuiCloseDockSpace();
+    void ViewportPanel();
+    
     OrthographicCameraController m_orthoCameraController;
 
     SharedPtr<Texture2D> m_TestTexture;
@@ -41,6 +50,6 @@ private:
 
     float m_rotation = 0.0f;
 
-    SceneHierarchyPanel m_sceneHierarchyPanel;
+    std::vector<SharedPtr<BasePanel>> m_editorPanels;
 };
 }

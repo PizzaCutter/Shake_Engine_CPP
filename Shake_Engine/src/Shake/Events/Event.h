@@ -64,6 +64,7 @@ namespace Shake
             case EventType::MouseButtonReleased: return "MouseButtonReleased";
             case EventType::MouseMoved: return "MouseMoved";
             case EventType::MouseScrolled: return "MouseScrolled";
+            default: ;
             }
             return "NOT IMPLEMENTED";
         };

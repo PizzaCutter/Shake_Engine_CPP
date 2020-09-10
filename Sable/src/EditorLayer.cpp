@@ -1,11 +1,11 @@
 #include "sepch.h"
 #include "EditorLayer.h"
 
-#include "Shake/Core/Timestep.h"
+#include "Shake/Core/Utils/Timestep.h"
 
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui/imgui.h"
-#include "Shake/Renderer/FrameBuffer.h"
+#include "Shake/Renderer/Buffers/FrameBuffer.h"
 #include "Shake/Renderer/Renderer2D.h"
 
 EditorLayer::EditorLayer() : Layer("Base"),

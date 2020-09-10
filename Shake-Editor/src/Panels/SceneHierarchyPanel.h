@@ -1,24 +1,22 @@
 ﻿#pragma once
 
-#include "Shake/Scene/Scene.h"
+#include "BasePanel.h"
 #include "Shake/Core/Core.h"
+#include "Shake/Scene/Scene.h"
 #include "Shake/Scene/Entities/Entity.h"
 
 namespace Shake
 {
-    class SceneHierarchyPanel
+    class SceneHierarchyPanel : public BasePanel
     {
     public:
-        SceneHierarchyPanel() {}
-        SceneHierarchyPanel(const SharedPtr<Scene>& scene);
+        SceneHierarchyPanel(SharedPtr<Scene> scene);
+        virtual ~SceneHierarchyPanel() {};
 
-        void SetContext(const SharedPtr<Scene>& scene);
-
-        void OnImGuiRender();
+        void OnImGuiRender() override;
+        
     private:
         void DrawEntityNode(Entity entity);
-        
-        SharedPtr<Scene> m_context;
         Entity m_selectionContext;
     };
 }

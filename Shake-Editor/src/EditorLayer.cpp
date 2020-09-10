@@ -3,6 +3,7 @@
 
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui/imgui.h"
+#include "Panels/MenuBarPanel.h"
 #include "Shake/Renderer/Buffers/FrameBuffer.h"
 #include "Shake/Renderer/Renderer2D.h"
 #include "Shake/Scene/Entities/Entity.h"
@@ -30,16 +31,16 @@ namespace Shake
         m_frameBuffer = FrameBuffer::Create(spec);
 
         m_scene = CreateSharedPtr<Scene>();
-        
+
         {
             Entity testEntity = m_scene->CreateEntity();
             testEntity.AddComponent<TransformComponent>();
             testEntity.AddComponent<SpriteComponent>(SVector4(1.0f, 0.2f, 0.2f, 1.0f));
         }
 
-        class CameraController : public ScriptableEntity 
+        class CameraController : public ScriptableEntity
         {
-            public:
+        public:
             void OnCreate()
             {
                 //auto& transform = GetComponent<TransformComponent>();
@@ -53,7 +54,7 @@ namespace Shake
             {
             }
         };
-        
+
         // CREATING PRIMARY CAMERA
         {
             m_cameraEntity = m_scene->CreateEntity();
@@ -63,7 +64,9 @@ namespace Shake
             m_cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
         }
 
-        m_sceneHierarchyPanel.SetContext(m_scene); 
+        m_editorPanels.push_back(CreateSharedPtr<MenuBarPanel>(m_scene));
+        m_editorPanels.push_back(CreateSharedPtr<SceneHierarchyPanel>(m_scene));
+        m_editorPanels.push_back(CreateSharedPtr<SceneStatsPanel>(m_scene));
     }
 
     void EditorLayer::OnDetach()
@@ -79,13 +82,10 @@ namespace Shake
 
             if (m_viewportFocused)
             {
-               
-                
                 //m_orthoCameraController.OnUpdate(timeStep);
             }
 
             m_rotation += 10.0f * timeStep.GetSeconds();
-
         }
 
         {
@@ -94,11 +94,11 @@ namespace Shake
             RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
             RenderCommand::Clear();
         }
-        
+
 
         {
             SE_PROFILE_SCOPE("Rendering - Draw");
-            
+
             m_scene->OnUpdate(timeStep);
         }
 
@@ -110,12 +110,26 @@ namespace Shake
         }
     }
 
+
     void EditorLayer::OnImGuiRender()
+    {
+        ImGuiSetupDockspace();
+
+        for (SharedPtr<BasePanel> panel : m_editorPanels)
+        {
+            panel->OnImGuiRender();
+        }
+
+        ViewportPanel();
+
+        ImGuiCloseDockSpace();
+    }
+
+    void EditorLayer::ImGuiSetupDockspace()
     {
         bool p_open = true;
         static bool opt_fullscreen_persistant = true;
         bool opt_fullscreen = opt_fullscreen_persistant;
-        static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
         // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
         // because it would be confusing to have two docking targets within each others.
@@ -135,7 +149,7 @@ namespace Shake
 
         // When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
         // and handle the pass-thru hole, so we ask Begin() to not render a background.
-        if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+        if (ImGuiDockNodeFlags_None & ImGuiDockNodeFlags_PassthruCentralNode)
             window_flags |= ImGuiWindowFlags_NoBackground;
 
         // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
@@ -155,71 +169,45 @@ namespace Shake
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
         {
             ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-            ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+            ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
         }
         else
         {
             //ShowDockingDisabledMessage();
         }
+    }
 
-        if (ImGui::BeginMenuBar())
+    void EditorLayer::ImGuiCloseDockSpace()
+    {
+       ImGui::End(); 
+    }
+
+    void EditorLayer::ViewportPanel()
+    {
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Removes padding around the window
+        ImGui::Begin("Viewport");
+
+        m_viewportFocused = ImGui::IsWindowFocused();
+        m_viewportHovered = ImGui::IsWindowHovered();
+        Application::Get().GetImGuiLayer()->BlockEvents(!m_viewportFocused || !m_viewportHovered);
+
+        ImVec2 viewportSize = ImGui::GetContentRegionAvail();
+        if ((viewportSize.x != m_viewportSize.x || viewportSize.y != m_viewportSize.y) && viewportSize.x > 0 &&
+            viewportSize.y > 0)
         {
-            if (ImGui::BeginMenu("Docking"))
-            {
-                // Disabling fullscreen would allow the window to be moved to the front of other windows,
-                // which we can't undo at the moment without finer window depth/z control.
-                //ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
+            m_viewportSize.x = viewportSize.x;
+            m_viewportSize.y = viewportSize.y;
+            m_frameBuffer->Resize(static_cast<uint32_t>(m_viewportSize.x), static_cast<uint32_t>(m_viewportSize.y));
+            m_orthoCameraController.OnResize(m_viewportSize.x, m_viewportSize.y);
 
-                if (ImGui::MenuItem("Exit", "", (dockspace_flags & ImGuiDockNodeFlags_NoSplit) != 0))
-                {
-                    Shake::Application::Get().Close();
-                }
-
-                ImGui::EndMenu();
-            }
-            ImGui::EndMenuBar();
+            m_scene->OnViewportResize((uint32_t)m_viewportSize.x, (uint32_t)m_viewportSize.y);
         }
 
-        m_sceneHierarchyPanel.OnImGuiRender();
-
-        {
-            ImGui::Begin("Settings");
-            ImGui::ColorEdit4("Square Color", glm::value_ptr(m_editableColor));
-            const Shake::RenderStatistics& renderStats = Shake::Renderer2D::GetRenderStats();
-            ImGui::Text("Renderer2D Stats:");
-            ImGui::Text("Draw Calls: %d", renderStats.BatchCount);
-            ImGui::Text("Quad Count: %d", renderStats.QuadCount);
-            ImGui::Text("Index Count: %d", renderStats.IndexCount);
-            ImGui::Text("Texture Count: %d", renderStats.TextureCount);
-            ImGui::End();
-
-            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Removes padding around the window
-            ImGui::Begin("Viewport");
-
-            m_viewportFocused = ImGui::IsWindowFocused();
-            m_viewportHovered = ImGui::IsWindowHovered();
-            Shake::Application::Get().GetImGuiLayer()->BlockEvents(!m_viewportFocused || !m_viewportHovered);
-
-            ImVec2 viewportSize = ImGui::GetContentRegionAvail();
-            if ((viewportSize.x != m_viewportSize.x || viewportSize.y != m_viewportSize.y) && viewportSize.x > 0 &&
-                viewportSize.y > 0)
-            {
-                m_viewportSize.x = viewportSize.x;
-                m_viewportSize.y = viewportSize.y;
-                m_frameBuffer->Resize(static_cast<uint32_t>(m_viewportSize.x), static_cast<uint32_t>(m_viewportSize.y));
-                m_orthoCameraController.OnResize(m_viewportSize.x, m_viewportSize.y);
-
-                m_scene->OnViewportResize((uint32_t)m_viewportSize.x, (uint32_t)m_viewportSize.y);
-            }
-
-            uint32_t rendererID = m_frameBuffer->GetColorAttachmentRendererID();
-            ImGui::Image(INT2VOIDP(rendererID), ImVec2(viewportSize.x, viewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
-
-            ImGui::End();
-            ImGui::PopStyleVar();
-        }
+        uint32_t rendererID = m_frameBuffer->GetColorAttachmentRendererID();
+        ImGui::Image(INT2VOIDP(rendererID), ImVec2(viewportSize.x, viewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
 
         ImGui::End();
+        ImGui::PopStyleVar();
     }
 
     void EditorLayer::OnEvent(Shake::Event& event)

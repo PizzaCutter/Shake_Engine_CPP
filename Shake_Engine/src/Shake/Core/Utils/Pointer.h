@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <memory>
+
 namespace Shake
 {
     template<typename T>

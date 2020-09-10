@@ -11,6 +11,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Shake/Core/Utils/Pointer.h"
+
 // ------------- STRINGS ------------
 #include "Shake/Strings/SString.h"
 
