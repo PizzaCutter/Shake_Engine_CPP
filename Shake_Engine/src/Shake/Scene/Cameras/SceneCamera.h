@@ -11,6 +11,8 @@ namespace Shake
 
         void SetOrthographic(float size, float nearClip, float farClip);
         void SetViewportSize(uint32_t width, uint32_t height);
+
+        float GetAspectRatio() const { return m_aspectRatio; }
     private:
         void RecaluclateProjection();
         

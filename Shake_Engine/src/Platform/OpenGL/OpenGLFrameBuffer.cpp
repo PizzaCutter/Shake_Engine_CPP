@@ -61,6 +61,8 @@ namespace Shake
 
     void OpenGLFrameBuffer::Unbind()
     {
+        // glBindFramebuffer(GL_FRAMEBUFFER, m_rendererID);
+        // glViewport(0,0,m_frameBufferSpecification.width,m_frameBufferSpecification.height);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
     

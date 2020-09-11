@@ -90,6 +90,19 @@ namespace Shake
         m_rendererStorage.m_textureSlotIndexCount = 1;
     }
 
+    void Renderer2D::BeginSceneMatric(SMat4 mat)
+    {
+         m_rendererStatistics = RenderStatistics();
+         
+         m_rendererStorage.m_textureShader->Bind();
+         m_rendererStorage.m_textureShader->UploadUniformMat4("u_viewProjection", mat);
+ 
+         m_rendererStorage.m_quadIndexCount = 0;
+         m_rendererStorage.m_quadVertexBufferPtr = m_rendererStorage.m_quadVertexBufferBase;
+ 
+         m_rendererStorage.m_textureSlotIndexCount = 1;       
+    }
+
     void Renderer2D::EndScene()
     {
         FlushAndReset();

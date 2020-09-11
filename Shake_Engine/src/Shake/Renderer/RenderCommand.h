@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "RenderAPI.h"
 #include "Renderer2D.h"
+#include "Buffers/FrameBuffer.h"
 
 namespace Shake
 {
@@ -33,6 +34,11 @@ namespace Shake
         inline static void DrawIndexed(const SharedPtr<VertexArray>& vertexArray, uint32_t indexCount = 0)
         {
             s_renderAPI->DrawIndexed(vertexArray, indexCount);
+        }
+
+        inline static void RenderFrameBuffer(const SharedPtr<FrameBuffer>& frameBuffer)
+        {
+           s_renderAPI->RenderFrameBuffer(frameBuffer); 
         }
 
     private:

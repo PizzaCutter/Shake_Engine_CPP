@@ -6,6 +6,7 @@
 #include "Shake/Scene/Entities/Entity.h"
 #include "Panels/SceneHierarchyPanel.h"
 #include "Panels/SceneStatsPanel.h"
+#include "Shake/Events/KeyEvent.h"
 
 namespace Shake {
     class BasePanel;
@@ -26,7 +27,10 @@ public:
     void OnImGuiRender() override;
 
     void OnEvent(Event& event) override;
+    bool OnWindowResizeCallback(const WindowResizeEvent& eventData);
     bool OnMouseButtonPressedCallback(const MouseButtonPressedEvent& eventData);
+    bool OnKeyPressedCallback(const KeyPressedEvent& eventData);
+    void OnResizeViewport(uint32_t width, uint32_t height);
 
 private:
     void ImGuiSetupDockspace();
@@ -36,7 +40,7 @@ private:
     void AddObject();
     void SaveScene();
 
-    OrthographicCameraController m_orthoCameraController;
+    //OrthographicCameraController m_orthoCameraController;
 
     SharedPtr<Texture2D> m_TestTexture;
     SharedPtr<Texture2D> m_SpriteSheet;
@@ -56,6 +60,9 @@ private:
     float m_rotation = 0.0f;
 
     std::vector<SharedPtr<BasePanel>> m_editorPanels;
+
+    bool m_isEditorHidden = true;
+    bool m_recalculateViewportSize = true;
 
     // TRYING TO CREATE AN ACTION PANEL
     ImVec2 m_actionPanelLocation;

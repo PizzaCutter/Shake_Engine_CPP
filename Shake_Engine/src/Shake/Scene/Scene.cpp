@@ -42,7 +42,7 @@ namespace Shake
 
         // FIND MAIN CAMERA 
         // TODO[rsmekens]: make this 'independent' from entt use a thin wrapper layer instead so we can layer implement our own system
-        Camera* mainCamera = nullptr;
+        SceneCamera* mainCamera = nullptr;
         {
             auto group = m_registry.group<CameraComponent>(entt::get<TransformComponent>);
             for (auto entity : group)
@@ -56,6 +56,8 @@ namespace Shake
                 }
             }
         }
+
+        SE_ENGINE_LOG(LogVerbosity::Info, "AspectRatio {0}", mainCamera->GetAspectRatio());
 
         if(mainCamera == nullptr)
         {

@@ -6,6 +6,7 @@
 
 namespace Shake
 {
+    class FrameBuffer;
     class VertexArray;
 
     class RenderAPI
@@ -27,6 +28,8 @@ namespace Shake
         virtual void WindowResize(int32_t width, int32_t height) = 0;
 
         virtual void DrawIndexed(const SharedPtr<VertexArray>& vertexArray, uint32_t indexCount) = 0;
+        
+        virtual void RenderFrameBuffer(const SharedPtr<FrameBuffer>& frameBuffer) = 0;
 
         inline static API GetAPI() { return s_api; }
     private:

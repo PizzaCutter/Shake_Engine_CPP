@@ -12,7 +12,7 @@
 namespace Shake
 {
     EditorLayer::EditorLayer() : Layer("EditorLayer"),
-                                 m_orthoCameraController(1280.0f / 720.0f),
+                                 //m_orthoCameraController(1280.0f / 720.0f),
                                  m_editableColor(SVector4(1.0f))
     {
         m_TestTexture = Texture2D::Create("Content/Textures/Test.png");
@@ -26,9 +26,12 @@ namespace Shake
 
     void EditorLayer::OnAttach()
     {
+        const uint32_t width = Application::Get().GetWindow().GetWidth();
+        const uint32_t height = Application::Get().GetWindow().GetHeight();
+        
         FramebufferSpecifications spec;
-        spec.width = 1280;
-        spec.height = 720;
+        spec.width = width;
+        spec.height = height;
         m_frameBuffer = FrameBuffer::Create(spec);
 
         m_scene = CreateSharedPtr<Scene>();
@@ -68,6 +71,8 @@ namespace Shake
         m_editorPanels.push_back(CreateSharedPtr<MenuBarPanel>(m_scene));
         m_editorPanels.push_back(CreateSharedPtr<SceneHierarchyPanel>(m_scene));
         m_editorPanels.push_back(CreateSharedPtr<SceneStatsPanel>(m_scene));
+
+        m_scene->OnViewportResize(1280, 720);
     }
 
     void EditorLayer::OnDetach()
@@ -77,7 +82,7 @@ namespace Shake
     auto EditorLayer::OnUpdate(Shake::Timestep timeStep) -> void
     {
         SE_PROFILE_FUNCTION()
-
+        
         {
             SE_PROFILE_SCOPE("Gameplay update");
 
@@ -97,29 +102,48 @@ namespace Shake
 
         {
             SE_PROFILE_SCOPE("Rendering - Prep");
-            m_frameBuffer->Bind();
+            if(m_isEditorHidden == false)
+            {
+                m_frameBuffer->Bind();
+            }
+            
             RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
             RenderCommand::Clear();
         }
 
-
         {
             SE_PROFILE_SCOPE("Rendering - Draw");
-
+            
             m_scene->OnUpdate(timeStep);
+
         }
+        
 
         {
             SE_PROFILE_SCOPE("Rendering - Shutdown");
-            //Renderer2D::EndScene();
+            if(m_isEditorHidden == false)
+            {
+                m_frameBuffer->Unbind();
+            }
 
-            m_frameBuffer->Unbind();
+            RenderCommand::RenderFrameBuffer(m_frameBuffer);
+        }
+        
+        if(m_isEditorHidden && m_recalculateViewportSize)
+        {
+            const uint32_t width = Application::Get().GetWindow().GetWidth();
+            const uint32_t height = Application::Get().GetWindow().GetHeight();
+            OnResizeViewport(width, height); 
         }
     }
 
-
     void EditorLayer::OnImGuiRender()
     {
+        if(m_isEditorHidden)
+        {
+            return;
+        }
+        
         ImGuiSetupDockspace();
 
         for (SharedPtr<BasePanel> panel : m_editorPanels)
@@ -216,10 +240,14 @@ namespace Shake
         {
             m_viewportSize.x = viewportSize.x;
             m_viewportSize.y = viewportSize.y;
-            m_frameBuffer->Resize(static_cast<uint32_t>(m_viewportSize.x), static_cast<uint32_t>(m_viewportSize.y));
-            m_orthoCameraController.OnResize(m_viewportSize.x, m_viewportSize.y);
+            OnResizeViewport(static_cast<uint32_t>(m_viewportSize.x), static_cast<uint32_t>(m_viewportSize.y));
+        }
 
-            m_scene->OnViewportResize((uint32_t)m_viewportSize.x, (uint32_t)m_viewportSize.y);
+        if(m_recalculateViewportSize)
+        {
+            m_viewportSize.x = viewportSize.x;
+            m_viewportSize.y = viewportSize.y;
+            OnResizeViewport(static_cast<uint32_t>(m_viewportSize.x), static_cast<uint32_t>(m_viewportSize.y));
         }
 
         uint32_t rendererID = m_frameBuffer->GetColorAttachmentRendererID();
@@ -236,10 +264,20 @@ namespace Shake
     
     void EditorLayer::OnEvent(Shake::Event& event)
     {
-        m_orthoCameraController.OnEvent(event);
-        
         EventDispatcher dispatcher(event);
         dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT(EditorLayer::OnMouseButtonPressedCallback));
+        dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT(EditorLayer::OnKeyPressedCallback));
+
+        if(m_isEditorHidden)
+            {
+            dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT(EditorLayer::OnWindowResizeCallback));
+            }
+    }
+
+    bool EditorLayer::OnWindowResizeCallback(const WindowResizeEvent& eventData)
+    {
+        OnResizeViewport(eventData.GetWidth(), eventData.GetHeight());
+        return true; 
     }
 
     bool EditorLayer::OnMouseButtonPressedCallback(const MouseButtonPressedEvent& eventData)
@@ -256,7 +294,21 @@ namespace Shake
         return true;
     }
 
-    
+    bool EditorLayer::OnKeyPressedCallback(const KeyPressedEvent& eventData)
+    {
+       if(eventData.GetKeyCode() == KeyCode::F1)
+       {
+           m_isEditorHidden = !m_isEditorHidden;
+           m_recalculateViewportSize = true;
+       }
+       return true;         
+    }
+
+    void EditorLayer::OnResizeViewport(uint32_t width, uint32_t height)
+    {
+        m_scene->OnViewportResize(width, height);
+        m_recalculateViewportSize = false;
+    }
 
     void EditorLayer::SaveScene()
     {

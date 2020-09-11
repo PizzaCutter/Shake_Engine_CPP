@@ -12,5 +12,6 @@ namespace Shake
         void Initialize() override;
         void WindowResize(int32_t width, int32_t height) override;
         void DrawIndexed(const SharedPtr<VertexArray>& vertexArray, uint32_t indexCount = 0) override;
+        void RenderFrameBuffer(const SharedPtr<FrameBuffer>& frameBuffer) override;
     };
 }
