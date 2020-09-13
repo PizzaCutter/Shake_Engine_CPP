@@ -5,7 +5,6 @@ namespace Shake
 {
     struct TransformComponent 
     {
-    public:
         SMat4 Transform {SMat4(1.0f)};
         SVector3 Position {SVector3()};
         float Rotation {0.0f};
@@ -14,10 +13,16 @@ namespace Shake
         TransformComponent() = default;
         TransformComponent(const TransformComponent&) = default;
         TransformComponent(const SMat4& transform) : Transform(transform) {};
+        TransformComponent(const SVector3& position, const float rotation, const SVector2& scale)
+            : Position(position), Rotation(rotation), Scale(scale)
+        {
+            
+        }
 
         void SetPosition(SVector3 newPosition);
         void SetRotation(float newRotation);
         void SetScale(SVector2 newScale);
+        void SetPositionAndRotation(SVector3 newPosition, float newRotation);
 
         SVector3 GetPosition() const;
         float GetRotation() const;

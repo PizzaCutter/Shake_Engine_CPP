@@ -21,6 +21,13 @@ namespace Shake
         UpdateMatrix();
     }
 
+    void TransformComponent::SetPositionAndRotation(glm::vec3 newPosition, float newRotation)
+    {
+        Position = newPosition;
+        Rotation = newRotation;
+        UpdateMatrix();
+    }
+
     glm::vec3 TransformComponent::GetPosition() const
     {
         return Position;

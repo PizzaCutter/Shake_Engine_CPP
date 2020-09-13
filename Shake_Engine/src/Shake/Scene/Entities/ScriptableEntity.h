@@ -3,9 +3,9 @@
 
 namespace Shake
 {
-    class ScriptableEntity 
+    struct ScriptableEntity 
     {
-    public:
+        ScriptableEntity() = default;
         virtual ~ScriptableEntity() {}
         
         template<typename T>
@@ -14,12 +14,10 @@ namespace Shake
             return m_entity.GetComponent<T>();
         }
         
-    protected:
         virtual void OnCreate() {}
         virtual void OnDestroy() {}
         virtual void OnUpdate(Timestep ts) {}
     
-    private:
         Entity m_entity;
         friend class Scene;
     

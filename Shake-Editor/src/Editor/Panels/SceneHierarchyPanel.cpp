@@ -15,7 +15,7 @@ namespace Shake
     {
         ImGui::Begin("Scene Hierarchy");
         
-        m_currentScene->GetRegistry().each([&](auto entityID)
+        m_currentScene->m_registry.each([&](auto entityID)
         {
             Entity entity {entityID, m_currentScene.get()};
             DrawEntityNode(entity);

@@ -49,12 +49,8 @@ private:
     SharedPtr<SubTexture2D> m_SubTextureTest;
     
     SharedPtr<FrameBuffer> m_frameBuffer;
-
+    
     SharedPtr<Scene> m_scene;
-    Entity m_cameraEntity;
-    Entity m_playerEntity;
-    std::vector<Entity> m_testEntities;
-    std::vector<b2Body*> m_testPhysicEntities;
 
     SVector2 m_viewportSize = SVector2(0.0f, 0.0f);
     bool m_viewportFocused = false;
@@ -76,8 +72,6 @@ private:
     bool m_actionPanelEnabled = false;
     bool m_triggeredSave = false;
 
-    std::unique_ptr<b2World> m_world;
-    b2Body* dynamicBodyTest = nullptr;
 };
     
 }

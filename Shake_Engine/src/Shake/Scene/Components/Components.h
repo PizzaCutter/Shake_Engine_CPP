@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "Shake/Scene/Cameras/SceneCamera.h"
 #include "Shake/Scene/Entities/ScriptableEntity.h"
 #include "Shake/Math/SMath.h"
@@ -12,7 +13,10 @@ namespace Shake
 
         SpriteComponent() = default;
         SpriteComponent(const SpriteComponent&) = default;
-        SpriteComponent(const SVector4& color) : Color(color) {}
+
+        SpriteComponent(const SVector4& color) : Color(color)
+        {
+        }
     };
 
     struct CameraComponent
@@ -44,6 +48,6 @@ namespace Shake
                 delete nsc->Instance;
                 nsc->Instance = nullptr;
             };
-       }
+        }
     };
 }
