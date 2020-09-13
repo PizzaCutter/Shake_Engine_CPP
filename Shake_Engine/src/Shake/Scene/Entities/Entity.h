@@ -29,7 +29,7 @@ namespace Shake
         template<typename T>
         T& GetComponent()
         {
-            SE_CORE_ASSERT(HasComponent<T>, "Entity does not have component!");
+            //SE_CORE_ASSERT(HasComponent<T>, "Entity does not have component!");
             return m_scene->GetRegistry().get<T>(m_entityId);
         }
 

@@ -1,29 +1,32 @@
 #include "sepch.h"
 #include "EditorLayer.h"
 
+
+#include "../Game/Components/PlayerMovementComponent.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui/imgui.h"
 #include "Panels/MenuBarPanel.h"
 #include "Shake/Events/KeyEvent.h"
 #include "Shake/Renderer/Buffers/FrameBuffer.h"
 #include "Shake/Renderer/Renderer2D.h"
+#include "Shake/Scene/Components/TransformComponent.h"
 #include "Shake/Scene/Entities/Entity.h"
 
 namespace Shake
 {
     EditorLayer::EditorLayer() : Layer("EditorLayer"),
-                                 //m_orthoCameraController(1280.0f / 720.0f),
-                                 m_editableColor(SVector4(1.0f))
+    //m_orthoCameraController(1280.0f / 720.0f),
+    m_editableColor(SVector4(1.0f))
     {
         m_TestTexture = Texture2D::Create("Content/Textures/Test.png");
         m_SpriteSheet = Texture2D::Create("Content/Game/Textures/industrial.v2.png");
         m_SubTextureTest = SubTexture2D::CreateSubTexture(m_SpriteSheet, Shake::SubTextureData(2, 14, 16, 16));
     }
-
+    
     EditorLayer::~EditorLayer()
     {
     }
-
+    
     void EditorLayer::OnAttach()
     {
         const uint32_t width = Application::Get().GetWindow().GetWidth();
@@ -33,32 +36,37 @@ namespace Shake
         spec.width = width;
         spec.height = height;
         m_frameBuffer = FrameBuffer::Create(spec);
-
+        
         m_scene = CreateSharedPtr<Scene>();
-
+        
         {
-            Entity testEntity = m_scene->CreateEntity();
-            testEntity.AddComponent<TransformComponent>();
-            testEntity.AddComponent<SpriteComponent>(SVector4(1.0f, 0.2f, 0.2f, 1.0f));
+            Entity playerEntity = m_scene->CreateEntity();
+            playerEntity.AddComponent<TransformComponent>();
+            playerEntity.AddComponent<SpriteComponent>(SVector4(1.0f, 0.2f, 0.2f, 1.0f));
+            playerEntity.AddComponent<NativeScriptComponent>().Bind<PlayerMovementComponent>();
+            
+            // Entity anotherEntity = m_scene->CreateEntity();
+            // anotherEntity.AddComponent<TransformComponent>();
+            // anotherEntity.AddComponent<SpriteComponent>(SVector4(0.2f, 1.0f, 0.2f, 1.0f));
         }
-
+        
         class CameraController : public ScriptableEntity
         {
-        public:
+            public:
             void OnCreate()
             {
                 //auto& transform = GetComponent<TransformComponent>();
             }
-
+            
             void OnDestroy()
             {
             }
-
+            
             void OnUpdate(Timestep ts)
             {
             }
         };
-
+        
         // CREATING PRIMARY CAMERA
         {
             m_cameraEntity = m_scene->CreateEntity();
@@ -67,25 +75,25 @@ namespace Shake
             cameraComponent.Primary = true;
             m_cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
         }
-
+        
         m_editorPanels.push_back(CreateSharedPtr<MenuBarPanel>(m_scene));
         m_editorPanels.push_back(CreateSharedPtr<SceneHierarchyPanel>(m_scene));
         m_editorPanels.push_back(CreateSharedPtr<SceneStatsPanel>(m_scene));
-
+        
         m_scene->OnViewportResize(1280, 720);
     }
-
+    
     void EditorLayer::OnDetach()
     {
     }
-
+    
     auto EditorLayer::OnUpdate(Shake::Timestep timeStep) -> void
     {
         SE_PROFILE_FUNCTION()
-        
+            
         {
             SE_PROFILE_SCOPE("Gameplay update");
-
+            
             if(m_triggeredSave == false)
             {
                 if(Input::IsKeyPressed(KeyCode::LeftControl) && Input::IsKeyPressed(KeyCode::S))
@@ -96,36 +104,36 @@ namespace Shake
                     m_triggeredSave = false;
                 }
             }
-
+            
             m_rotation += 10.0f * timeStep.GetSeconds();
         }
-
+        
         {
             SE_PROFILE_SCOPE("Rendering - Prep");
             if(m_isEditorHidden == false)
             {
-                m_frameBuffer->Bind();
+                
             }
             
             RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
             RenderCommand::Clear();
         }
-
+        
         {
             SE_PROFILE_SCOPE("Rendering - Draw");
             
             m_scene->OnUpdate(timeStep);
-
+            
         }
         
-
+        
         {
             SE_PROFILE_SCOPE("Rendering - Shutdown");
             if(m_isEditorHidden == false)
             {
                 m_frameBuffer->Unbind();
             }
-
+            
             RenderCommand::RenderFrameBuffer(m_frameBuffer);
         }
         
@@ -136,7 +144,7 @@ namespace Shake
             OnResizeViewport(width, height); 
         }
     }
-
+    
     void EditorLayer::OnImGuiRender()
     {
         if(m_isEditorHidden)
@@ -145,14 +153,14 @@ namespace Shake
         }
         
         ImGuiSetupDockspace();
-
+        
         for (SharedPtr<BasePanel> panel : m_editorPanels)
         {
             panel->OnImGuiRender();
         }
-
+        
         ViewportPanel();
-
+        
         if(m_actionPanelEnabled)
         {
             ImGui::SetNextWindowPos(m_actionPanelLocation, ImGuiCond_Always, ImVec2(0.0f, 0.0f));
@@ -164,16 +172,16 @@ namespace Shake
             }
             ImGui::End();
         }
-
+        
         ImGuiCloseDockSpace();
     }
-
+    
     void EditorLayer::ImGuiSetupDockspace()
     {
         bool p_open = true;
         static bool opt_fullscreen_persistant = true;
         bool opt_fullscreen = opt_fullscreen_persistant;
-
+        
         // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
         // because it would be confusing to have two docking targets within each others.
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -189,12 +197,12 @@ namespace Shake
                 ImGuiWindowFlags_NoMove;
             window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
         }
-
+        
         // When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
         // and handle the pass-thru hole, so we ask Begin() to not render a background.
         if (ImGuiDockNodeFlags_None & ImGuiDockNodeFlags_PassthruCentralNode)
             window_flags |= ImGuiWindowFlags_NoBackground;
-
+        
         // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
         // This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
         // all active windows docked into it will lose their parent and become undocked.
@@ -203,10 +211,10 @@ namespace Shake
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
         ImGui::Begin("DockSpace Demo", &p_open, window_flags);
         ImGui::PopStyleVar();
-
+        
         if (opt_fullscreen)
             ImGui::PopStyleVar(2);
-
+        
         // DockSpace
         ImGuiIO& io = ImGui::GetIO();
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
@@ -219,21 +227,21 @@ namespace Shake
             //ShowDockingDisabledMessage();
         }
     }
-
+    
     void EditorLayer::ImGuiCloseDockSpace()
     {
-       ImGui::End(); 
+        ImGui::End(); 
     }
-
+    
     void EditorLayer::ViewportPanel()
     {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Removes padding around the window
         ImGui::Begin("Viewport");
-
+        
         m_viewportFocused = ImGui::IsWindowFocused();
         m_viewportHovered = ImGui::IsWindowHovered();
         Application::Get().GetImGuiLayer()->BlockEvents(!m_viewportFocused || !m_viewportHovered);
-
+        
         ImVec2 viewportSize = ImGui::GetContentRegionAvail();
         if ((viewportSize.x != m_viewportSize.x || viewportSize.y != m_viewportSize.y) && viewportSize.x > 0 &&
             viewportSize.y > 0)
@@ -242,21 +250,21 @@ namespace Shake
             m_viewportSize.y = viewportSize.y;
             OnResizeViewport(static_cast<uint32_t>(m_viewportSize.x), static_cast<uint32_t>(m_viewportSize.y));
         }
-
+        
         if(m_recalculateViewportSize)
         {
             m_viewportSize.x = viewportSize.x;
             m_viewportSize.y = viewportSize.y;
             OnResizeViewport(static_cast<uint32_t>(m_viewportSize.x), static_cast<uint32_t>(m_viewportSize.y));
         }
-
+        
         uint32_t rendererID = m_frameBuffer->GetColorAttachmentRendererID();
         ImGui::Image(INT2VOIDP(rendererID), ImVec2(viewportSize.x, viewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
-
+        
         ImGui::End();
         ImGui::PopStyleVar();
     }
-
+    
     void EditorLayer::AddObject()
     {
         SE_ENGINE_LOG(LogVerbosity::Info, "Attempted to add object");
@@ -267,19 +275,19 @@ namespace Shake
         EventDispatcher dispatcher(event);
         dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT(EditorLayer::OnMouseButtonPressedCallback));
         dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT(EditorLayer::OnKeyPressedCallback));
-
+        
         if(m_isEditorHidden)
-            {
+        {
             dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT(EditorLayer::OnWindowResizeCallback));
-            }
+        }
     }
-
+    
     bool EditorLayer::OnWindowResizeCallback(const WindowResizeEvent& eventData)
     {
         OnResizeViewport(eventData.GetWidth(), eventData.GetHeight());
         return true; 
     }
-
+    
     bool EditorLayer::OnMouseButtonPressedCallback(const MouseButtonPressedEvent& eventData)
     {
         if(eventData.GetMouseButton() == MouseCode::ButtonRight)
@@ -293,23 +301,23 @@ namespace Shake
         }
         return true;
     }
-
+    
     bool EditorLayer::OnKeyPressedCallback(const KeyPressedEvent& eventData)
     {
-       if(eventData.GetKeyCode() == KeyCode::F1)
-       {
-           m_isEditorHidden = !m_isEditorHidden;
-           m_recalculateViewportSize = true;
-       }
-       return true;         
+        if(eventData.GetKeyCode() == KeyCode::F1)
+        {
+            m_isEditorHidden = !m_isEditorHidden;
+            m_recalculateViewportSize = true;
+        }
+        return true;         
     }
-
+    
     void EditorLayer::OnResizeViewport(uint32_t width, uint32_t height)
     {
         m_scene->OnViewportResize(width, height);
         m_recalculateViewportSize = false;
     }
-
+    
     void EditorLayer::SaveScene()
     {
         SE_ENGINE_LOG(LogVerbosity::Info, "Save Data");

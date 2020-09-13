@@ -1,6 +1,8 @@
 ﻿#include "sepch.h"
 #include "Scene.h"
 
+
+#include "Components/TransformComponent.h"
 #include "Shake/Scene/Components/Components.h"
 #include "Shake/Renderer/Renderer2D.h"
 
@@ -56,8 +58,6 @@ namespace Shake
                 }
             }
         }
-
-        SE_ENGINE_LOG(LogVerbosity::Info, "AspectRatio {0}", mainCamera->GetAspectRatio());
 
         if(mainCamera == nullptr)
         {

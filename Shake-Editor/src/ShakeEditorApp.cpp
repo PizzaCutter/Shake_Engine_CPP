@@ -2,7 +2,7 @@
 #include "Shake.h"
 #include "Shake/Core/EntryPoint.h"
 
-#include "EditorLayer.h"
+#include "Editor/EditorLayer.h"
 
 
 class ShakeEditor : public Shake::Application

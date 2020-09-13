@@ -5,19 +5,6 @@
 
 namespace Shake
 {
-    struct TransformComponent 
-    {
-    public:
-        SMat4 Transform {SMat4(1.0f)};
-
-        TransformComponent() = default;
-        TransformComponent(const TransformComponent&) = default;
-        TransformComponent(const SMat4& transform) : Transform(transform) {};
-
-        operator SMat4&() { return Transform; }
-        operator const SMat4&() const { return Transform; }
-    };
-
     struct SpriteComponent
     {
     public:
@@ -41,7 +28,6 @@ namespace Shake
     struct NativeScriptComponent
     {
         ScriptableEntity* Instance = nullptr;
-
 
         void InstantiateFunction();
 
