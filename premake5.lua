@@ -24,11 +24,13 @@ IncludeDir["ImGui"] = "Shake_Engine/vendor/imgui"
 IncludeDir["GLM"] = "Shake_Engine/vendor/glm"
 IncludeDir["stb_image"] = "Shake_Engine/vendor/stb_image"
 IncludeDir["entt"] = "Shake_Engine/vendor/entt/include"
+IncludeDir["Box2D"] = "Shake_Engine/vendor/Box2D/include"
 
 group "Dependencies"
 	include "Shake_Engine/vendor/GLFW"
 	include "Shake_Engine/vendor/glad"
 	include "Shake_Engine/vendor/imgui"
+	include "Shake_Engine/vendor/Box2D"
 group ""
 
 project "Shake_Engine"
@@ -75,7 +77,8 @@ project "Shake_Engine"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.Box2D}"
 	}
 	
 	links
@@ -83,7 +86,8 @@ project "Shake_Engine"
 		"GLFW",
 		"GLAD",
 		"ImGui",
-		"opengl32.lib"
+		"opengl32.lib",
+		"Box2D"
 	}
 
 	filter "system:windows"
