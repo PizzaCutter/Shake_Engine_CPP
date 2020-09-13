@@ -12,6 +12,9 @@
 #include "Shake/Scene/Components/TransformComponent.h"
 #include "Shake/Scene/Entities/Entity.h"
 
+#include "box2d/box2d.h"
+
+
 namespace Shake
 {
     EditorLayer::EditorLayer() : Layer("EditorLayer"),
@@ -40,11 +43,19 @@ namespace Shake
         m_scene = CreateSharedPtr<Scene>();
         
         {
-            Entity playerEntity = m_scene->CreateEntity();
-            playerEntity.AddComponent<TransformComponent>();
-            playerEntity.AddComponent<SpriteComponent>(SVector4(1.0f, 0.2f, 0.2f, 1.0f));
-            playerEntity.AddComponent<NativeScriptComponent>().Bind<PlayerMovementComponent>();
-            
+            m_playerEntity = m_scene->CreateEntity();
+            m_playerEntity.AddComponent<TransformComponent>();
+            m_playerEntity.AddComponent<SpriteComponent>(SVector4(1.0f, 0.2f, 0.2f, 1.0f));
+            //m_playerEntity.AddComponent<NativeScriptComponent>().Bind<PlayerMovementComponent>();
+
+            Entity someEntity = m_scene->CreateEntity();
+            auto& transform = someEntity.AddComponent<TransformComponent>();
+            transform.SetPosition(SVector3(0.5f, 2.0f, 0.0));
+            someEntity.AddComponent<SpriteComponent>(SVector4(1.0f, 0.2f, 0.2f, 1.0f));
+            //someEntity.AddComponent<NativeScriptComponent>().Bind<PlayerMovementComponent>();
+                            
+            m_testEntities.push_back(someEntity);
+           
             // Entity anotherEntity = m_scene->CreateEntity();
             // anotherEntity.AddComponent<TransformComponent>();
             // anotherEntity.AddComponent<SpriteComponent>(SVector4(0.2f, 1.0f, 0.2f, 1.0f));
@@ -81,6 +92,65 @@ namespace Shake
         m_editorPanels.push_back(CreateSharedPtr<SceneStatsPanel>(m_scene));
         
         m_scene->OnViewportResize(1280, 720);
+
+        b2Vec2 gravity(0.0f, -9.81);
+        m_world = std::make_unique<b2World>(gravity);
+
+        // Make the ground
+        b2BodyDef groundBodyDef;
+        groundBodyDef.position.Set(0.0f, -15.0f);
+        b2Body* groundBody = m_world->CreateBody(&groundBodyDef);
+        
+        // Make the ground fixture
+        b2PolygonShape groundBox;
+        groundBox.SetAsBox(50.0f, 10.0f);
+        groundBody->CreateFixture(&groundBox, 0.0f);
+
+        // Creating a dynamic body
+        b2BodyDef bodyDef;
+        bodyDef.type = b2_dynamicBody;
+        
+        auto& transComp = m_playerEntity.GetComponent<TransformComponent>();
+        bodyDef.position.Set(transComp.Position.x, transComp.Position.y);
+        dynamicBodyTest = m_world->CreateBody(&bodyDef);
+
+        b2PolygonShape dynamicBox;
+        dynamicBox.SetAsBox(0.5f, 0.5f);
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &dynamicBox;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.3f;
+
+        dynamicBodyTest->CreateFixture(&fixtureDef);
+        dynamicBodyTest->SetFixedRotation(true);
+        //dynamicBodyTest->();
+
+        for (int i = 0; i < m_testEntities.size(); ++i)
+        {
+            m_testPhysicEntities.push_back(CreatePhysicsBody(m_testEntities[i])); 
+        }
+    }
+
+    b2Body* EditorLayer::CreatePhysicsBody(Entity entity)
+    {
+        b2BodyDef bodyDef;
+        bodyDef.type = b2_dynamicBody;
+
+        auto& transComp = entity.GetComponent<TransformComponent>();
+        bodyDef.position.Set(transComp.Position.x, transComp.Position.y);
+        b2Body* newDynamicBodyTest = m_world->CreateBody(&bodyDef);
+
+        b2PolygonShape dynamicBox;
+        dynamicBox.SetAsBox(0.5f, 0.5f);
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &dynamicBox;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.3f;
+
+        newDynamicBodyTest->CreateFixture(&fixtureDef);
+        return newDynamicBodyTest; 
     }
     
     void EditorLayer::OnDetach()
@@ -90,7 +160,54 @@ namespace Shake
     auto EditorLayer::OnUpdate(Shake::Timestep timeStep) -> void
     {
         SE_PROFILE_FUNCTION()
+        
+        // BOX 2D PHYSICS UPDATE
+        if(m_simulatePhysics)
+        {
+            const int32 velocityIterations = 6;
+            const int32 positionIterations = 2;
             
+            // auto& transComp = m_playerEntity.GetComponent<TransformComponent>();
+            // b2Vec2 tempPos = b2Vec2(transComp.GetPosition().x, transComp.GetRotation());
+            // dynamicBodyTest->SetTransform(tempPos, transComp.GetRotation());
+            const float movementSpeed = 10.0f;
+            const b2Vec2 currentVelocity = dynamicBodyTest->GetLinearVelocity();
+            if(Input::IsKeyPressed(KeyCode::A))
+            {
+                dynamicBodyTest->SetLinearVelocity(b2Vec2(-movementSpeed, currentVelocity.y)); 
+            }
+            if(Input::IsKeyPressed(KeyCode::D))
+            {
+                dynamicBodyTest->SetLinearVelocity(b2Vec2(movementSpeed, currentVelocity.y));               
+            }
+            
+            m_world->Step(timeStep.GetSeconds(), velocityIterations, positionIterations);
+
+            {
+                b2Vec2 physicsPosition = dynamicBodyTest->GetPosition();
+                float physicsRotaiton = dynamicBodyTest->GetAngle();
+            
+                auto& transComp = m_playerEntity.GetComponent<TransformComponent>();
+                transComp.SetPosition(SVector3(physicsPosition.x, physicsPosition.y, 0.0f));
+                transComp.SetRotation(physicsRotaiton);
+            }
+            
+
+            for (int i = 0; i < m_testEntities.size(); ++i)
+            {
+                Entity entity = m_testEntities[i];
+                auto physics = m_testPhysicEntities[i];
+                
+                auto& transComp = entity.GetComponent<TransformComponent>();
+                
+                b2Vec2 physicsPosition = physics->GetPosition();
+                float physicsRotaiton = physics->GetAngle();
+
+                transComp.SetPosition(SVector3(physicsPosition.x, physicsPosition.y, 0.0f));
+                transComp.SetRotation(physicsRotaiton);
+            }
+        }
+        
         {
             SE_PROFILE_SCOPE("Gameplay update");
             
@@ -308,6 +425,10 @@ namespace Shake
         {
             m_isEditorHidden = !m_isEditorHidden;
             m_recalculateViewportSize = true;
+        }
+        if(eventData.GetKeyCode() == KeyCode::F2)
+        {
+            m_simulatePhysics = true;
         }
         return true;         
     }

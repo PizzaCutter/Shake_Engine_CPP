@@ -1,5 +1,6 @@
 #pragma once
 #include "Shake.h"
+#include "box2d/b2_world.h"
 #include "imgui/imgui.h"
 #include "Shake/Renderer/Textures/SubTexture2D.h"
 #include "Shake/Renderer/Camera/OrthographicCameraController.h"
@@ -21,6 +22,7 @@ public:
     EditorLayer();
     ~EditorLayer() override;
     void OnAttach() override;
+    b2Body* CreatePhysicsBody(Entity entity);
     void OnDetach() override;
     void OnUpdate(Timestep timeStep) override;
 
@@ -50,6 +52,9 @@ private:
 
     SharedPtr<Scene> m_scene;
     Entity m_cameraEntity;
+    Entity m_playerEntity;
+    std::vector<Entity> m_testEntities;
+    std::vector<b2Body*> m_testPhysicEntities;
 
     SVector2 m_viewportSize = SVector2(0.0f, 0.0f);
     bool m_viewportFocused = false;
@@ -61,6 +66,8 @@ private:
 
     std::vector<SharedPtr<BasePanel>> m_editorPanels;
 
+    bool m_simulatePhysics = false;
+    
     bool m_isEditorHidden = true;
     bool m_recalculateViewportSize = true;
 
@@ -68,5 +75,9 @@ private:
     ImVec2 m_actionPanelLocation;
     bool m_actionPanelEnabled = false;
     bool m_triggeredSave = false;
+
+    std::unique_ptr<b2World> m_world;
+    b2Body* dynamicBodyTest = nullptr;
 };
+    
 }

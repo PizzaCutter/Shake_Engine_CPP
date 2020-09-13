@@ -178,7 +178,8 @@ project "Shake-Editor"
 		"Shake_Engine/src",
 		"Shake_Engine/vendor",
 		"%{IncludeDir.GLM}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.Box2D}"
 	}
 
 	links
