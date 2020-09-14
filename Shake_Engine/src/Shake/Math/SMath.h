@@ -6,6 +6,8 @@
 
 #include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
 
+#include <algorithm>
+
 #define SVector2 glm::vec2
 #define SVector3 glm::vec3
 #define SVector4 glm::vec4
@@ -20,5 +22,7 @@ namespace SMath
     static SMat4 Rotate(const SMat4& matrix, const float& inFloat, const SVector3& rotationVector) { return glm::rotate(matrix, inFloat, rotationVector); }
     static SMat4 Inverse(const SMat4& matrix) { return glm::inverse(matrix); }
     static float Radians(const float rotation) { return glm::radians(rotation); }
+
+    static float Clamp(const float value, const float min, const float max) { return std::clamp(value, min, max); }
 }
 

@@ -2,6 +2,8 @@
 #include "EditorLayer.h"
 
 
+
+#include "../Game/Components/CameraFollowComponent.h"
 #include "../Game/Components/PlayerMovementComponent.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui/imgui.h"
@@ -63,30 +65,23 @@ namespace Shake
             someEntity.AddComponent<CollisionComponent>(data);
         }
 
-
-        class CameraController : public ScriptableEntity
         {
-        public:
-            void OnCreate()
-            {
-                //auto& transform = GetComponent<TransformComponent>();
-            }
-
-            void OnDestroy()
-            {
-            }
-
-            void OnUpdate(Timestep ts)
-            {
-            }
-        };
+            Entity someEntity = m_scene->CreateEntity();
+            someEntity.GetComponent<TransformComponent>().AddPosition(SVector3(0.0f, -9.0f, 0.0f));
+            someEntity.GetComponent<TransformComponent>().SetScale(SVector2(50.0f, 10.0f));
+            someEntity.AddComponent<SpriteComponent>(SVector4(0.2f, 0.0f, 1.0f, 1.0f));
+            CollisionData data = CollisionData();
+            data.FixedRotation = true;
+            data.PhysicsType = CollisionType::Static;
+            someEntity.AddComponent<CollisionComponent>(data);
+        }
 
         // CREATING PRIMARY CAMERA
         {
             Entity m_cameraEntity = m_scene->CreateEntity();
             auto& cameraComponent = m_cameraEntity.AddComponent<CameraComponent>();
             cameraComponent.Primary = true;
-            //m_cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+            m_cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraFollowComponent>();
         }
 
         m_editorPanels.push_back(CreateSharedPtr<MenuBarPanel>(m_scene));
@@ -94,17 +89,6 @@ namespace Shake
         m_editorPanels.push_back(CreateSharedPtr<SceneStatsPanel>(m_scene));
 
         m_scene->OnViewportResize(1280, 720);
-
-        // Make the ground
-        b2BodyDef groundBodyDef;
-        groundBodyDef.position.Set(0.0f, -15.0f);
-        b2Body* groundBody = m_scene->m_physicsWorld->CreateBody(&groundBodyDef);
-
-        // Make the ground fixture
-        b2PolygonShape groundBox;
-        groundBox.SetAsBox(50.0f, 10.0f);
-        groundBody->CreateFixture(&groundBox, 0.0f);
-        
         m_scene->OnBeginPlay();
     }
 
@@ -294,7 +278,7 @@ namespace Shake
         SE_ENGINE_LOG(LogVerbosity::Info, "Attempted to add object");
     }
 
-    void EditorLayer::OnEvent(Shake::Event& event)
+    void EditorLayer::OnEvent(Event& event)
     {
         EventDispatcher dispatcher(event);
         dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT(EditorLayer::OnMouseButtonPressedCallback));

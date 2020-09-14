@@ -6,6 +6,7 @@
 #include "Shake/Scene/Components/Components.h"
 #include "Components/TransformComponent.h"
 #include "Components/CollisionComponent.h"
+#include "Shake/Events/Event.h"
 
 #include "Shake/Renderer/Renderer2D.h"
 

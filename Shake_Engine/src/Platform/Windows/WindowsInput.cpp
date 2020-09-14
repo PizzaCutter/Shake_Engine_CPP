@@ -16,6 +16,13 @@ namespace Shake
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
+    bool Input::IsKeyDown(KeyCode keycode)
+    {
+        GLFWwindow* glfwWindow = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+        const int state = glfwGetKey(glfwWindow, static_cast<int>(keycode));
+        return state == GLFW_PRESS;
+    }
+
     bool Input::IsMouseButtonPressed(MouseCode mouseCode)
     {
         GLFWwindow* glfwWindow = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());

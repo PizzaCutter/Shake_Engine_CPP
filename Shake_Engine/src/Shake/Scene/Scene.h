@@ -2,6 +2,7 @@
 
 #include "entt.hpp"
 #include "box2d/b2_world.h"
+#include "Shake/Events/Event.h"
 
 namespace Shake
 {

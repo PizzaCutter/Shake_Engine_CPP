@@ -52,7 +52,9 @@ public:
     {
         auto& m_transformComponent(entity.GetComponent<Shake::TransformComponent>());
         const SVector3 currentPosition = m_transformComponent.GetPosition();
-        
+        const SVector2 currentScale = m_transformComponent.GetScale();
+
+        // TODO[rsmekens]: Branching here might be slow
         b2BodyDef bodyDef;
         switch (m_collisionData.PhysicsType)
         {
@@ -79,7 +81,7 @@ public:
         m_physicsBody = entity.m_scene->m_physicsWorld->CreateBody(&bodyDef);
         
         b2PolygonShape collisionShape;
-        collisionShape.SetAsBox(0.5f, 0.5f);
+        collisionShape.SetAsBox(currentScale.x * 0.5f, currentScale.y * 0.5f);
         
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &collisionShape;

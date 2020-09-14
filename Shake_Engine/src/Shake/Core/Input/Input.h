@@ -9,6 +9,7 @@ namespace Shake
     {
     public:
         static bool IsKeyPressed(KeyCode keycode);
+        static bool IsKeyDown(KeyCode keycode);
 
         static bool IsMouseButtonPressed(MouseCode mouseCode);
         static SVector2 GetMousePos();

@@ -6,6 +6,7 @@ namespace Shake
     struct ScriptableEntity 
     {
         ScriptableEntity() = default;
+        ScriptableEntity(const ScriptableEntity& entity) = default;
         virtual ~ScriptableEntity() {}
         
         template<typename T>
@@ -13,7 +14,7 @@ namespace Shake
         {
             return m_entity.GetComponent<T>();
         }
-        
+
         virtual void OnCreate() {}
         virtual void OnDestroy() {}
         virtual void OnUpdate(Timestep ts) {}
