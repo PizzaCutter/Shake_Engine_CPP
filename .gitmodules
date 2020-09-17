@@ -13,3 +13,6 @@
 [submodule "Shake_engine/vendor/Box2D"]
 	path = Shake_engine/vendor/Box2D
 	url = https://github.com/erincatto/box2d.git
+[submodule "Shake_Engine/vendor/entityx"]
+	path = Shake_Engine/vendor/entityx
+	url = https://github.com/PizzaCutter/entityx.git
