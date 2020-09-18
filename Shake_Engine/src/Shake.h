@@ -26,11 +26,6 @@
 
 #include "Shake/Scene/Scene.h"
 #include "Shake/Scene/Entities/Entity.h"
-#include "Shake/Scene/Entities/ScriptableEntity.h"
-#include "Shake/Scene/Components/Components.h"
 
 // ----------- HELPERS -------------
 #include "Shake/Helpers/Timer.h"
-
-// ------------- ENTRY POINT --------
-//#include "Shake/Core/EntryPoint.h"

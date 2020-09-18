@@ -9,12 +9,12 @@ namespace Shake
     class SceneStatsPanel : public BasePanel
     {
     public:
-        SceneStatsPanel(SharedPtr<Scene> scene);
+        SceneStatsPanel(SharedPtr<SceneX> scene);
         virtual ~SceneStatsPanel() {};
 
         void OnImGuiRender() override;
         
     private:
-        SharedPtr<Scene> m_context;
+        SharedPtr<SceneX> m_context;
     };
 }

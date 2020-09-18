@@ -20,13 +20,14 @@ namespace Shake
 
         OrthographicCamera& GetCamera() { return m_orthoCamera; }
 
+
     private:
         bool OnMouseScrolledCallback(const MouseScrolledEvent& event);
         bool OnWindowResizedCallback(const WindowResizeEvent& event);
         bool OnMouseMovedCallback(const MouseMovedEvent& e);
 
         float m_aspectRatio = 1.9f;
-        float m_zoomLevel = 1.0f;
+        float m_zoomLevel = 10.0f;
         OrthographicCamera m_orthoCamera;
         
         float m_minZoomLevel = 0.1f;

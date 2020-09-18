@@ -1,7 +1,7 @@
 ﻿#include "sepch.h"
-#include "Entity.h"
-
-namespace Shake
-{
-    
-}
+// #include "Entity.h"
+//
+// namespace Shake
+// {
+//     
+// }

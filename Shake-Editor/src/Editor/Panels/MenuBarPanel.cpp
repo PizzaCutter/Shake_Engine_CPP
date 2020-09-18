@@ -5,7 +5,7 @@
 
 namespace Shake
 {
-    MenuBarPanel::MenuBarPanel(SharedPtr<Scene> scene)
+    MenuBarPanel::MenuBarPanel(SharedPtr<SceneX> scene)
         : BasePanel(scene)
     {
         

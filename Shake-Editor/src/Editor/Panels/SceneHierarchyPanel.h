@@ -10,13 +10,13 @@ namespace Shake
     class SceneHierarchyPanel : public BasePanel
     {
     public:
-        SceneHierarchyPanel(SharedPtr<Scene> scene);
+        SceneHierarchyPanel(SharedPtr<SceneX> scene);
         virtual ~SceneHierarchyPanel() {};
 
         void OnImGuiRender() override;
         
     private:
-        void DrawEntityNode(Entity entity);
-        Entity m_selectionContext;
+        //void DrawEntityNode(SceneX entity);
+        //SceneX m_selectionContext;
     };
 }

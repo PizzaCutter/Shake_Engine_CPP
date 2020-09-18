@@ -5,7 +5,7 @@
 
 namespace Shake
 {
-    SceneStatsPanel::SceneStatsPanel(SharedPtr<Scene> scene)
+    SceneStatsPanel::SceneStatsPanel(SharedPtr<SceneX> scene)
         : BasePanel(scene)
     {
         

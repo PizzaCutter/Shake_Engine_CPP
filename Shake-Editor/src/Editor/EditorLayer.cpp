@@ -1,6 +1,8 @@
 #include "sepch.h"
 #include "EditorLayer.h"
 
+#include <algorithm>
+
 
 
 #include "../Game/Components/CameraFollowComponent.h"
@@ -16,6 +18,7 @@
 
 #include "box2d/box2d.h"
 #include "Shake/Scene/Components/CollisionComponent.h"
+#include "Shake/Scene/Components/SpriteComponent.h"
 
 namespace ex = entityx;
 
@@ -28,7 +31,8 @@ namespace Shake
     {
         m_SpriteSheet = Texture2D::Create("Content/Game/Textures/industrial.v2.png");
         m_SubTextureTest = SubTexture2D::CreateSubTexture(m_SpriteSheet, SubTextureData(2, 14, 16, 16));
-        
+
+        m_controller = CreateSharedPtr<OrthographicCameraController>(1920.0f / 1080.0f);
         m_orthoCameraController = CreateSharedPtr<OrthographicCamera>(-1.7f, 1.7, -1.0f, 1.0f);
     }
 
@@ -46,11 +50,38 @@ namespace Shake
         spec.height = height;
         m_frameBuffer = FrameBuffer::Create(spec);
         
-        m_testScene = CreateSharedPtr<SceneX>(m_orthoCameraController);
+        m_testScene = CreateSharedPtr<SceneX>(m_controller->GetCamera());
 
-        entityx::Entity newEntity = m_testScene->entities.create();
-        newEntity.assign<Transform>(SVector3(0.0f, 0.0f, 0.0f), SVector2(0.5f, 0.5f));
-        newEntity.assign<Sprite>(SVector4(1.0f, 0.0f, 0.0f, 1.0f));
+        {
+            entityx::Entity newEntity = m_testScene->CreateEntity();
+            newEntity.assign<SpriteComponent>(SVector4(1.0f, 0.0f, 0.0f, 1.0f));
+            CollisionData data;
+            data.PhysicsType = CollisionType::Dynamic;
+            newEntity.assign<CollisionComponent>(data);
+        }
+        
+        {
+            entityx::Entity newEntity = m_testScene->CreateEntity();
+            entityx::ComponentHandle<TransformComponent> transform = newEntity.component<TransformComponent>();
+            transform->SetPosition(SVector3(0.5f, 2.0f, 0.0f));
+            transform->SetScale(SVector2(2.0f, 1.0f));
+            newEntity.assign<SpriteComponent>(SVector4(1.0f, 0.0f, 0.0f, 1.0f));
+            CollisionData data;
+            data.PhysicsType = CollisionType::Dynamic;
+            newEntity.assign<CollisionComponent>(data);
+        }
+        
+        {
+            entityx::Entity newEntity = m_testScene->CreateEntity();
+            entityx::ComponentHandle<TransformComponent> transform = newEntity.component<TransformComponent>();
+            transform->SetPosition(SVector3(0.0f, -10.0f, 0.0f));
+            transform->SetScale(SVector2(50.0f, 10.0f));
+            newEntity.assign<SpriteComponent>(SVector4(0.2f, 0.2f, 0.2f, 1.0f));
+            CollisionData data;
+            data.PhysicsType = CollisionType::Static;
+            newEntity.assign<CollisionComponent>(data);
+        }
+
 
         // m_editorPanels.push_back(CreateSharedPtr<MenuBarPanel>(m_scene));
         // m_editorPanels.push_back(CreateSharedPtr<SceneHierarchyPanel>(m_scene));

@@ -2,36 +2,44 @@
 
 #include "entt.hpp"
 #include "box2d/b2_world.h"
-#include "Shake/Events/Event.h"
+#include "entityx/quick.h"
+#include "Shake/Renderer/Camera/OrthographicCamera.h"
+#include "Systems/CollisionSystem.h"
+#include "Systems/RenderSystem.h"
+#include "Systems/SpawnSystem.h"
 
 namespace Shake
 {
-    class Timestep;
-    class Entity;
-    
-    class Scene
+    class SceneX : public entityx::EntityX
     {
     public:
-        Scene();
-        ~Scene();
+        explicit SceneX(OrthographicCamera& camera)
+        {
+            m_physicsWorld = std::make_unique<b2World>(gravity);
+            systems.add<SpawnSystem>(m_physicsWorld.get());
+            systems.add<CollisionSystem>();
+            systems.add<RenderSystem>(camera);
+            systems.configure();
+        }
+        
+        void Update(entityx::TimeDelta ts)
+        {
+            m_physicsWorld->Step(ts, m_velocityIterations, m_positionIteartions);
+            systems.update_all(ts); 
+        }
 
-        Entity CreateEntity();
-        
-        void OnBeginPlay();
-        void OnUpdate(Timestep ts);
-        void OnViewportResize(uint32_t width, uint32_t height);
-        
-        // container that contains our entities
-        entt::registry m_registry;
+        entityx::Entity CreateEntity()
+        {
+            entityx::Entity newEntity = entities.create();
+            newEntity.assign<TransformComponent>(SVector3(0.0f));
+            return newEntity;
+        }
         
         std::unique_ptr<b2World> m_physicsWorld;
-    private:
+        
+        // MOVE THIS TO A CONFIG FILE
         b2Vec2 gravity{0.0f, -9.81};
         int32_t m_velocityIterations = 6;
         int32_t m_positionIteartions = 2;
-        
-
-        uint32_t m_viewportWidth = 0;
-        uint32_t m_viewportHeight = 0;
     };
 }

@@ -9,19 +9,19 @@ class BasePanel
 {
 public:
     BasePanel() {};
-    BasePanel(SharedPtr<Scene> scene)
+    BasePanel(SharedPtr<SceneX> scene)
     {
         BasePanel::SetContext(scene);
     };
     virtual ~BasePanel() {};
 
-    virtual void SetContext(const SharedPtr<Scene>& scene)
+    virtual void SetContext(const SharedPtr<SceneX>& scene)
     {
         m_currentScene = scene;    
     }
 
     virtual void OnImGuiRender() = 0;
 protected:
-    SharedPtr<Scene> m_currentScene;
+    SharedPtr<SceneX> m_currentScene;
 };
 }

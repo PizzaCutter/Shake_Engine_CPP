@@ -9,7 +9,7 @@ namespace Shake
     class MenuBarPanel : public BasePanel
     {
     public:
-        MenuBarPanel(SharedPtr<Scene> scene);
+        MenuBarPanel(SharedPtr<SceneX> scene);
         virtual ~MenuBarPanel() {}
 
         void OnImGuiRender() override;
