@@ -6,7 +6,7 @@ namespace Shake
     class Texture
     {
     public:
-        ~Texture() = default;
+        virtual ~Texture() = default;
         
         virtual int32_t GetWidth() const = 0;
         virtual int32_t GetHeight() const = 0;
@@ -20,7 +20,7 @@ namespace Shake
     class Texture2D : public Texture
     {
     public:
-        ~Texture2D() = default;
+        virtual ~Texture2D() = default;
 
         virtual uint32_t GetRendererID() const = 0;
 

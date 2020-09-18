@@ -17,16 +17,19 @@
 #include "box2d/box2d.h"
 #include "Shake/Scene/Components/CollisionComponent.h"
 
+namespace ex = entityx;
 
 namespace Shake
 {
+
+    
     EditorLayer::EditorLayer() : Layer("EditorLayer"),
-                                 //m_orthoCameraController(1280.0f / 720.0f),
                                  m_editableColor(SVector4(1.0f))
     {
-        m_TestTexture = Texture2D::Create("Content/Textures/Test.png");
         m_SpriteSheet = Texture2D::Create("Content/Game/Textures/industrial.v2.png");
-        m_SubTextureTest = SubTexture2D::CreateSubTexture(m_SpriteSheet, Shake::SubTextureData(2, 14, 16, 16));
+        m_SubTextureTest = SubTexture2D::CreateSubTexture(m_SpriteSheet, SubTextureData(2, 14, 16, 16));
+        
+        m_orthoCameraController = CreateSharedPtr<OrthographicCamera>(-1.7f, 1.7, -1.0f, 1.0f);
     }
 
     EditorLayer::~EditorLayer()
@@ -42,54 +45,19 @@ namespace Shake
         spec.width = width;
         spec.height = height;
         m_frameBuffer = FrameBuffer::Create(spec);
+        
+        m_testScene = CreateSharedPtr<SceneX>(m_orthoCameraController);
 
-        m_scene = CreateSharedPtr<Scene>();
+        entityx::Entity newEntity = m_testScene->entities.create();
+        newEntity.assign<Transform>(SVector3(0.0f, 0.0f, 0.0f), SVector2(0.5f, 0.5f));
+        newEntity.assign<Sprite>(SVector4(1.0f, 0.0f, 0.0f, 1.0f));
 
-        // CREATE PLAYER ENTITY
-        {
-            Entity playerEntity = m_scene->CreateEntity();
-            playerEntity.AddComponent<SpriteComponent>(SVector4(1.0f, 0.2f, 0.2f, 1.0f));
-            CollisionData data = CollisionData();
-            data.FixedRotation = true;
-            data.PhysicsType = CollisionType::Dynamic;
-            playerEntity.AddComponent<CollisionComponent>(data);
-            playerEntity.AddComponent<NativeScriptComponent>().Bind<PlayerMovementComponent>();
-        }
-        {
-            Entity someEntity = m_scene->CreateEntity();
-            someEntity.GetComponent<TransformComponent>().AddPosition(SVector3(0.5f, 1.0f, 0.0f));
-            someEntity.AddComponent<SpriteComponent>(SVector4(0.2f, 1.0f, 0.2f, 1.0f));
-            CollisionData data = CollisionData();
-            data.FixedRotation = false;
-            data.PhysicsType = CollisionType::Dynamic;
-            someEntity.AddComponent<CollisionComponent>(data);
-        }
-
-        {
-            Entity someEntity = m_scene->CreateEntity();
-            someEntity.GetComponent<TransformComponent>().AddPosition(SVector3(0.0f, -9.0f, 0.0f));
-            someEntity.GetComponent<TransformComponent>().SetScale(SVector2(50.0f, 10.0f));
-            someEntity.AddComponent<SpriteComponent>(SVector4(0.2f, 0.0f, 1.0f, 1.0f));
-            CollisionData data = CollisionData();
-            data.FixedRotation = true;
-            data.PhysicsType = CollisionType::Static;
-            someEntity.AddComponent<CollisionComponent>(data);
-        }
-
-        // CREATING PRIMARY CAMERA
-        {
-            Entity m_cameraEntity = m_scene->CreateEntity();
-            auto& cameraComponent = m_cameraEntity.AddComponent<CameraComponent>();
-            cameraComponent.Primary = true;
-            m_cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraFollowComponent>();
-        }
-
-        m_editorPanels.push_back(CreateSharedPtr<MenuBarPanel>(m_scene));
-        m_editorPanels.push_back(CreateSharedPtr<SceneHierarchyPanel>(m_scene));
-        m_editorPanels.push_back(CreateSharedPtr<SceneStatsPanel>(m_scene));
-
-        m_scene->OnViewportResize(1280, 720);
-        m_scene->OnBeginPlay();
+        // m_editorPanels.push_back(CreateSharedPtr<MenuBarPanel>(m_scene));
+        // m_editorPanels.push_back(CreateSharedPtr<SceneHierarchyPanel>(m_scene));
+        // m_editorPanels.push_back(CreateSharedPtr<SceneStatsPanel>(m_scene));
+        //
+        // m_scene->OnViewportResize(1280, 720);
+        // m_scene->OnBeginPlay();
     }
 
     void EditorLayer::OnDetach()
@@ -131,7 +99,7 @@ namespace Shake
         {
             SE_PROFILE_SCOPE("Rendering - Draw");
 
-            m_scene->OnUpdate(timeStep);
+            m_testScene->Update(timeStep.GetSeconds());
         }
 
 
@@ -326,7 +294,7 @@ namespace Shake
 
     void EditorLayer::OnResizeViewport(uint32_t width, uint32_t height)
     {
-        m_scene->OnViewportResize(width, height);
+        //m_scene->OnViewportResize(width, height);
         m_recalculateViewportSize = false;
     }
 

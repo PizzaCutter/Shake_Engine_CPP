@@ -77,12 +77,12 @@ namespace Shake
     {
     }
 
-    void Renderer2D::BeginScene(Camera& camera)
+    void Renderer2D::BeginScene(const SMat4& viewProjectionMatrix)
     {
         m_rendererStatistics = RenderStatistics();
         
         m_rendererStorage.m_textureShader->Bind();
-        m_rendererStorage.m_textureShader->UploadUniformMat4("u_viewProjection", camera.GetViewProjection());
+        m_rendererStorage.m_textureShader->UploadUniformMat4("u_viewProjection", viewProjectionMatrix);
 
         m_rendererStorage.m_quadIndexCount = 0;
         m_rendererStorage.m_quadVertexBufferPtr = m_rendererStorage.m_quadVertexBufferBase;

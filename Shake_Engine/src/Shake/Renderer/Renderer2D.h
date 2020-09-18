@@ -58,7 +58,7 @@ namespace Shake
         static void Initialize();
         static void Shutdown();
         
-        static void BeginScene(Camera& camera);
+        static void BeginScene(const SMat4& viewProjectionMatrix);
         static void BeginSceneMatric(SMat4 mat);
         static void EndScene();
 

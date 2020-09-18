@@ -94,7 +94,7 @@ namespace Shake
         }
 
         // RENDER SPRITES
-        Renderer2D::BeginScene(*mainCamera);
+        //Renderer2D::BeginScene(*mainCamera);
 
         auto group = m_registry.group<TransformComponent>(entt::get<SpriteComponent>);
         for (auto entity : group)

@@ -8,6 +8,8 @@ namespace Shake
     {
     public:
         OrthographicCamera(float left, float right, float bottom, float top);
+        virtual ~OrthographicCamera() = default;
+        
         void SetProjection(float left, float right, float bottom, float top);
         
         const SVector3 GetPosition() const { return m_position; }
