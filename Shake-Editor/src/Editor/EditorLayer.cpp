@@ -57,7 +57,9 @@ namespace Shake
             newEntity.assign<SpriteComponent>(SVector4(1.0f, 0.0f, 0.0f, 1.0f));
             CollisionData data;
             data.PhysicsType = CollisionType::Dynamic;
+            data.FixedRotation = true;
             newEntity.assign<CollisionComponent>(data);
+            newEntity.assign<PlayerMovementComponent>();
         }
         
         {
@@ -65,7 +67,7 @@ namespace Shake
             entityx::ComponentHandle<TransformComponent> transform = newEntity.component<TransformComponent>();
             transform->SetPosition(SVector3(0.5f, 2.0f, 0.0f));
             transform->SetScale(SVector2(2.0f, 1.0f));
-            newEntity.assign<SpriteComponent>(SVector4(1.0f, 0.0f, 0.0f, 1.0f));
+            newEntity.assign<SpriteComponent>(SVector4(0.0f, 0.0f, 1.0f, 1.0f));
             CollisionData data;
             data.PhysicsType = CollisionType::Dynamic;
             newEntity.assign<CollisionComponent>(data);

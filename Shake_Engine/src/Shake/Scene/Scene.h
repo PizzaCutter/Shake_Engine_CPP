@@ -5,6 +5,7 @@
 #include "entityx/quick.h"
 #include "Shake/Renderer/Camera/OrthographicCamera.h"
 #include "Systems/CollisionSystem.h"
+#include "Systems/PlayerMovementSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/SpawnSystem.h"
 
@@ -19,6 +20,7 @@ namespace Shake
             systems.add<SpawnSystem>(m_physicsWorld.get());
             systems.add<CollisionSystem>();
             systems.add<RenderSystem>(camera);
+            systems.add<PlayerMovementSystem>();
             systems.configure();
         }
         
