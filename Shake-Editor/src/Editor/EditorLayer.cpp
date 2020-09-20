@@ -51,39 +51,40 @@ namespace Shake
         m_frameBuffer = FrameBuffer::Create(spec);
         
         m_testScene = CreateSharedPtr<SceneX>(m_controller->GetCamera());
+        m_testScene->LoadScene();
 
-#if 1
-        // {
-        //     entityx::Entity newEntity = m_testScene->CreateEntity("Player", 0);
-        //     newEntity.assign<SpriteComponent>(SVector4(1.0f, 0.0f, 0.0f, 1.0f));
-        //     CollisionData data;
-        //     data.PhysicsType = CollisionType::Dynamic;
-        //     data.FixedRotation = true;
-        //     newEntity.assign<CollisionComponent>(data);
-        //     newEntity.assign<PlayerMovementComponent>();
-        // }
-        //
-        // {
-        //     entityx::Entity newEntity = m_testScene->CreateEntity("Physics Box", 1);
-        //     entityx::ComponentHandle<TransformComponent> transform = newEntity.component<TransformComponent>();
-        //     transform->SetPosition(SVector3(0.5f, 2.0f, 0.0f));
-        //     transform->SetScale(SVector2(2.0f, 1.0f));
-        //     newEntity.assign<SpriteComponent>(SVector4(0.0f, 0.0f, 1.0f, 1.0f));
-        //     CollisionData data;
-        //     data.PhysicsType = CollisionType::Dynamic;
-        //     newEntity.assign<CollisionComponent>(data);
-        // }
-        //
-        // {
-        //     entityx::Entity newEntity = m_testScene->CreateEntity("Ground", 2);
-        //     entityx::ComponentHandle<TransformComponent> transform = newEntity.component<TransformComponent>();
-        //     transform->SetPosition(SVector3(0.0f, -10.0f, 0.0f));
-        //     transform->SetScale(SVector2(50.0f, 10.0f));
-        //     newEntity.assign<SpriteComponent>(SVector4(0.2f, 0.2f, 0.2f, 1.0f));
-        //     CollisionData data;
-        //     data.PhysicsType = CollisionType::Static;
-        //     newEntity.assign<CollisionComponent>(data);
-        // }
+#if 0
+        {
+            entityx::Entity newEntity = m_testScene->CreateEntity("Player", 0);
+            newEntity.assign<SpriteComponent>(SVector4(1.0f, 0.0f, 0.0f, 1.0f));
+            CollisionData data;
+            data.PhysicsType = CollisionType::Dynamic;
+            data.FixedRotation = true;
+            newEntity.assign<CollisionComponent>(data);
+            newEntity.assign<PlayerMovementComponent>();
+        }
+        
+        {
+            entityx::Entity newEntity = m_testScene->CreateEntity("Physics Box", 1);
+            entityx::ComponentHandle<TransformComponent> transform = newEntity.component<TransformComponent>();
+            transform->SetPosition(SVector3(0.5f, 2.0f, 0.0f));
+            transform->SetScale(SVector2(2.0f, 1.0f));
+            newEntity.assign<SpriteComponent>(SVector4(0.0f, 0.0f, 1.0f, 1.0f));
+            CollisionData data;
+            data.PhysicsType = CollisionType::Dynamic;
+            newEntity.assign<CollisionComponent>(data);
+        }
+        
+        {
+            entityx::Entity newEntity = m_testScene->CreateEntity("Ground", 2);
+            entityx::ComponentHandle<TransformComponent> transform = newEntity.component<TransformComponent>();
+            transform->SetPosition(SVector3(0.0f, -10.0f, 0.0f));
+            transform->SetScale(SVector2(50.0f, 10.0f));
+            newEntity.assign<SpriteComponent>(SVector4(0.2f, 0.2f, 0.2f, 1.0f));
+            CollisionData data;
+            data.PhysicsType = CollisionType::Static;
+            newEntity.assign<CollisionComponent>(data);
+        }
 #endif
 
         // std::string serializeTest = "{111.111,22.222,3.3333}{3.14}{4.00, 5.00}";

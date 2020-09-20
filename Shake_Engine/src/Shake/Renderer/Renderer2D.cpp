@@ -235,7 +235,7 @@ namespace Shake
             m_rendererStorage.m_textureSlotIndexCount++;
         }
 
-        const SVector2 halfSize = size * 0.5f;
+        const SVector2 halfSize = size * SVector2(0.5, 0.5f);
 
         m_rendererStorage.m_quadVertexBufferPtr->m_position = position + SVector3(-halfSize.x, -halfSize.y, 0.0f);
         m_rendererStorage.m_quadVertexBufferPtr->m_color = color;

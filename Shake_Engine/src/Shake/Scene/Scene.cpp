@@ -10,7 +10,7 @@ namespace Shake
         std::string sceneData = ""; 
         entities.each<TagComponent, TransformComponent>([this, &sceneData](entityx::Entity entity, TagComponent& tagComponent, TransformComponent& transformComponent)
         {
-            sceneData += tagComponent.serialize() + "\n\t" + transformComponent.serialize() + "%" + "\n";
+            sceneData += tagComponent.serialize() + ";\n\t" + transformComponent.serialize() + ";%" + "\n";
         });
         SE_ENGINE_LOG(LogVerbosity::Verbose, "\n{0}", sceneData);
 
@@ -21,6 +21,11 @@ namespace Shake
         sceneFile.close();
     }
 
+    inline bool IsSpace(unsigned char c)
+    {
+        return (c == ' ' || c == '\n' || c == '\r' ||
+           c == '\t' || c == '\v' || c == '\f');
+    }
     
     // Might be interesting to read this article https://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring 
     void SceneX::LoadScene()
@@ -34,6 +39,8 @@ namespace Shake
             serializedSceneData += lineData + "\n"; 
         }
         sceneFile.close();
+        
+        serializedSceneData.erase(std::remove_if(serializedSceneData.begin(), serializedSceneData.end(), IsSpace), serializedSceneData.end());
 
         std::string sceneDataCopy = serializedSceneData;
         std::vector<std::string> entitiesData;
@@ -43,7 +50,7 @@ namespace Shake
             uint32 entityEndIndex = sceneDataCopy.find_first_of("%");
             std::string entityString = sceneDataCopy.substr(0, entityEndIndex + 1);
             entitiesData.push_back(entityString);
-            sceneDataCopy = sceneDataCopy.substr(entityEndIndex + 2);
+            sceneDataCopy = sceneDataCopy.substr(entityEndIndex + 1);
             SE_ENGINE_LOG(LogVerbosity::Info, "{0}", sceneDataCopy);
         }
 
@@ -63,18 +70,18 @@ namespace Shake
             std::string& inData = entitiesData[i];
             EntityData entityData;
             
-            while(inData.length() > 0)
+            while(inData.length() > 1)
             {
                 size_t componentNameStartIndex = inData.find_first_of("[");
                 size_t componentNameEndIndex = inData.find_first_of("]");
                 size_t componentDataStartIndex = inData.find_first_of("{");
-                size_t componentDataEndIndex = inData.find_first_of("\n");
-                if(componentDataEndIndex == std::string::npos)
-                {
-                   componentDataEndIndex = inData.find_first_of("%");
-                }
+                size_t componentDataEndIndex = inData.find_first_of(";");
+                // if(componentDataEndIndex == std::string::npos)
+                // {
+                //    componentDataEndIndex = inData.find_first_of("%");
+                // }
 
-                std::string componentName = inData.substr(componentNameStartIndex + 1, componentNameEndIndex - 1);
+                std::string componentName = inData.substr(componentNameStartIndex + 1, componentNameEndIndex - componentNameStartIndex - 1);
                 std::string componentData = inData.substr(componentDataStartIndex + 1, componentDataEndIndex - componentDataStartIndex - 2);
 
                 DataLayout data;
@@ -90,8 +97,8 @@ namespace Shake
 
                 entityData.Components.push_back(std::make_pair(componentName, data));
                 
-                size_t index = std::clamp(static_cast<int>(componentDataEndIndex + 2), 0, static_cast<int>(inData.size())); 
-                inData = inData.substr(index);
+                //size_t index = std::clamp(static_cast<int>(componentDataEndIndex + 1), 0, static_cast<int>(inData.size())); 
+                inData = inData.substr(componentDataEndIndex + 1);
             }
             
             en.push_back(entityData);

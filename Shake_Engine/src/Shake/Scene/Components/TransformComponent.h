@@ -23,35 +23,10 @@ namespace Shake
             : Position(position), Rotation(rotation), Scale(scale) { }
         TransformComponent(const std::vector<std::string>& inData)
         {
-            Position = SSerialize::Deserialize(inData[0]);
-            
-
-            // // PARSING ROTATION
-            // temp = positionZEndIndex;
-            // const uint32_t rotationStartIndex = inData.substr(temp).find_first_of("{") + temp + 1;
-            // temp = rotationStartIndex;
-            // const uint32_t rotationEndIndex = inData.substr(rotationStartIndex + 1).find_first_of("}") + temp + 1;
-            //
-            // const std::string rotationAsString = inData.substr(rotationStartIndex, rotationEndIndex - rotationStartIndex);
-            // Rotation = std::stof(rotationAsString);
-            //
-            //
-            //  // PARSE X SCALE 
-            // temp = rotationEndIndex;
-            // const uint32_t scaleXStartIndex = inData.substr(temp).find_first_of("{") + temp + 1;
-            // temp = scaleXStartIndex;
-            // const uint32_t scaleXEndIndex = inData.substr(temp).find_first_of(",") + temp;
-            //
-            // // PARSE Y LOCATION
-            // temp = scaleXEndIndex;
-            // const uint32_t scaleYStartIndex = inData.substr(temp).find_first_of(",") + temp + 1;
-            // temp = scaleYStartIndex;
-            // const uint32_t scaleYEndIndex= inData.substr(temp).find_first_of("}") + temp;
-            //
-            // const std::string scaleXAsString = inData.substr(scaleXStartIndex, scaleXEndIndex - scaleXStartIndex);
-            // const std::string scaleYAsString = inData.substr(scaleYStartIndex, scaleYEndIndex - scaleYStartIndex); 
-            //
-            // Scale = SVector2( std::stof(scaleXAsString), std::stof(scaleYAsString));
+            Position = SVector3::Deserialize(inData[0]);
+            Rotation = SSerialize::DeserializeFloat(inData[1]);
+            Scale = SVector2::Deserialize(inData[2]);
+            UpdateMatrix();
         }
     
     
@@ -110,9 +85,9 @@ namespace Shake
         std::string serialize()
         {
             std::string serializedData = "[" + GetComponentName() + "]{";
-            serializedData += "{" + std::to_string(Position.x) + "," + std::to_string(Position.y) + "," + std::to_string(Position.z) + "}";
-            serializedData += "{" + std::to_string(Rotation) + "}";
-            serializedData += "{" + std::to_string(Scale.x) + "," + std::to_string(Scale.y) + "}}";
+            serializedData += Position.Serialize();
+            serializedData += SSerialize::SerializeFloat(Rotation);
+            serializedData += Scale.Serialize();
             return serializedData;
         }
 
