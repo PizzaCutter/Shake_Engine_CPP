@@ -61,8 +61,6 @@ namespace Shake
 
         std::vector<SharedPtr<BasePanel>> m_editorPanels;
 
-        bool m_simulatePhysics = false;
-
         bool m_isEditorHidden = true;
         bool m_recalculateViewportSize = true;
 

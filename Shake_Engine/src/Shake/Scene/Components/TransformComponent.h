@@ -88,6 +88,7 @@ namespace Shake
             serializedData += Position.Serialize();
             serializedData += SSerialize::SerializeFloat(Rotation);
             serializedData += Scale.Serialize();
+            serializedData += "}"; 
             return serializedData;
         }
 

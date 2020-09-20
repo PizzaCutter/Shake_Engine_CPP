@@ -5,12 +5,27 @@
 
 namespace Shake
 {
+    void SceneX::Update(entityx::TimeDelta ts)
+    {
+        if(m_updateSystems == false)
+        {
+            auto renderSystem  = systems.system<RenderSystem>();
+            renderSystem->update(entities, events, ts);
+            return;
+        }
+        
+        m_physicsWorld->Step(ts, m_velocityIterations, m_positionIteartions);
+        systems.update_all(ts);
+
+        SELOG(LogVerbosity::Info, "{0}", entities.size());
+    }
+
     void SceneX::SaveScene()
     {
         std::string sceneData = ""; 
-        entities.each<TagComponent, TransformComponent>([this, &sceneData](entityx::Entity entity, TagComponent& tagComponent, TransformComponent& transformComponent)
+        entities.each<TagComponent, TransformComponent, CollisionComponent>([this, &sceneData](entityx::Entity entity, TagComponent& tagComponent, TransformComponent& transformComponent, CollisionComponent& collisionComponent)
         {
-            sceneData += tagComponent.serialize() + ";\n\t" + transformComponent.serialize() + ";%" + "\n";
+            sceneData += tagComponent.serialize() + ";\n\t" + transformComponent.serialize() + ";\n\t" + collisionComponent.serialize() + ";%" + "\n";
         });
         SE_ENGINE_LOG(LogVerbosity::Verbose, "\n{0}", sceneData);
 
@@ -76,10 +91,6 @@ namespace Shake
                 size_t componentNameEndIndex = inData.find_first_of("]");
                 size_t componentDataStartIndex = inData.find_first_of("{");
                 size_t componentDataEndIndex = inData.find_first_of(";");
-                // if(componentDataEndIndex == std::string::npos)
-                // {
-                //    componentDataEndIndex = inData.find_first_of("%");
-                // }
 
                 std::string componentName = inData.substr(componentNameStartIndex + 1, componentNameEndIndex - componentNameStartIndex - 1);
                 std::string componentData = inData.substr(componentDataStartIndex + 1, componentDataEndIndex - componentDataStartIndex - 2);
@@ -96,15 +107,23 @@ namespace Shake
                 }
 
                 entityData.Components.push_back(std::make_pair(componentName, data));
-                
-                //size_t index = std::clamp(static_cast<int>(componentDataEndIndex + 1), 0, static_cast<int>(inData.size())); 
                 inData = inData.substr(componentDataEndIndex + 1);
             }
             
             en.push_back(entityData);
-            
-            SELOG(LogVerbosity::Verbose, "{0}", entitiesData[i]); 
         }
+
+        entities.each<TagComponent>([this](entityx::Entity entity, TagComponent& tagComponent)
+        {
+            entities.destroy(entity.id());
+        });
+
+        // RESETTING PHYSICS
+        m_physicsWorld.reset();
+        m_physicsWorld = std::make_unique<b2World>(gravity);
+        std::shared_ptr<SpawnSystem> spawnSystem = systems.system<SpawnSystem>();
+        spawnSystem->m_physicsWorld = m_physicsWorld.get();
+        spawnSystem->Reset();
 
         for (int i = 0; i < en.size(); ++i)
         {
@@ -115,14 +134,17 @@ namespace Shake
             {
                 const auto& component = e.Components[j];
 
-                // TODO[rsmekens]: remove magic number
-                // if(component.first == TagComponent::GetComponentName())
-                // {
-                //     newEntity.assign<TagComponent>(component.second); 
-                // }
+                if(component.first == TagComponent::GetComponentName())
+                {
+                    newEntity.assign<TagComponent>(component.second.Data); 
+                }
                 if(component.first == TransformComponent::GetComponentName())
                 {
                     newEntity.assign<TransformComponent>(component.second.Data); 
+                }
+                if(component.first == CollisionComponent::GetComponentName())
+                {
+                    newEntity.assign<CollisionComponent>(component.second.Data);
                 }
             }
             

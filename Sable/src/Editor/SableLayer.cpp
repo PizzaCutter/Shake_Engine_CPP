@@ -40,7 +40,7 @@ namespace Shake
         m_frameBuffer = FrameBuffer::Create(spec);
         
         m_testScene = CreateSharedPtr<SceneX>(m_controller->GetCamera());
-        m_testScene->LoadScene();
+        //m_testScene->LoadScene();
 
 #if 0
         {
@@ -303,15 +303,27 @@ namespace Shake
         }
         if (eventData.GetKeyCode() == KeyCode::F2)
         {
-            m_simulatePhysics = true;
+            if(m_testScene->m_updateSystems)
+            {
+               m_testScene->LoadScene();
+               m_testScene->m_updateSystems = false;
+            }
+            else
+            {
+                m_testScene->m_updateSystems = true;
+            }
         }
-        if(Input::IsKeyPressed(KeyCode::LeftControl) && Input::IsKeyPressed(KeyCode::S))
+        
+        if (m_testScene->m_updateSystems == false)
         {
-           m_testScene->SaveScene(); 
-        }
-        if(Input::IsKeyPressed(KeyCode::LeftControl) && Input::IsKeyPressed(KeyCode::O))
-        {
-           m_testScene->LoadScene(); 
+            if (Input::IsKeyPressed(KeyCode::LeftControl) && Input::IsKeyPressed(KeyCode::S))
+            {
+                m_testScene->SaveScene();
+            }
+            if (Input::IsKeyPressed(KeyCode::LeftControl) && Input::IsKeyPressed(KeyCode::O))
+            {
+                m_testScene->LoadScene();
+            }
         }
         return true;
     }

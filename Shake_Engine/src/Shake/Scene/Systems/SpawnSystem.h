@@ -21,6 +21,11 @@ namespace Shake
             
         }
 
+        void Reset()
+        {
+            m_initialized = false; 
+        }
+
         void update(entityx::EntityManager& em, entityx::EventManager& events, entityx::TimeDelta dt) override
         {
             if (m_initialized)
@@ -76,8 +81,9 @@ namespace Shake
 
             m_initialized = true;
         }
-    private:
+        
         b2World* m_physicsWorld = nullptr;
+    private:
         bool m_initialized = false;
     };
 }

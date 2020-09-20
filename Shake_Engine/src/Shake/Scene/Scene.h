@@ -24,12 +24,8 @@ namespace Shake
             systems.add<PlayerMovementSystem>();
             systems.configure();
         }
-        
-        void Update(entityx::TimeDelta ts)
-        {
-            m_physicsWorld->Step(ts, m_velocityIterations, m_positionIteartions);
-            systems.update_all(ts); 
-        }
+
+        void Update(entityx::TimeDelta ts);
 
         void SaveScene();
         void LoadScene();
@@ -48,5 +44,7 @@ namespace Shake
         b2Vec2 gravity{0.0f, -9.81};
         int32_t m_velocityIterations = 6;
         int32_t m_positionIteartions = 2;
+
+        bool m_updateSystems = false;
     };
 }

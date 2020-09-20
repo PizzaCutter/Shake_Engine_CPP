@@ -33,6 +33,7 @@ namespace Shake
             outString += "[" + GetComponentName() + "]{";
             outString += SSerialize::SerializeString(ObjectName);
             outString += SSerialize::SerializeInt(ComponentId);
+            outString += "}";
             return outString;
         }
     };
