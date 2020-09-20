@@ -16,8 +16,7 @@ namespace Shake
 {
 
     
-    SableLayer::SableLayer() : Layer("EditorLayer"),
-                                 m_editableColor(SVector4(1.0f))
+    SableLayer::SableLayer() : Layer("EditorLayer")
     {
         m_SpriteSheet = Texture2D::Create("Content/Game/Textures/industrial.v2.png");
         m_SubTextureTest = SubTexture2D::CreateSubTexture(m_SpriteSheet, SubTextureData(2, 14, 16, 16));
@@ -101,8 +100,6 @@ namespace Shake
 
         {
             SE_PROFILE_SCOPE("Gameplay update");
-
-            m_rotation += 10.0f * timeStep.GetSeconds();
         }
 
         {
