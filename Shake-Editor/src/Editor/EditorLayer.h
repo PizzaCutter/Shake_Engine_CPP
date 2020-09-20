@@ -47,7 +47,6 @@ private:
     void ViewportPanel();
     
     void AddObject();
-    void SaveScene();
 
     SharedPtr<SceneX> m_testScene;
     
@@ -76,7 +75,6 @@ private:
     // TRYING TO CREATE AN ACTION PANEL
     ImVec2 m_actionPanelLocation;
     bool m_actionPanelEnabled = false;
-    bool m_triggeredSave = false;
 };
     
 }

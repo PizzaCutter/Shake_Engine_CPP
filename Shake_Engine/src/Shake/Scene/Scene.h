@@ -2,6 +2,7 @@
 
 #include "entt.hpp"
 #include "box2d/b2_world.h"
+#include "Components/TagComponent.h"
 #include "entityx/quick.h"
 #include "Shake/Renderer/Camera/OrthographicCamera.h"
 #include "Systems/CollisionSystem.h"
@@ -30,9 +31,13 @@ namespace Shake
             systems.update_all(ts); 
         }
 
-        entityx::Entity CreateEntity()
+        void SaveScene();
+        void LoadScene();
+
+        entityx::Entity CreateEntity(const std::string& objectName, uint32_t id)
         {
             entityx::Entity newEntity = entities.create();
+            newEntity.assign<TagComponent>(objectName, id);
             newEntity.assign<TransformComponent>(SVector3(0.0f));
             return newEntity;
         }
