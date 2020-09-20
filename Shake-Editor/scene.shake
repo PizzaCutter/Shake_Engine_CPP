@@ -1,5 +1,6 @@
 [TagComponent]{{Player}{04546}}
-	[TransformComponent]{{0.447623,-4.485001,0.000000}{0.000000}{1.000000,1.000000}}%
+	[TransformComponent]{{0.447623,-4.485001,0.000000}{0.000000}{1.000000,1.000000}}
+	[SpriteComponent]{{0.447623,-4.485001,0.000000}}%
 [TagComponent]{{Physics Box}{1}}
 	[TransformComponent]{{0.674560,-3.465472,0.000000}{0.000602}{2.000000,1.000000}}%
 [TagComponent]{{Ground}{2}}

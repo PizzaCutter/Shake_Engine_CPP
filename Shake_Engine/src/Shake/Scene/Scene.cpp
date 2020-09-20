@@ -47,10 +47,14 @@ namespace Shake
             SE_ENGINE_LOG(LogVerbosity::Info, "{0}", sceneDataCopy);
         }
 
-        // CONVERT THIS STRING DATA TO COMPONENT NAME AND COMPONENT DATA  
+        // CONVERT THIS STRING DATA TO COMPONENT NAME AND COMPONENT DATA
+        struct DataLayout
+        {
+            std::vector<std::string> Data; 
+        };
         struct EntityData
         {
-            std::vector<std::pair<std::string, std::string>> Components;
+            std::vector<std::pair<std::string, DataLayout>> Components;
         };
 
         std::vector<EntityData> en;
@@ -61,16 +65,33 @@ namespace Shake
             
             while(inData.length() > 0)
             {
-                uint32 componentNameStartIndex = inData.find_first_of("[");
-                uint32 componentNameEndIndex = inData.find_first_of("]");
-                uint32 componentDataStartIndex = inData.find_first_of("{");
-                uint32 componentDataEndIndex = inData.find_first_of("\n");
+                size_t componentNameStartIndex = inData.find_first_of("[");
+                size_t componentNameEndIndex = inData.find_first_of("]");
+                size_t componentDataStartIndex = inData.find_first_of("{");
+                size_t componentDataEndIndex = inData.find_first_of("\n");
+                if(componentDataEndIndex == std::string::npos)
+                {
+                   componentDataEndIndex = inData.find_first_of("%");
+                }
 
                 std::string componentName = inData.substr(componentNameStartIndex + 1, componentNameEndIndex - 1);
                 std::string componentData = inData.substr(componentDataStartIndex + 1, componentDataEndIndex - componentDataStartIndex - 2);
 
-                entityData.Components.push_back(std::make_pair(componentName, componentData));
-                inData = inData.substr(componentDataEndIndex + 2);
+                DataLayout data;
+                while(componentData.length() > 0)
+                {
+                    size_t dataSetStart = componentData.find_first_of("{");
+                    size_t dataSetEnd = componentData.find_first_of("}") + 1;
+
+                    const std::string something = componentData.substr(dataSetStart + 1, dataSetEnd - dataSetStart - 2);
+                    data.Data.push_back(something);
+                    componentData = componentData.substr(dataSetEnd); 
+                }
+
+                entityData.Components.push_back(std::make_pair(componentName, data));
+                
+                size_t index = std::clamp(static_cast<int>(componentDataEndIndex + 2), 0, static_cast<int>(inData.size())); 
+                inData = inData.substr(index);
             }
             
             en.push_back(entityData);
@@ -88,17 +109,14 @@ namespace Shake
                 const auto& component = e.Components[j];
 
                 // TODO[rsmekens]: remove magic number
-                if(component.first == TagComponent::GetComponentName())
-                {
-                    newEntity.assign<TagComponent>(component.second); 
-                }
+                // if(component.first == TagComponent::GetComponentName())
+                // {
+                //     newEntity.assign<TagComponent>(component.second); 
+                // }
                 if(component.first == TransformComponent::GetComponentName())
                 {
-                   newEntity.assign<TransformComponent>(component.second); 
+                    newEntity.assign<TransformComponent>(component.second.Data); 
                 }
-            //     if(component.first == )
-            //     {
-            //     }
             }
             
             newEntity.assign<SpriteComponent>(SVector4(1.0f, 1.0f, 1.0f, 1.0f));
