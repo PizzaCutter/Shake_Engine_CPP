@@ -23,11 +23,11 @@ namespace Shake {
     class VertexArray;
     class Texture2D;
 
-class EditorLayer : public Layer
+class SableLayer : public Layer
 {
 public:
-    EditorLayer();
-    ~EditorLayer() override;
+    SableLayer();
+    ~SableLayer() override;
     void OnAttach() override;
     //b2Body* CreatePhysicsBody(Entity entity);
     void OnDetach() override;

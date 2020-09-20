@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include "../../../../../Shake-Editor/src/Game/Components/PlayerMovementComponent.h"
+// TODO[rsmekens]: fix up this include
+#include "../../../../../Sable/src/Game/Components/PlayerMovementComponent.h"
 #include "entityx/System.h"
 #include "Shake/Core/Input/Input.h"
 

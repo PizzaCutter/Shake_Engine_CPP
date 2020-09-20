@@ -1,24 +1,14 @@
 #include "sepch.h"
-#include "EditorLayer.h"
+#include "SableLayer.h"
 
 #include <algorithm>
 
-
-
-#include "../Game/Components/CameraFollowComponent.h"
-#include "../Game/Components/PlayerMovementComponent.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui/imgui.h"
 #include "Panels/MenuBarPanel.h"
 #include "Shake/Events/KeyEvent.h"
 #include "Shake/Renderer/Buffers/FrameBuffer.h"
-#include "Shake/Renderer/Renderer2D.h"
-#include "Shake/Scene/Components/TransformComponent.h"
 #include "Shake/Scene/Entities/Entity.h"
-
-#include "box2d/box2d.h"
-#include "Shake/Scene/Components/CollisionComponent.h"
-#include "Shake/Scene/Components/SpriteComponent.h"
 
 namespace ex = entityx;
 
@@ -26,7 +16,7 @@ namespace Shake
 {
 
     
-    EditorLayer::EditorLayer() : Layer("EditorLayer"),
+    SableLayer::SableLayer() : Layer("EditorLayer"),
                                  m_editableColor(SVector4(1.0f))
     {
         m_SpriteSheet = Texture2D::Create("Content/Game/Textures/industrial.v2.png");
@@ -36,11 +26,11 @@ namespace Shake
         m_orthoCameraController = CreateSharedPtr<OrthographicCamera>(-1.7f, 1.7, -1.0f, 1.0f);
     }
 
-    EditorLayer::~EditorLayer()
+    SableLayer::~SableLayer()
     {
     }
 
-    void EditorLayer::OnAttach()
+    void SableLayer::OnAttach()
     {
         const uint32_t width = Application::Get().GetWindow().GetWidth();
         const uint32_t height = Application::Get().GetWindow().GetHeight();
@@ -101,11 +91,11 @@ namespace Shake
         // m_scene->OnBeginPlay();
     }
 
-    void EditorLayer::OnDetach()
+    void SableLayer::OnDetach()
     {
     }
 
-    auto EditorLayer::OnUpdate(Shake::Timestep timeStep) -> void
+    auto SableLayer::OnUpdate(Shake::Timestep timeStep) -> void
     {
         SE_PROFILE_FUNCTION()
 
@@ -150,7 +140,7 @@ namespace Shake
         }
     }
 
-    void EditorLayer::OnImGuiRender()
+    void SableLayer::OnImGuiRender()
     {
         if (m_isEditorHidden)
         {
@@ -181,7 +171,7 @@ namespace Shake
         ImGuiCloseDockSpace();
     }
 
-    void EditorLayer::ImGuiSetupDockspace()
+    void SableLayer::ImGuiSetupDockspace()
     {
         bool p_open = true;
         static bool opt_fullscreen_persistant = true;
@@ -233,12 +223,12 @@ namespace Shake
         }
     }
 
-    void EditorLayer::ImGuiCloseDockSpace()
+    void SableLayer::ImGuiCloseDockSpace()
     {
         ImGui::End();
     }
 
-    void EditorLayer::ViewportPanel()
+    void SableLayer::ViewportPanel()
     {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Removes padding around the window
         ImGui::Begin("Viewport");
@@ -270,30 +260,30 @@ namespace Shake
         ImGui::PopStyleVar();
     }
 
-    void EditorLayer::AddObject()
+    void SableLayer::AddObject()
     {
         SE_ENGINE_LOG(LogVerbosity::Info, "Attempted to add object");
     }
 
-    void EditorLayer::OnEvent(Event& event)
+    void SableLayer::OnEvent(Event& event)
     {
         EventDispatcher dispatcher(event);
-        dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT(EditorLayer::OnMouseButtonPressedCallback));
-        dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT(EditorLayer::OnKeyPressedCallback));
+        dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT(SableLayer::OnMouseButtonPressedCallback));
+        dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT(SableLayer::OnKeyPressedCallback));
 
         if (m_isEditorHidden)
         {
-            dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT(EditorLayer::OnWindowResizeCallback));
+            dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT(SableLayer::OnWindowResizeCallback));
         }
     }
 
-    bool EditorLayer::OnWindowResizeCallback(const WindowResizeEvent& eventData)
+    bool SableLayer::OnWindowResizeCallback(const WindowResizeEvent& eventData)
     {
         OnResizeViewport(eventData.GetWidth(), eventData.GetHeight());
         return true;
     }
 
-    bool EditorLayer::OnMouseButtonPressedCallback(const MouseButtonPressedEvent& eventData)
+    bool SableLayer::OnMouseButtonPressedCallback(const MouseButtonPressedEvent& eventData)
     {
         if (eventData.GetMouseButton() == MouseCode::ButtonRight)
         {
@@ -307,7 +297,7 @@ namespace Shake
         return true;
     }
 
-    bool EditorLayer::OnKeyPressedCallback(const KeyPressedEvent& eventData)
+    bool SableLayer::OnKeyPressedCallback(const KeyPressedEvent& eventData)
     {
         if (eventData.GetKeyCode() == KeyCode::F1)
         {
@@ -329,7 +319,7 @@ namespace Shake
         return true;
     }
 
-    void EditorLayer::OnResizeViewport(uint32_t width, uint32_t height)
+    void SableLayer::OnResizeViewport(uint32_t width, uint32_t height)
     {
         //m_scene->OnViewportResize(width, height);
         m_recalculateViewportSize = false;
