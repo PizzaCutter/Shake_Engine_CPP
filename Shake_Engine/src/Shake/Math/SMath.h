@@ -9,8 +9,8 @@
 
 #include <algorithm>
 
-//#define SVector2 glm::vec2
-//#define SVector3 glm::vec3
+#include "Shake/Serialization/metastuff/include/Meta.h"
+
 #define SVector4 glm::vec4
 
 #define SMat3 glm::mat3
@@ -56,27 +56,21 @@ struct SVector3 : glm::vec3
     }
 
     
-    std::string Serialize() const
-    {
-        return "{" + std::to_string(this->x) + "," + std::to_string(this->y) + "," + std::to_string(this->z) + "}";
-    }
-    
-    static SVector3 Deserialize(const std::string& inData)
-    {
-        // PARSE X LOCATION 
-        const uint32_t positionXEndIndex = inData.find_first_of(",");
-        const uint32_t positionYEndIndex= inData.substr(positionXEndIndex + 1).find_first_of(",");
-    
-        const std::string positionXAsString = inData.substr(0, positionXEndIndex);
-        const std::string positionYAsString = inData.substr(positionXEndIndex + 1, positionYEndIndex);
-        const std::string positionZAsString = inData.substr( positionXEndIndex + positionYEndIndex + 2);
-        
-        std::string::size_type sz;
-        return SVector3(
-                std::stof(positionXAsString, &sz), std::stof(positionYAsString, &sz), std::stof(positionZAsString, &sz)
-            ); 
-    }
 };
+
+
+namespace meta
+{
+    template <>
+    inline auto registerMembers<SVector3>()
+    {
+        return members(
+            member("x", &SVector3::x),
+            member("y", &SVector3::y),
+            member("z", &SVector3::z)
+        );
+    }
+}
 
 struct SVector2 : glm::vec2
 {
@@ -140,6 +134,17 @@ struct SVector2 : glm::vec2
     }
 };
 
+namespace meta
+{
+    template <>
+    inline auto registerMembers<SVector2>()
+    {
+        return members(
+            member("x", &SVector2::x),
+            member("y", &SVector2::y)
+        );
+    }
+} 
 
 namespace SMath 
 {

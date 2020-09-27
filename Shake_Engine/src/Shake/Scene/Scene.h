@@ -27,6 +27,7 @@ namespace Shake
 
         void Update(entityx::TimeDelta ts);
         void TestMetaStuff();
+        void TestOwnMetaStuff();
 
         void SaveScene();
         void LoadScene();

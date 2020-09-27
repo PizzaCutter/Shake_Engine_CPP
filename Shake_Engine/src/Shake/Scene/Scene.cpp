@@ -120,17 +120,72 @@ namespace Shake
         std::cout << "Person 2 name is " << person2.getName() << " too!" << '\n';
     }
 
+    void SceneX::TestOwnMetaStuff()
+    {
+        TransformComponent transformComponent{SVector3(0.0f)};
+
+        // printing members of different classes
+        std::cout << "Members of class Person:\n";
+        meta::doForAllMembers<TransformComponent>(
+            [](const auto& member)
+        {
+            std::cout << "* " << member.getName() << '\n';
+        }
+        );
+
+        printSeparator();
+
+        // checking if classes are registered
+        if (meta::isRegistered<TransformComponent>()) {
+            std::cout << "TransformComponent class is registered\n";
+            std::cout << "It has " << meta::getMemberCount<TransformComponent>() << " members registered.\n";
+        }
+
+        // checking if class has a member
+        if (meta::hasMember<TransformComponent>("rotation")) {
+            std::cout << "TransformComponent has member named 'rotation'\n";
+        }
+
+        // getting members
+        auto rotation = meta::getMemberValue<float>(transformComponent, "rotation");
+        std::cout << "Got transform rotation: " << rotation << '\n';
+
+        // setting members
+        meta::setMemberValue<float>(transformComponent, "rotation", 1.0f);
+        rotation = meta::getMemberValue<float>(transformComponent, "rotation");
+        std::cout << "Changed rotation to" << rotation << '\n';
+
+        printSeparator();
+
+        // And here's how you can serialize/deserialize
+        // (if you write a function for your type)
+        std::cout << "Serializing transformComponent:" << '\n';
+        json root = transformComponent;
+        std::cout << std::setw(4) << root << std::endl;
+
+
+        auto testTransformComponent = root.get<TransformComponent>();
+        rotation = meta::getMemberValue<float>(testTransformComponent, "rotation");
+        std::cout << "Changed rotation to" << rotation << '\n'; 
+        
+        // MetaTestComponent component;
+        // component.test = 5.0f;
+        // json root(component);
+        // std::cout << std::setw(4) << root << std::endl;
+    }
+
     void SceneX::SaveScene()
     {
         //TestMetaStuff();
+        TestOwnMetaStuff();
         
         std::string sceneData = "";
         entities.each<TagComponent, TransformComponent, CollisionComponent>(
             [this, &sceneData](entityx::Entity entity, TagComponent& tagComponent,
                                TransformComponent& transformComponent, CollisionComponent& collisionComponent)
             {
-                sceneData += tagComponent.serialize() + ";\n\t" + transformComponent.serialize() + ";\n\t" +
-                    collisionComponent.serialize() + ";%" + "\n";
+                //sceneData += tagComponent.serialize() + ";\n\t" + transformComponent.serialize() + ";\n\t" +
+                 //   collisionComponent.serialize() + ";%" + "\n";
             });
         SE_ENGINE_LOG(LogVerbosity::Verbose, "\n{0}", sceneData);
 
@@ -246,10 +301,10 @@ namespace Shake
                 {
                     newEntity.assign<TagComponent>(component.second.Data);
                 }
-                if (component.first == TransformComponent::GetComponentName())
-                {
-                    newEntity.assign<TransformComponent>(component.second.Data);
-                }
+                // if (component.first == TransformComponent::GetComponentName())
+                // {
+                //     newEntity.assign<TransformComponent>(component.second.Data);
+                // }
                 if (component.first == CollisionComponent::GetComponentName())
                 {
                     newEntity.assign<CollisionComponent>(component.second.Data);
