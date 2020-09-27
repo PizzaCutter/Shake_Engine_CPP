@@ -16,3 +16,6 @@
 [submodule "Shake_Engine/vendor/entityx"]
 	path = Shake_Engine/vendor/entityx
 	url = https://github.com/PizzaCutter/entityx.git
+[submodule "Shake_Engine/vendor/metastuff"]
+	path = Shake_Engine/vendor/metastuff
+	url = https://github.com/eliasdaler/MetaStuff.git

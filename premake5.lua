@@ -59,7 +59,7 @@ project "Shake_Engine"
 		"%{prj.name}/vendor/imgui/examples/imgui_impl_opengl3.h",
 		"%{prj.name}/vendor/imgui/examples/imgui_impl_opengl3.cpp",
 		"%{prj.name}/vendor/stb_image/**.h",
-		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.cpp"
 	}
 	
 	defines
