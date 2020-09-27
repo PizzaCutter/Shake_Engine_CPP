@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Shake/Core/Core.h"
 #include "Shake/Math/SMath.h"
+#include <array>
 
 namespace Shake
 {

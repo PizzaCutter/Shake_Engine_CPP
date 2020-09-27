@@ -1,9 +1,0 @@
-[TagComponent]{{Player}{0}};
-	[TransformComponent]{{0.000000,0.000000,0.000000}{0.000000}{1.000000,1.000000}};
-	[CollisionComponent]{{1}{1.000000}{0.500000}{1}{0}{1}};%
-[TagComponent]{{Physics Box}{1}};
-	[TransformComponent]{{0.500000,2.000000,0.000000}{0.000000}{2.000000,1.000000}};
-	[CollisionComponent]{{1}{1.000000}{0.500000}{0}{0}{1}};%
-[TagComponent]{{Ground}{2}};
-	[TransformComponent]{{0.000000,-10.000000,0.000000}{0.000000}{50.000000,10.000000}};
-	[CollisionComponent]{{0}{1.000000}{0.500000}{0}{0}{1}};%

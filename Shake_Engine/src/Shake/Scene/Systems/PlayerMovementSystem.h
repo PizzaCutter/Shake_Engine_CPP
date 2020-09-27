@@ -2,8 +2,10 @@
 
 // TODO[rsmekens]: fix up this include
 #include "../../../../../Sable/src/Game/Components/PlayerMovementComponent.h"
+#include "box2d/b2_body.h"
 #include "entityx/System.h"
 #include "Shake/Core/Input/Input.h"
+#include "Shake/Scene/Components/CollisionComponent.h"
 
 namespace Shake
 {

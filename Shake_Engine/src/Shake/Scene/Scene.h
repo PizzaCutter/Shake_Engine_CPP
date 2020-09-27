@@ -1,12 +1,12 @@
 ﻿#pragma once
 
-#include "entt.hpp"
+#include "entityx/quick.h"
 #include "box2d/b2_world.h"
 #include "Components/TagComponent.h"
-#include "entityx/quick.h"
-#include "Shake/Renderer/Camera/OrthographicCamera.h"
-#include "Systems/CollisionSystem.h"
 #include "Systems/PlayerMovementSystem.h"
+#include "Shake/Renderer/Camera/OrthographicCamera.h"
+
+#include "Systems/CollisionSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/SpawnSystem.h"
 
