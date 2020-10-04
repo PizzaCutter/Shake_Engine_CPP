@@ -41,14 +41,11 @@ struct CollisionComponent
     {
     }
 
-    static std::string GetComponentName()
-    {
-        return "CollisionComponent";
-    }
 
     std::string serialize()
     {
-        std::string serializedData = "[" + GetComponentName() + "]{";
+        //std::string serializedData = "[" + "]{";
+        std::string serializedData = "";
         serializedData += SSerialize::SerializeInt(static_cast<int>(m_collisionData.PhysicsType));
         serializedData += SSerialize::SerializeFloat(m_collisionData.Density);
         serializedData += SSerialize::SerializeFloat(m_collisionData.Friction);
@@ -59,7 +56,7 @@ struct CollisionComponent
         serializedData += "}";
         return serializedData;
     }
-    
+
     CollisionData m_collisionData;
     b2Body* m_physicsBody = nullptr;
 };

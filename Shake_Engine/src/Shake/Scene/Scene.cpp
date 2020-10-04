@@ -17,6 +17,99 @@ void printSeparator()
     std::cout << "========================\n";
 }
 
+
+namespace ns
+{
+
+    struct BaseComponent
+    {
+        std::string ComponentName = "BaseComponent";
+        int testNumber = 2;
+        float otherTestNumber = 3.0f;
+    };
+
+    struct TestComponent : BaseComponent
+    {
+        TestComponent()
+        {
+            ComponentName = "TestComponent";
+        }
+        
+        int32 integerNumber = 1;
+        
+        
+    };
+
+    struct OtherComponent : BaseComponent
+    {
+        OtherComponent()
+        {
+            ComponentName = "OtherComponent";
+        }
+
+        float floatNumber = 2.0f; 
+
+        
+    };
+
+    struct TestEntity
+    {
+        TestEntity(const std::string& name)
+            : Name(name)
+        {
+        }
+        
+        std::string Name = "";
+        std::vector<BaseComponent*> Components;
+
+        
+    };
+
+
+    void from_json(const json& j, TestEntity& p)
+    {
+    }
+    void to_json(json& j, const OtherComponent& p){
+        j = json{{"floatNumber", p.floatNumber}};
+    }
+    void to_json(json& j, const TestComponent& p){
+        j = json{{"integerNumber", p.integerNumber}};
+    }
+    void to_json(json& j, const BaseComponent& p)
+    {
+        j = json{{"ComponentName", p.ComponentName}, {"IntNumber", p.testNumber}, {"OtherNumber", p.otherTestNumber}};       
+    }
+
+    // void to_json(json& j, const TagComponent& p)
+    // {
+    //     j = json{{"ComponentName", "TagComponent"}, {"ObjectName", p.ObjectName}, {"ComponentId", p.ComponentId}};       
+    // }
+    
+    
+    void from_json(const json& j, BaseComponent& p)
+    {
+        j.at("ComponentName").get_to(p.ComponentName);
+        j.at("IntNumber").get_to(p.testNumber);
+        j.at("OtherNumber").get_to(p.otherTestNumber);
+    }
+
+    void to_json(json& j, const BaseComponent* p)
+    {
+        j = json{{"ComponentName", p->ComponentName}, {"IntNumber", p->testNumber}, {"OtherNumber", p->otherTestNumber}};
+        
+    } 
+
+    void to_json(json& j, const TestEntity& p)
+    {
+        for (auto component : p.Components)
+        {
+            j.push_back(component); 
+        }
+        //j = json{{"components",  p.Components}};
+        //j.push_back(p.Components[0]);
+    }
+}
+
 namespace Shake
 {
     void SceneX::Update(entityx::TimeDelta ts)
@@ -107,7 +200,7 @@ namespace Shake
         // (if you write a function for your type)
         std::cout << "Serializing person:" << '\n';
         json root = person;
-        std::cout << std::setw(4) << root << std::endl;
+        ///std::cout << std::setw(4) << root << std::endl;
 
         //Unregistered y;
         //json root2 = y; // this will fail at compile time
@@ -161,7 +254,7 @@ namespace Shake
         // (if you write a function for your type)
         std::cout << "Serializing transformComponent:" << '\n';
         json root = transformComponent;
-        std::cout << std::setw(4) << root << std::endl;
+        //std::cout << std::setw(4) << root << std::endl;
 
 
         auto testTransformComponent = root.get<TransformComponent>();
@@ -174,19 +267,71 @@ namespace Shake
         // std::cout << std::setw(4) << root << std::endl;
     }
 
+
+
     void SceneX::SaveScene()
     {
+        // std::vector<ns::TestEntity> entityList;
+        //
+        // ns::TestEntity entity_01("entity_01");
+        // ns::TestComponent* testComponent_01 = new ns::TestComponent();
+        // testComponent_01->integerNumber = 100;
+        // testComponent_01->testNumber = 200;
+        // entity_01.Components.push_back(testComponent_01);
+        //
+        // entity_01.Components.push_back(new ns::OtherComponent());
+        // entityList.push_back(entity_01);
+        //
+        // ns::TestEntity entity_02("entity_02");
+        // entity_02.Components.push_back(new ns::TestComponent());
+        // entity_02.Components.push_back(new ns::OtherComponent());
+        // entityList.push_back(entity_02);
+        //
+        // json tagRoot(entityList);
+        // //tagRoot.push_back(entity_01);
+        // //tagRoot.push_back(entity_02);
+        // //std::string sceneData = tagRoot.dump();
+        // std::string sceneData = tagRoot.dump();
+        //
+        // std::cout << sceneData << std::endl;
+            
         //TestMetaStuff();
-        TestOwnMetaStuff();
+        //TestOwnMetaStuff();
         
         std::string sceneData = "";
-        entities.each<TagComponent, TransformComponent, CollisionComponent>(
-            [this, &sceneData](entityx::Entity entity, TagComponent& tagComponent,
-                               TransformComponent& transformComponent, CollisionComponent& collisionComponent)
+        // sceneData += '"';
+        // sceneData += "entities";
+        // sceneData += '"';
+        // sceneData += ": \n[";
+        //
+        json jsonEntities;
+        entities.each<TagComponent>(
+            [this, &sceneData, &jsonEntities](entityx::Entity entity, TagComponent& tagComponent)
             {
-                //sceneData += tagComponent.serialize() + ";\n\t" + transformComponent.serialize() + ";\n\t" +
-                 //   collisionComponent.serialize() + ";%" + "\n";
+                json jsonEntity;
+                jsonEntity.push_back(tagComponent);
+
+                if(entity.has_component<TransformComponent>())
+                {
+                   jsonEntity.push_back(*entity.component<TransformComponent>().get()); 
+                }
+                if(entity.has_component<CollisionComponent>())
+                {
+                   //jsonEntity.push_back(*entity.component<CollisionComponent>().get()); 
+                   //jsonEntity.push_back(entity.component<CollisionComponent>()); 
+                }
+                if(entity.has_component<SpriteComponent>())
+                {
+                   //jsonEntity.push_back(*entity.component<TransformComponent>().get()); 
+                   //jsonEntity.push_back(entity.component<SpriteComponent>());
+                }
+
+                
+                jsonEntities.push_back(jsonEntity);        
             });
+
+        sceneData = jsonEntities.dump();
+        
         SE_ENGINE_LOG(LogVerbosity::Verbose, "\n{0}", sceneData);
 
         std::ofstream sceneFile;
@@ -208,106 +353,33 @@ namespace Shake
         // LOADING SCENE DATA
         std::string serializedSceneData;
         std::ifstream sceneFile("scene.shake");
-        std::string lineData;
-        while (getline(sceneFile, lineData))
-        {
-            serializedSceneData += lineData + "\n";
-        }
+        json jf = json::parse(sceneFile);
         sceneFile.close();
-
-        serializedSceneData.erase(std::remove_if(serializedSceneData.begin(), serializedSceneData.end(), IsSpace),
-                                  serializedSceneData.end());
-
-        std::string sceneDataCopy = serializedSceneData;
-        std::vector<std::string> entitiesData;
-        // CONVERTING SCENE DATA INTO ACTUAL ENTITIES
-        while (sceneDataCopy.length() > 0)
-        {
-            uint32 entityEndIndex = sceneDataCopy.find_first_of("%");
-            std::string entityString = sceneDataCopy.substr(0, entityEndIndex + 1);
-            entitiesData.push_back(entityString);
-            sceneDataCopy = sceneDataCopy.substr(entityEndIndex + 1);
-            SE_ENGINE_LOG(LogVerbosity::Info, "{0}", sceneDataCopy);
-        }
-
-        // CONVERT THIS STRING DATA TO COMPONENT NAME AND COMPONENT DATA
-        struct DataLayout
-        {
-            std::vector<std::string> Data;
-        };
-        struct EntityData
-        {
-            std::vector<std::pair<std::string, DataLayout>> Components;
-        };
-
-        std::vector<EntityData> en;
-        for (int i = 0; i < entitiesData.size(); ++i)
-        {
-            std::string& inData = entitiesData[i];
-            EntityData entityData;
-
-            while (inData.length() > 1)
-            {
-                size_t componentNameStartIndex = inData.find_first_of("[");
-                size_t componentNameEndIndex = inData.find_first_of("]");
-                size_t componentDataStartIndex = inData.find_first_of("{");
-                size_t componentDataEndIndex = inData.find_first_of(";");
-
-                std::string componentName = inData.substr(componentNameStartIndex + 1,
-                                                          componentNameEndIndex - componentNameStartIndex - 1);
-                std::string componentData = inData.substr(componentDataStartIndex + 1,
-                                                          componentDataEndIndex - componentDataStartIndex - 2);
-
-                DataLayout data;
-                while (componentData.length() > 0)
-                {
-                    size_t dataSetStart = componentData.find_first_of("{");
-                    size_t dataSetEnd = componentData.find_first_of("}") + 1;
-
-                    const std::string something = componentData.substr(dataSetStart + 1, dataSetEnd - dataSetStart - 2);
-                    data.Data.push_back(something);
-                    componentData = componentData.substr(dataSetEnd);
-                }
-
-                entityData.Components.push_back(std::make_pair(componentName, data));
-                inData = inData.substr(componentDataEndIndex + 1);
-            }
-
-            en.push_back(entityData);
-        }
 
         entities.each<TagComponent>([this](entityx::Entity entity, TagComponent& tagComponent)
         {
             entities.destroy(entity.id());
         });
-
-        // RESETTING PHYSICS
-        m_physicsWorld.reset();
-        m_physicsWorld = std::make_unique<b2World>(gravity);
-        std::shared_ptr<SpawnSystem> spawnSystem = systems.system<SpawnSystem>();
-        spawnSystem->m_physicsWorld = m_physicsWorld.get();
-        spawnSystem->Reset();
-
-        for (int i = 0; i < en.size(); ++i)
+        
+        for (auto element : jf.items())
         {
-            const EntityData& e = en[i];
             entityx::Entity newEntity = entities.create();
-
-            for (int j = 0; j < e.Components.size(); ++j)
+            for(json::iterator it = element.value().begin(); it != element.value().end(); ++it)
             {
-                const auto& component = e.Components[j];
+                nlohmann::basic_json<> temp = it.value();
+                nlohmann::basic_json<>::iterator otherTemp = temp.find("name");
 
-                if (component.first == TagComponent::GetComponentName())
+                if(otherTemp.value() == "TagComponent")
                 {
-                    newEntity.assign<TagComponent>(component.second.Data);
+                    TagComponent newTagComp;
+                    from_json(temp, newTagComp);
+                    newEntity.assign<TagComponent>(newTagComp);
                 }
-                // if (component.first == TransformComponent::GetComponentName())
-                // {
-                //     newEntity.assign<TransformComponent>(component.second.Data);
-                // }
-                if (component.first == CollisionComponent::GetComponentName())
+                if(otherTemp.value() == "TransformComponent")
                 {
-                    newEntity.assign<CollisionComponent>(component.second.Data);
+                     TransformComponent newTransformComponent;
+                     from_json(temp, newTransformComponent);
+                     newEntity.assign<TransformComponent>(newTransformComponent);
                 }
             }
 

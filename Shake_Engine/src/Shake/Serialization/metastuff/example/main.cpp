@@ -83,7 +83,7 @@ static int metastuff_example()
     // (if you write a function for your type)
     std::cout << "Serializing person:" << '\n';
     json root = person;
-    std::cout << std::setw(4) << root << std::endl;
+    //std::cout << std::setw(4) << root << std::endl;
 
     //Unregistered y;
     //json root2 = y; // this will fail at compile time

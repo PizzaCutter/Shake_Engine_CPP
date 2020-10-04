@@ -6,6 +6,8 @@
 
 struct TransformComponent
 {
+    std::string Name = "TransformComponent";
+    
     SMat4 Transform{SMat4(1.0f)};
     SVector3 Position{SVector3(0.0f)};
     float Rotation{0.0f};
@@ -95,6 +97,7 @@ namespace meta
     inline auto registerMembers<TransformComponent>()
     {
         return members(
+            member("name", &TransformComponent::Name),
             member("position", &TransformComponent::Position),
             member("rotation", &TransformComponent::Rotation),
             member("scale", &TransformComponent::Scale)
