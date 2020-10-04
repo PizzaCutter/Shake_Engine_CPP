@@ -20,7 +20,6 @@ void printSeparator()
 
 namespace ns
 {
-
     struct BaseComponent
     {
         std::string ComponentName = "BaseComponent";
@@ -34,10 +33,8 @@ namespace ns
         {
             ComponentName = "TestComponent";
         }
-        
+
         int32 integerNumber = 1;
-        
-        
     };
 
     struct OtherComponent : BaseComponent
@@ -47,9 +44,7 @@ namespace ns
             ComponentName = "OtherComponent";
         }
 
-        float floatNumber = 2.0f; 
-
-        
+        float floatNumber = 2.0f;
     };
 
     struct TestEntity
@@ -58,34 +53,37 @@ namespace ns
             : Name(name)
         {
         }
-        
+
         std::string Name = "";
         std::vector<BaseComponent*> Components;
-
-        
     };
 
 
     void from_json(const json& j, TestEntity& p)
     {
     }
-    void to_json(json& j, const OtherComponent& p){
+
+    void to_json(json& j, const OtherComponent& p)
+    {
         j = json{{"floatNumber", p.floatNumber}};
     }
-    void to_json(json& j, const TestComponent& p){
+
+    void to_json(json& j, const TestComponent& p)
+    {
         j = json{{"integerNumber", p.integerNumber}};
     }
+
     void to_json(json& j, const BaseComponent& p)
     {
-        j = json{{"ComponentName", p.ComponentName}, {"IntNumber", p.testNumber}, {"OtherNumber", p.otherTestNumber}};       
+        j = json{{"ComponentName", p.ComponentName}, {"IntNumber", p.testNumber}, {"OtherNumber", p.otherTestNumber}};
     }
 
     // void to_json(json& j, const TagComponent& p)
     // {
     //     j = json{{"ComponentName", "TagComponent"}, {"ObjectName", p.ObjectName}, {"ComponentId", p.ComponentId}};       
     // }
-    
-    
+
+
     void from_json(const json& j, BaseComponent& p)
     {
         j.at("ComponentName").get_to(p.ComponentName);
@@ -95,15 +93,16 @@ namespace ns
 
     void to_json(json& j, const BaseComponent* p)
     {
-        j = json{{"ComponentName", p->ComponentName}, {"IntNumber", p->testNumber}, {"OtherNumber", p->otherTestNumber}};
-        
-    } 
+        j = json{
+            {"ComponentName", p->ComponentName}, {"IntNumber", p->testNumber}, {"OtherNumber", p->otherTestNumber}
+        };
+    }
 
     void to_json(json& j, const TestEntity& p)
     {
         for (auto component : p.Components)
         {
-            j.push_back(component); 
+            j.push_back(component);
         }
         //j = json{{"components",  p.Components}};
         //j.push_back(p.Components[0]);
@@ -221,21 +220,23 @@ namespace Shake
         std::cout << "Members of class Person:\n";
         meta::doForAllMembers<TransformComponent>(
             [](const auto& member)
-        {
-            std::cout << "* " << member.getName() << '\n';
-        }
+            {
+                std::cout << "* " << member.getName() << '\n';
+            }
         );
 
         printSeparator();
 
         // checking if classes are registered
-        if (meta::isRegistered<TransformComponent>()) {
+        if (meta::isRegistered<TransformComponent>())
+        {
             std::cout << "TransformComponent class is registered\n";
             std::cout << "It has " << meta::getMemberCount<TransformComponent>() << " members registered.\n";
         }
 
         // checking if class has a member
-        if (meta::hasMember<TransformComponent>("rotation")) {
+        if (meta::hasMember<TransformComponent>("rotation"))
+        {
             std::cout << "TransformComponent has member named 'rotation'\n";
         }
 
@@ -259,8 +260,8 @@ namespace Shake
 
         auto testTransformComponent = root.get<TransformComponent>();
         rotation = meta::getMemberValue<float>(testTransformComponent, "rotation");
-        std::cout << "Changed rotation to" << rotation << '\n'; 
-        
+        std::cout << "Changed rotation to" << rotation << '\n';
+
         // MetaTestComponent component;
         // component.test = 5.0f;
         // json root(component);
@@ -268,42 +269,9 @@ namespace Shake
     }
 
 
-
     void SceneX::SaveScene()
     {
-        // std::vector<ns::TestEntity> entityList;
-        //
-        // ns::TestEntity entity_01("entity_01");
-        // ns::TestComponent* testComponent_01 = new ns::TestComponent();
-        // testComponent_01->integerNumber = 100;
-        // testComponent_01->testNumber = 200;
-        // entity_01.Components.push_back(testComponent_01);
-        //
-        // entity_01.Components.push_back(new ns::OtherComponent());
-        // entityList.push_back(entity_01);
-        //
-        // ns::TestEntity entity_02("entity_02");
-        // entity_02.Components.push_back(new ns::TestComponent());
-        // entity_02.Components.push_back(new ns::OtherComponent());
-        // entityList.push_back(entity_02);
-        //
-        // json tagRoot(entityList);
-        // //tagRoot.push_back(entity_01);
-        // //tagRoot.push_back(entity_02);
-        // //std::string sceneData = tagRoot.dump();
-        // std::string sceneData = tagRoot.dump();
-        //
-        // std::cout << sceneData << std::endl;
-            
-        //TestMetaStuff();
-        //TestOwnMetaStuff();
-        
         std::string sceneData = "";
-        // sceneData += '"';
-        // sceneData += "entities";
-        // sceneData += '"';
-        // sceneData += ": \n[";
-        //
         json jsonEntities;
         entities.each<TagComponent>(
             [this, &sceneData, &jsonEntities](entityx::Entity entity, TagComponent& tagComponent)
@@ -311,27 +279,24 @@ namespace Shake
                 json jsonEntity;
                 jsonEntity.push_back(tagComponent);
 
-                if(entity.has_component<TransformComponent>())
+                if (entity.has_component<TransformComponent>())
                 {
-                   jsonEntity.push_back(*entity.component<TransformComponent>().get()); 
+                    jsonEntity.push_back(*entity.component<TransformComponent>().get());
                 }
-                if(entity.has_component<CollisionComponent>())
+                if (entity.has_component<SpriteComponent>())
                 {
-                   //jsonEntity.push_back(*entity.component<CollisionComponent>().get()); 
-                   //jsonEntity.push_back(entity.component<CollisionComponent>()); 
+                    jsonEntity.push_back(*entity.component<SpriteComponent>().get());
                 }
-                if(entity.has_component<SpriteComponent>())
+                if (entity.has_component<CollisionComponent>())
                 {
-                   //jsonEntity.push_back(*entity.component<TransformComponent>().get()); 
-                   //jsonEntity.push_back(entity.component<SpriteComponent>());
+                    jsonEntity.push_back(*entity.component<CollisionComponent>().get());
                 }
 
-                
-                jsonEntities.push_back(jsonEntity);        
+                jsonEntities.push_back(jsonEntity);
             });
 
         sceneData = jsonEntities.dump();
-        
+
         SE_ENGINE_LOG(LogVerbosity::Verbose, "\n{0}", sceneData);
 
         std::ofstream sceneFile;
@@ -360,30 +325,47 @@ namespace Shake
         {
             entities.destroy(entity.id());
         });
-        
+
+        // RESETTING PHYSICS
+        m_physicsWorld.reset();
+        m_physicsWorld = std::make_unique<b2World>(gravity);
+        std::shared_ptr<SpawnSystem> spawnSystem = systems.system<SpawnSystem>();
+        spawnSystem->m_physicsWorld = m_physicsWorld.get();
+        spawnSystem->Reset();
+
         for (auto element : jf.items())
         {
             entityx::Entity newEntity = entities.create();
-            for(json::iterator it = element.value().begin(); it != element.value().end(); ++it)
+            for (json::iterator it = element.value().begin(); it != element.value().end(); ++it)
             {
                 nlohmann::basic_json<> temp = it.value();
                 nlohmann::basic_json<>::iterator otherTemp = temp.find("name");
 
-                if(otherTemp.value() == "TagComponent")
+                if (otherTemp.value() == "TagComponent")
                 {
                     TagComponent newTagComp;
                     from_json(temp, newTagComp);
                     newEntity.assign<TagComponent>(newTagComp);
                 }
-                if(otherTemp.value() == "TransformComponent")
+                if (otherTemp.value() == "TransformComponent")
                 {
-                     TransformComponent newTransformComponent;
-                     from_json(temp, newTransformComponent);
-                     newEntity.assign<TransformComponent>(newTransformComponent);
+                    TransformComponent newTransformComponent;
+                    from_json(temp, newTransformComponent);
+                    newEntity.assign<TransformComponent>(newTransformComponent);
+                }
+                if (otherTemp.value() == "SpriteComponent")
+                {
+                    SpriteComponent newSpriteComponent;
+                    from_json(temp, newSpriteComponent);
+                    newEntity.assign<SpriteComponent>(newSpriteComponent);
+                }
+                if (otherTemp.value() == "CollisionComponent")
+                {
+                    CollisionComponent newCollisionComponent;
+                    from_json(temp, newCollisionComponent);
+                    newEntity.assign<CollisionComponent>(newCollisionComponent);
                 }
             }
-
-            newEntity.assign<SpriteComponent>(SVector4(1.0f, 1.0f, 1.0f, 1.0f));
         }
     }
 }

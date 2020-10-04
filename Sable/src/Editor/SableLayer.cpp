@@ -42,6 +42,7 @@ namespace Shake
         m_testScene = CreateSharedPtr<SceneX>(m_controller->GetCamera());
         //m_testScene->LoadScene();
 
+
 #if 0
         {
             entityx::Entity newEntity = m_testScene->CreateEntity("Player", 0);

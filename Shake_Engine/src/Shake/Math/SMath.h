@@ -11,8 +11,6 @@
 
 #include "Shake/Serialization/metastuff/include/Meta.h"
 
-#define SVector4 glm::vec4
-
 #define SMat3 glm::mat3
 #define SMat4 glm::mat4
 
@@ -144,7 +142,66 @@ namespace meta
             member("y", &SVector2::y)
         );
     }
-} 
+}
+
+struct SVector4 : glm::vec4
+{
+    SVector4(const float& x, const float& y, const float& z, const float& w)
+    {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+        this->w = w;
+    }
+
+    SVector4(const float& scalar)
+    {
+        this->x = scalar;
+        this->y = scalar;
+        this->z = scalar;
+        this->w = scalar;
+    }
+
+    SVector4()
+        : SVector4(0.0f)
+    {
+        
+    }
+
+    operator glm::vec4() const { return *this; }
+    
+    SVector4& operator=(const glm::vec4& other) 
+    {
+        this->x = other.x;
+        this->y = other.y;
+        this->z = other.z;
+        this->w = other.w;
+        return *this;
+    }
+    SVector4& operator+(const glm::vec4& other)
+    {
+        this->x += other.x;
+        this->y += other.y;
+        this->z += other.z;
+        this->w += other.w;
+        return *this; 
+    }
+};
+
+namespace meta
+{
+    template <>
+    inline auto registerMembers<SVector4>()
+    {
+        return members(
+            member("x", &SVector4::x),
+            member("y", &SVector4::y),
+            member("z", &SVector4::z),
+            member("w", &SVector4::w)
+        );
+    }
+}
+
 
 namespace SMath 
 {

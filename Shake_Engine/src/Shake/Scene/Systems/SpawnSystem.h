@@ -40,7 +40,7 @@ namespace Shake
                     const SVector2 currentScale = transformComponent.GetScale();
                     const float currentRotation = transformComponent.GetRotation();
                     
-                    CollisionData& m_collisionData = collisionComponent.m_collisionData;
+                    CollisionData& m_collisionData = collisionComponent.CollisionData;
                     
                     // TODO[rsmekens]: Branching here might be slow
                     b2BodyDef bodyDef;
