@@ -6,7 +6,7 @@
 
 struct TransformComponent
 {
-    std::string Name = "TransformComponent";
+    std::string Name = GetComponentName();
     
     SMat4 Transform{SMat4(1.0f)};
     SVector3 Position{SVector3(0.0f)};
@@ -38,6 +38,8 @@ struct TransformComponent
         Scale = SVector2::Deserialize(inData[2]);
         UpdateMatrix();
     }
+
+    static std::string GetComponentName() { return "TransformComponent"; }
 
 
     void SetPosition(SVector3 newPosition)

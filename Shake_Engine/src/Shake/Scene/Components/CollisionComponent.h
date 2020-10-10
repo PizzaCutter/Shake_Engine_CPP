@@ -59,7 +59,9 @@ struct CollisionComponent
     {
     }
 
-    std::string Name = "CollisionComponent";
+    static std::string GetComponentName() { return "CollisionComponent"; }
+
+    std::string Name = GetComponentName();
     CollisionData CollisionData;
     b2Body* m_physicsBody = nullptr;
 };

@@ -5,11 +5,13 @@
 
 struct PlayerMovementComponent
 {
-    std::string Name = "PlayerMovementComponent";
+    std::string Name = GetComponentName();
     float MovementSpeedIncrease{50.0f}; // 0.5f
     float MaxMovementSpeed{10.0f}; // 10.0f
     float VelocityMultiplier{50.0f}; // 0.9f
     float JumpVelocity{5.0f};
+
+    static std::string GetComponentName() { return "PlayerMovementComponent"; }
 };
 
 namespace meta

@@ -10,8 +10,10 @@ struct SpriteComponent
     {
     }
 
+    static std::string GetComponentName() { return "SpriteComponent"; }
 
-    std::string Name = "SpriteComponent";
+
+    std::string Name = GetComponentName();
     SVector4 Color{1.0f, 1.0f, 1.0f, 1.0f};
 };
 

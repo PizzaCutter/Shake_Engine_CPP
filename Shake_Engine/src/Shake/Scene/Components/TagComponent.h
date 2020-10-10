@@ -6,7 +6,7 @@
 
 struct TagComponent
 {
-    std::string Name = "TagComponent";
+    std::string Name = GetComponentName();
     std::string ObjectName;
     uint32_t ComponentId;
 
@@ -22,6 +22,8 @@ struct TagComponent
         ObjectName = inData[0];
         ComponentId = SSerialize::DeserializeInt(inData[1]);
     }
+
+    static std::string GetComponentName() { return "TagComponent"; }
 };
 
 namespace meta

@@ -12,31 +12,30 @@ namespace Shake
 
     void SceneHierarchyPanel::OnImGuiRender()
     {
-        // ImGui::Begin("Scene Hierarchy");
-        //
-        // m_currentScene->m_registry.each([&](auto entityID)
-        // {
-        //     Entity entity {entityID, m_currentScene.get()};
-        //     DrawEntityNode(entity);
-        // });
-        //
-        // ImGui::End();
+        ImGui::Begin("Scene Hierarchy");
+
+        m_currentScene->entities.each<TagComponent>(
+            [this](entityx::Entity entity, TagComponent& tagComponent)
+            {
+                DrawEntityNode(entity);
+            });
+
+        ImGui::End();
     }
 
-    // void SceneHierarchyPanel::DrawEntityNode(Entity entity)
-    // {
-    //     SString s = std::to_string(entity.GetEntityId());
-    //     ImGuiTreeNodeFlags flags = ((m_selectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;// | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-    //     bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity.GetEntityId(), flags , s.c_str());
-    //     
-    //     if(ImGui::IsItemClicked())
-    //     {
-    //         m_selectionContext = entity;
-    //     }
-    //     
-    //     if(opened)
-    //     {            
-    //         ImGui::TreePop();
-    //     }
-    // }
+    void SceneHierarchyPanel::DrawEntityNode(entityx::Entity entity)
+    {
+        
+        ImGuiTreeNodeFlags flags = ((SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;// | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+        entityx::ComponentHandle<TagComponent> tagComponent = entity.component<TagComponent>();
+        bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)tagComponent.get()->ComponentId, flags, tagComponent.get()->ObjectName.c_str());
+        if(ImGui::IsItemClicked())
+        {
+            SelectedEntity = entity;
+        }
+        if(opened)
+        {
+            ImGui::TreePop();
+        }
+    }
 }

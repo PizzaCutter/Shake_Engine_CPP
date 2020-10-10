@@ -202,31 +202,31 @@ namespace Shake
                 nlohmann::basic_json<> temp = it.value();
                 nlohmann::basic_json<>::iterator otherTemp = temp.find("name");
 
-                if (otherTemp.value() == "TagComponent")
+                if (otherTemp.value() == TagComponent::GetComponentName())
                 {
                     TagComponent newTagComp;
                     from_json(temp, newTagComp);
                     newEntity.assign<TagComponent>(newTagComp);
                 }
-                if (otherTemp.value() == "TransformComponent")
+                if (otherTemp.value() == TransformComponent::GetComponentName())
                 {
                     TransformComponent newTransformComponent;
                     from_json(temp, newTransformComponent);
                     newEntity.assign<TransformComponent>(newTransformComponent);
                 }
-                if (otherTemp.value() == "SpriteComponent")
+                if (otherTemp.value() == SpriteComponent::GetComponentName())
                 {
                     SpriteComponent newSpriteComponent;
                     from_json(temp, newSpriteComponent);
                     newEntity.assign<SpriteComponent>(newSpriteComponent);
                 }
-                if (otherTemp.value() == "CollisionComponent")
+                if (otherTemp.value() == CollisionComponent::GetComponentName())
                 {
                     CollisionComponent newCollisionComponent;
                     from_json(temp, newCollisionComponent);
                     newEntity.assign<CollisionComponent>(newCollisionComponent);
                 }
-                if(otherTemp.value() == "PlayerMovementComponent")
+                if(otherTemp.value() == PlayerMovementComponent::GetComponentName()) 
                 {
                     PlayerMovementComponent newPlayerMovementComponent;
                     from_json(temp, newPlayerMovementComponent);

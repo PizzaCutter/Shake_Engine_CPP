@@ -77,18 +77,11 @@ namespace Shake
         }
 #endif
 
-        // std::string serializeTest = "{111.111,22.222,3.3333}{3.14}{4.00, 5.00}";
-        // const TransformComponent test = TransformComponent::deserialize(serializeTest);
-        //
+        m_editorPanels.push_back(CreateSharedPtr<MenuBarPanel>(m_testScene));
+        m_editorPanels.push_back(CreateSharedPtr<SceneHierarchyPanel>(m_testScene));
+        //m_editorPanels.push_back(CreateSharedPtr<SceneStatsPanel>(m_testScene));
         
-
-
-        // m_editorPanels.push_back(CreateSharedPtr<MenuBarPanel>(m_scene));
-        // m_editorPanels.push_back(CreateSharedPtr<SceneHierarchyPanel>(m_scene));
-        // m_editorPanels.push_back(CreateSharedPtr<SceneStatsPanel>(m_scene));
-        //
-        // m_scene->OnViewportResize(1280, 720);
-        // m_scene->OnBeginPlay();
+        m_testScene->LoadScene();
     }
 
     void SableLayer::OnDetach()
@@ -107,6 +100,7 @@ namespace Shake
             SE_PROFILE_SCOPE("Rendering - Prep");
             if (m_isEditorHidden == false)
             {
+                m_frameBuffer->Bind();
             }
 
             RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
