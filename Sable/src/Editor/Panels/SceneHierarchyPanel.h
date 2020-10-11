@@ -15,7 +15,6 @@ namespace Shake
 
         void OnImGuiRender() override;
         
-    private:
         entityx::Entity SelectedEntity;
         void DrawEntityNode(entityx::Entity entity);
     };

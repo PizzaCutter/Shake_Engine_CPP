@@ -25,7 +25,6 @@ namespace Shake
 
     void SceneHierarchyPanel::DrawEntityNode(entityx::Entity entity)
     {
-        
         ImGuiTreeNodeFlags flags = ((SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;// | ImGuiTreeNodeFlags_OpenOnDoubleClick;
         entityx::ComponentHandle<TagComponent> tagComponent = entity.component<TagComponent>();
         bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)tagComponent.get()->ComponentId, flags, tagComponent.get()->ObjectName.c_str());

@@ -5,6 +5,7 @@
 
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui/imgui.h"
+#include "Panels/EntityPropertyPanel.h"
 #include "Panels/MenuBarPanel.h"
 #include "Shake/Events/KeyEvent.h"
 #include "Shake/Renderer/Buffers/FrameBuffer.h"
@@ -78,7 +79,9 @@ namespace Shake
 #endif
 
         m_editorPanels.push_back(CreateSharedPtr<MenuBarPanel>(m_testScene));
-        m_editorPanels.push_back(CreateSharedPtr<SceneHierarchyPanel>(m_testScene));
+        auto hierarchyPanel = CreateSharedPtr<SceneHierarchyPanel>(m_testScene);
+        m_editorPanels.push_back(hierarchyPanel);
+        m_editorPanels.push_back(CreateSharedPtr<EntityPropertyPanel>(m_testScene, hierarchyPanel));
         //m_editorPanels.push_back(CreateSharedPtr<SceneStatsPanel>(m_testScene));
         
         m_testScene->LoadScene();
@@ -134,6 +137,8 @@ namespace Shake
 
     void SableLayer::OnImGuiRender()
     {
+        ImGui::ShowDemoWindow();
+        
         if (m_isEditorHidden)
         {
             return;
